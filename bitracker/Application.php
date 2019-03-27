@@ -95,7 +95,7 @@ class _Application extends \IPS\Application
 	public function defaultFrontNavigation()
 	{
 		return array(
-			'rootTabs'		=>  array(),
+			'rootTabs'	=>  array(),
 			'browseTabs'	=> array( array( 'key' => 'Bitracker' ) ),
 			'browseTabsEnd'	=> array(),
 			'activityTabs'	=> array()
