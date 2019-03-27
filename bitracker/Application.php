@@ -1,7 +1,7 @@
 <?php
 /**
- *     Support this project... Keep it free and open source become a Patron
- *                                https://www.patreon.com/devcu
+ *     Support this Project... Keep it free! Become an Open Source Patron
+ *                       https://www.patreon.com/devcu
  *
  * @brief       BitTracker Application Class
  * @author      Gary Cornell for devCU Software Open Source Projects
