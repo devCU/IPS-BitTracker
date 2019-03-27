@@ -6,9 +6,11 @@
     [![Development](https://img.shields.io/badge/Development-Active-blue.svg)](https://www.devcu.com/forums/devcu-tracker/)
 
 
-**Please support our Open Source Projects**
+## ** Become a Patron of devCU **
+	
+**Please support our Open Source Projects and keep this software free**
 
-[![donate](https://www.devcu.net/mediasrc/donate.png)](https://www.devcu.com/forums/topic/739-help-support-our-work/)
+[![donate](https://www.devcu.net/mediasrc/become_a_patron_button.png)](https://www.patreon.com/devcu/)
 
     
 # IPS 4.4x BitTracker
