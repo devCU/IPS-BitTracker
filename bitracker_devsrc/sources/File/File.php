@@ -236,7 +236,7 @@ class _File extends \IPS\Content\Item implements
 	/**
 	 * @brief	URL Base
 	 */
-	public static $urlBase = 'app=bitracker&module=bitracker&controller=view&id=';
+	public static $urlBase = 'app=bitracker&module=portal&controller=view&id=';
 	
 	/**
 	 * @brief	URL Base
