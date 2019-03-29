@@ -306,7 +306,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		$form->add( new \IPS\Helpers\Form\YesNo( 'clog_on', $this->log !== 0, FALSE, array( 'togglesOn' => array( 'clog', 'submitter_log' ) ) ) );
 		$form->add( new \IPS\Helpers\Form\Interval( 'clog', $this->log === NULL ? -1 : $this->log, FALSE, array(
 			'valueAs' => \IPS\Helpers\Form\Interval::DAYS, 'unlimited' => -1
-		), NULL, NULL, ( $this->id and \IPS\Member::loggedIn()->hasAcpRestriction( 'bitracker', 'bitracker', 'categories_recount_bitracker' ) ) ? '<a data-confirm data-confirmSubMessage="' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount_desc') . '" href="' . \IPS\Http\Url::internal( "app=bitracker&module=bitracker&controller=categories&do=recountBitracker&id={$this->id}") . '">' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount') . '</a>' : '', 'clog' ) );
+		), NULL, NULL, ( $this->id and \IPS\Member::loggedIn()->hasAcpRestriction( 'bitracker', 'bitracker', 'categories_recount_bitracker' ) ) ? '<a data-confirm data-confirmSubMessage="' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount_desc') . '" href="' . \IPS\Http\Url::internal( "app=bitracker&module=configure&controller=categories&do=recountBitracker&id={$this->id}") . '">' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount') . '</a>' : '', 'clog' ) );
 
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_submitter_log', $this->bitoptions['submitter_log'], FALSE, array(), NULL, NULL, NULL, 'submitter_log' ) );
 		
