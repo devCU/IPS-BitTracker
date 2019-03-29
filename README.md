@@ -1,6 +1,6 @@
 <p align="center">
 ![devCUHead](https://www.devcu.net/mediasrc/githubhead_2.gif?V=1.4)
-
+</p>
 [![License](https://img.shields.io/badge/License-GNUv3-blue.svg)](https://github.com/GaalexxC/IPS-4.4-BitTracker/blob/master/LICENSE) [![Version](https://img.shields.io/badge/Version-2.0.0-blue.svg)](https://www.devcu.com/forums/devcu-tracker/)
     [![Build](https://img.shields.io/badge/Build-Beta-lightgrey.svg)](https://www.devcu.com/forums/devcu-tracker/)
     [![Status](https://img.shields.io/badge/Status-Green-green.svg)](https://www.devcu.com/forums/devcu-tracker/)
@@ -38,7 +38,6 @@
 # IPS 4.4x BitTracker
 
 #### Full featured bit torrent tracker application for IPS 4.4x Community Suite focusing on privacy and security
-</p>
 
 ## ** Updated Notes **
 
