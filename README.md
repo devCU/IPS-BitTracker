@@ -41,11 +41,11 @@
 
 ## ** Updated Notes **
 
-03/28/19
+04/06/19
 
 - Code refactor from IPS 4.3 (v1.x.x) >> IPS 4.4 (v2.x.x) in progress
-- Release April 21st for Patrons
-- Release May 5th for Public
+- Release April 28th for Patrons
+- Release May 12th for Public
 - Added bitracker_devsrc development files for those who want continue work after 4.4 EOL (No Date)
 - Will do a release of compiled source in IPS .tar file format for import installations
 - Looking for an older version? [IPS 4.2x/4.3x version](https://github.com/GaalexxC/IPS-4.3-BitTracker) in active development
