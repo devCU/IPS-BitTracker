@@ -9,13 +9,13 @@
 [![Platform](https://img.shields.io/badge/Platform-IPS4.4+-blue.svg)](https://www.devcu.com/forums/devcu-tracker/)
 
 
-## ** Become a Patron of devCU **
+## ** Become a Patron/Supporter of devCU **
 	
 **Please support our Open Source Projects and keep this software free**
 
-- Patrons have access to Beta and Release version up to 2 weeks before the public
+- Patrons and Donators have access to Beta and Release version up to 2 weeks before the public
 
-[![donate](https://www.devcu.net/mediasrc/become_a_patron_button.png)](https://www.patreon.com/devcu/)
+[![donate](https://www.devcu.net/mediasrc/patronize_devcu.png)](https://www.patreon.com/devcu/) [![donate](https://www.devcu.net/mediasrc/support_devcu.png?v=1)](https://www.devcu.com/clients/donations/)
 
     
 <pre>
