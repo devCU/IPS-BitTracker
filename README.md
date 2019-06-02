@@ -43,10 +43,10 @@
 
 ## ** Updated Notes **
 
-05/24/19
+06/02/19
 
-- Beta Testing next week, contact me for details on how to participate
-- Release first half of June for Patrons
+- Beta Testing begins Monday June 3rd, contact me to participate
+- Release middle of June for Patrons
 - Release early July for Public
 - Will do a release of compiled source in IPS .tar file format for import installations
 - Looking for an older version? [IPS 4.2x/4.3x version](https://github.com/GaalexxC/IPS-4.3-BitTracker) in active development
