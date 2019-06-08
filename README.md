@@ -43,9 +43,9 @@
 
 ## ** Updated Notes **
 
-06/02/19
+06/07/19
 
-- Beta Testing begins Monday June 3rd, contact me to participate
+- 2.0.0 RC 1 currently in beta testing
 - Release middle of June for Patrons
 - Release early July for Public
 - Will do a release of compiled source in IPS .tar file format for import installations
