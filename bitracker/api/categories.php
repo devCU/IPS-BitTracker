@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     09 JUN 2019
+ * @Updated     10 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -81,6 +81,8 @@ class _categories extends \IPS\Node\Api\NodeController
 	 * @apiparam	int|null	parent					The ID number of the parent the category should be created in. NULL for root.
 	 * @apiparam	int			moderation				Files must be approved?
 	 * @apiparam	int			moderation_edits		New versions must be re-approved?
+	 * @apiparam	int			allownfo				Allow NFO?
+	 * @apiparam	int			reqnfo					Require NFO?
 	 * @apiparam	int			allowss					Allow screenshots?
 	 * @apiparam	int			reqss					Require screenshots?
 	 * @apiparam	int			comments				Allow comments?
@@ -109,6 +111,8 @@ class _categories extends \IPS\Node\Api\NodeController
 	 * @apiparam	int|null	parent					The ID number of the parent the category should be created in. NULL for root.
 	 * @apiparam	int			moderation				Files must be approved?
 	 * @apiparam	int			moderation_edits		New versions must be re-approved?
+	 * @apiparam	int			allownfo				Allow NFO?
+	 * @apiparam	int			reqnfo					Require NFO?
 	 * @apiparam	int			allowss					Allow screenshots?
 	 * @apiparam	int			reqss					Require screenshots?
 	 * @apiparam	int			comments				Allow comments?
