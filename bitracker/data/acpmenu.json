@@ -1,0 +1,154 @@
+{
+    "dashboard": {
+        "overview": {
+            "tab": "bitracker",
+            "controller": "overview",
+            "do": "",
+            "restriction": "overview_manage"
+        }
+    },
+    "tracker": {
+        "announce": {
+            "tab": "bitracker",
+            "controller": "announce",
+            "do": "",
+            "restriction": "announce_manage"
+        },
+        "security": {
+            "tab": "bitracker",
+            "controller": "security",
+            "do": "",
+            "restriction": "security_manage"
+        },
+        "torrents": {
+            "tab": "bitracker",
+            "controller": "torrents",
+            "do": "",
+            "restriction": "torrents_manage"
+        }
+    },
+    "configure": {
+        "categories": {
+            "tab": "bitracker",
+            "controller": "categories",
+            "do": "",
+            "restriction": "categories_manage"
+        },
+        "fields": {
+            "tab": "bitracker",
+            "controller": "fields",
+            "do": "",
+            "restriction": "fields_manage"
+        }
+    },
+    "settings": {
+        "general": {
+            "tab": "bitracker",
+            "controller": "general",
+            "do": "",
+            "restriction": "settings_manage"
+        },
+        "file": {
+            "tab": "bitracker",
+            "controller": "files",
+            "do": "",
+            "restriction": "settings_manage"
+        },
+        "clients": {
+            "tab": "bitracker",
+            "controller": "clients",
+            "do": "",
+            "restriction": "settings_manage"
+        },
+        "sites": {
+            "tab": "bitracker",
+            "controller": "sites",
+            "do": "",
+            "restriction": "sites_manage"
+        },
+        "storage": {
+            "tab": "bitracker",
+            "controller": "storage",
+            "do": "",
+            "restriction": "settings_manage"
+        },
+        "menu": {
+            "tab": "bitracker",
+            "controller": "menu",
+            "do": "",
+            "restriction": "menu_manage"
+        },
+        "permissions": {
+            "tab": "bitracker",
+            "controller": "permissions",
+            "do": "",
+            "restriction": "permissions_manage"
+        }
+    },
+    "members": {
+        "members": {
+            "tab": "bitracker",
+            "controller": "members",
+            "do": "",
+            "restriction": "members_manage"
+        },
+        "profiles": {
+            "tab": "bitracker",
+            "controller": "profiles",
+            "do": "",
+            "restriction": "profiles_manage"
+        }
+    },
+    "stats": {
+        "torrent": {
+            "tab": "bitracker",
+            "controller": "torrents",
+            "do": "",
+            "restriction": "torrents_manage"
+        },
+        "network": {
+            "tab": "bitracker",
+            "controller": "network",
+            "do": "",
+            "restriction": "network_manage"
+        },
+        "member": {
+            "tab": "bitracker",
+            "controller": "members",
+            "do": "",
+            "restriction": "members_manage"
+        },
+        "peers": {
+            "tab": "bitracker",
+            "controller": "peers",
+            "do": "",
+            "restriction": "peers_manage"
+        },
+        "submitters": {
+            "tab": "bitracker",
+            "controller": "submitters",
+            "do": "",
+            "restriction": "submitters_manage"
+        }
+    },
+    "about": {
+        "about": {
+            "tab": "bitracker",
+            "controller": "about",
+            "do": "",
+            "restriction": "overview_manage"
+        },
+        "version": {
+            "tab": "bitracker",
+            "controller": "version",
+            "do": "",
+            "restriction": "overview_manage"
+        },
+        "update": {
+            "tab": "bitracker",
+            "controller": "update",
+            "do": "",
+            "restriction": "update_manage"
+        }
+    }
+}
