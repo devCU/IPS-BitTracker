@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.0 Beta 1
+ * @version     2.0.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     29 MAR 2019
+ * @Updated     10 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -94,7 +94,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 	 */
 	protected static $restrictions = array(
 		'app'		=> 'bitracker',
-		'module'	=> 'bitracker',
+		'module'	=> 'configure',
 		'prefix' => 'categories_'
 	);
 	
@@ -121,24 +121,25 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 	);
 	
 	/**
-	 * @brief	Bitwise values for members_bitoptions field
+	 * @brief	Bitwise values for members_bitoptions field, # 32 is deprecated
 	 */
 	public static $bitOptions = array(
 		'bitoptions' => array(
 			'bitoptions' => array(
 				'allowss'				=> 1,	// Allow screenshots?
 				'reqss'					=> 2,	// Require screenshots?
-				'comments'				=> 4,	// Enable comments?
-				'moderation'			=> 8,	// Require files to be approved?
-				'comment_moderation'	=> 16,	// Require comments to be approved?
-				# 32 is deprecated
-				'moderation_edits'		=> 64,	// Edits must be approved?
-				'submitter_log'			=> 128,	// File submitter can view downloads logs?
-				'reviews'				=> 256,	// Enable reviews?
-				'reviews_mod'			=> 512,	// Reviews must be approved?
-				'reviews_bitrack'		=> 1024,// Users must have downloaded before they can review?
-				'topic_delete'			=> 2048,// Delete created topics when file is deleted?
-				'topic_screenshot'		=> 4096,// Include screenshot with topics?
+				'allownfo'				=> 4,	// Allow NFO?
+				'reqnfo'				=> 8,	// Require NFO?
+				'comments'				=> 16,	// Enable comments?
+				'moderation'			=> 64,	// Require files to be approved?
+				'comment_moderation'	=> 128,	// Require comments to be approved?
+				'moderation_edits'		=> 256,	// Edits must be approved?
+				'submitter_log'			=> 512,	// File submitter can view downloads logs?
+				'reviews'				=> 1024,	// Enable reviews?
+				'reviews_mod'			=> 2048,	// Reviews must be approved?
+				'reviews_bitrack'		=> 4096,// Users must have downloaded before they can review?
+				'topic_delete'			=> 8192,// Delete created topics when file is deleted?
+				'topic_screenshot'		=> 16384_,// Include screenshot with topics?
 			)
 		)
 	);
@@ -273,7 +274,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 			)
 		) ) );
 
-		$class = get_called_class();
+		$class = \get_called_class();
 
 		$form->add( new \IPS\Helpers\Form\Node( 'cparent', $this->parent ?: 0, FALSE, array(
 			'class'		      => '\IPS\bitracker\Category',
@@ -306,8 +307,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		$form->add( new \IPS\Helpers\Form\YesNo( 'clog_on', $this->log !== 0, FALSE, array( 'togglesOn' => array( 'clog', 'submitter_log' ) ) ) );
 		$form->add( new \IPS\Helpers\Form\Interval( 'clog', $this->log === NULL ? -1 : $this->log, FALSE, array(
 			'valueAs' => \IPS\Helpers\Form\Interval::DAYS, 'unlimited' => -1
-		), NULL, NULL, ( $this->id and \IPS\Member::loggedIn()->hasAcpRestriction( 'bitracker', 'bitracker', 'categories_recount_bitracker' ) ) ? '<a data-confirm data-confirmSubMessage="' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount_desc') . '" href="' . \IPS\Http\Url::internal( "app=bitracker&module=configure&controller=categories&do=recountBitracker&id={$this->id}") . '">' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount') . '</a>' : '', 'clog' ) );
-
+		), NULL, NULL, ( $this->id and \IPS\Member::loggedIn()->hasAcpRestriction( 'bitracker', 'configure', 'categories_recount_bitracker' ) ) ? '<a data-confirm data-confirmSubMessage="' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount_desc') . '" href="' . \IPS\Http\Url::internal( "app=bitracker&module=configure&controller=categories&do=recountTorrents&id={$this->id}") . '">' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount') . '</a>' : '', 'clog' ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_submitter_log', $this->bitoptions['submitter_log'], FALSE, array(), NULL, NULL, NULL, 'submitter_log' ) );
 		
 		$form->addTab( 'category_submissions' );
@@ -321,11 +321,17 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		}, NULL, \IPS\Member::loggedIn()->language()->addToStack('filesize_raw_k'), 'cmaxfile' ) );
 		$form->add( new \IPS\Helpers\Form\Translatable( 'csubmissionterms', $this->submissionterms, FALSE, array( 'app' => 'bitracker', 'key' => ( $this->id ? "bitracker_category_{$this->id}_subterms" : NULL ), 'editor' => array( 'app' => 'bitracker', 'key' => 'Categories', 'autoSaveKey' => ( $this->id ? "bitracker-cat-{$this->id}-subt" : "bitracker-new-cat-subt" ), 'attachIds' => $this->id ? array( $this->id, NULL, 'subt' ) : NULL, 'minimize' => 'csubmissionterms_placeholder' ) ) ) );
 		$form->addHeader( 'category_versioning' );
+		$form->add( new \IPS\Helpers\Form\Radio( 'cversion_numbers', $this->id ? $this->version_numbers : 1, TRUE, array( 'options' => array( 0 => 'version_numbers_disabled', 1 => 'version_numbers_enabled', 2 => 'version_numbers_required' ) ) ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cversioning_on', $this->versioning !== 0, FALSE, array( 'togglesOn' => array( 'cversioning' ) ) ) );
 		$form->add( new \IPS\Helpers\Form\Number( 'cversioning', $this->versioning === NULL ? -1 : $this->versioning, FALSE, array( 'unlimited' => -1 ), NULL, NULL, NULL, 'cversioning' ) );
 		$form->addHeader( 'category_moderation' );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_moderation', $this->bitoptions['moderation'], FALSE, array( 'togglesOn' => array( 'cbitoptions_moderation_edits' ) ) ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_moderation_edits', $this->bitoptions['moderation_edits'], FALSE, array(), NULL, NULL, NULL, 'cbitoptions_moderation_edits' ) );
+		$form->addHeader( 'category_nfo' );
+		$form->add( new \IPS\Helpers\Form\Text( 'ctypesnfo', $this->id ? $this->_data['typesnfo'] : NULL, FALSE, array( 'autocomplete' => array( 'unique' => 'true' ), 'nullLang' => 'any_extensions' ), NULL, NULL, NULL, 'ctypesnfo' ) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_allownfo', $this->id ? $this->bitoptions['allownfo'] : TRUE, FALSE, array( 'togglesOn' => array( 'cbitoptions_reqnfo', 'cmaxnfo' ) ), NULL, NULL, NULL, 'cbitoptions_allownfo' ) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_reqnfo', $this->bitoptions['reqnfo'], FALSE, array(), NULL, NULL, NULL, 'cbitoptions_reqnfo' ) );
+		$form->add( new \IPS\Helpers\Form\Number( 'cmaxnfo', $this->maxnfo, FALSE, array( 'unlimited' => 0 ), NULL, NULL, \IPS\Member::loggedIn()->language()->addToStack('filesize_raw_k'), 'cmaxnfo' ) );
 		$form->addHeader( 'category_screenshots' );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_allowss', $this->id ? $this->bitoptions['allowss'] : TRUE, FALSE, array( 'togglesOn' => array( 'cbitoptions_reqss', 'cmaxss', 'cmaxdims' ) ), NULL, NULL, NULL, 'cbitoptions_allowss' ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_reqss', $this->bitoptions['reqss'], FALSE, array(), NULL, NULL, NULL, 'cbitoptions_reqss' ) );
@@ -406,7 +412,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 			}
 		}
 		
-		foreach ( array( 'moderation', 'moderation_edits', 'allowss', 'reqss', 'comments', 'comment_moderation', 'submitter_log', 'reviews', 'reviews_mod', 'reviews_bitrack', 'topic_delete', 'topic_screenshot' ) as $k )
+		foreach ( array( 'moderation', 'moderation_edits', 'allownfo', 'reqnfo', 'allowss', 'reqss', 'comments', 'comment_moderation', 'submitter_log', 'reviews', 'reviews_mod', 'reviews_bitrack', 'topic_delete', 'topic_screenshot' ) as $k )
 		{
 			if ( array_key_exists( "cbitoptions_{$k}", $values ) )
 			{
@@ -420,7 +426,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 			$values['cversioning'] = $values['cversioning_on'] ? ( ( $values['cversioning'] < 0 ) ? NULL : $values['cversioning'] ) : 0;
 		}
 		
-		foreach ( array( 'cmaxfile', 'cmaxss' ) as $k )
+		foreach ( array( 'cmaxfile', 'cmaxnfo', 'cmaxss' ) as $k )
 		{
 			if ( isset( $values[ $k ] ) and $values[ $k ] == -1 )
 			{
@@ -450,6 +456,11 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		if ( isset( $values['ctypes'] ) )
 		{
 			$values['ctypes'] = $values['ctypes'] ?: NULL;
+		}
+
+		if ( isset( $values['ctypesnfo'] ) )
+		{
+			$values['ctypesnfo'] = $values['ctypesnfo'] ?: NULL;
 		}
 
 		if ( isset( $values['cmaxdims'] ) )
@@ -499,7 +510,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		/* Send to parent */
 		return $values;
 	}
-	
+
 	/**
 	 * Get acceptable file extensions
 	 *
@@ -508,6 +519,11 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 	public function get_types()
 	{
 		return $this->_data['types'] ? explode( ',', $this->_data['types'] ) : NULL;
+	}
+
+	public function get_typesnfo()
+	{
+		return $this->_data['typesnfo'] ? explode( ',', $this->_data['typesnfo'] ) : NULL;
 	}
 	
 	/**
@@ -527,7 +543,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 			$this->_customFields = array();
 			if ( $this->_data['cfields'] )
 			{
-				foreach( new \IPS\Patterns\ActiveRecordIterator( \IPS\Db::i()->select( '*', 'bitracker_cfields', array( \IPS\Db::i()->in( 'cf_id', explode( ',', $this->_data['cfields'] ) ) ) ), 'IPS\bitracker\Field' ) AS $field )
+				foreach( new \IPS\Patterns\ActiveRecordIterator( \IPS\Db::i()->select( '*', 'bitracker_cfields', array( \IPS\Db::i()->in( 'cf_id', explode( ',', $this->_data['cfields'] ) ) ), 'cf_position ASC' ), 'IPS\bitracker\Field' ) AS $field )
 				{
 					$this->_customFields[ $field->id ] = $field;
 				}
@@ -795,9 +811,12 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		$form->add( new \IPS\Helpers\Form\Editor( 'club_node_description', $this->_id ? \IPS\Member::loggedIn()->language()->get( static::$titleLangPrefix . $this->_id . '_desc' ) : NULL, FALSE, array( 'app' => 'bitracker', 'key' => 'Categories', 'autoSaveKey' => ( $this->id ? "bitracker-cat-{$this->id}" : "bitracker-new-cat" ), 'attachIds' => $this->id ? array( $this->id, NULL, 'description' ) : NULL, 'minimize' => 'cdesc_placeholder' ) ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_comments', $this->id ? $this->bitoptions['comments'] : TRUE, FALSE, array(), NULL, NULL, NULL, 'cbitoptions_comments' ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_reviews', $this->id ? $this->bitoptions['reviews'] : TRUE, FALSE, array( 'togglesOn' => array( 'cbitoptions_reviews_bitrack' ) ) ) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_allownfo', $this->id ? $this->bitoptions['allownfo'] : TRUE, FALSE, array( 'togglesOn' => array( 'cbitoptions_reqnfo', 'cmaxnfo' ) ), NULL, NULL, NULL, 'cbitoptions_allownfo' ) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_reqnfo', $this->bitoptions['reqnfo'], FALSE, array(), NULL, NULL, NULL, 'cbitoptions_reqnfo' ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_allowss', $this->id ? $this->bitoptions['allowss'] : TRUE, FALSE, array( 'togglesOn' => array( 'cbitoptions_reqss', 'cmaxss', 'cmaxdims' ) ), NULL, NULL, NULL, 'cbitoptions_allowss' ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_reqss', $this->bitoptions['reqss'], FALSE, array(), NULL, NULL, NULL, 'cbitoptions_reqss' ) );
 		$form->add( new \IPS\Helpers\Form\Text( 'ctypes', $this->id ? $this->_data['types'] : NULL, FALSE, array( 'autocomplete' => array( 'unique' => 'true' ), 'nullLang' => 'any_extensions' ), NULL, NULL, NULL, 'ctypes' ) );
+		$form->add( new \IPS\Helpers\Form\Text( 'ctypesnfo', $this->id ? $this->_data['typesnfo'] : NULL, FALSE, array( 'autocomplete' => array( 'unique' => 'true' ), 'nullLang' => 'any_extensions' ), NULL, NULL, NULL, 'ctypesnfo' ) );
 	}
 	
 	/**
@@ -809,7 +828,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 	 */
 	public function _saveClubForm( \IPS\Member\Club $club, $values )
 	{
-		foreach ( array( 'allowss', 'reqss', 'comments', 'reviews' ) as $k )
+		foreach ( array( 'allowss', 'reqss', 'allownfo', 'reqnfo', 'comments', 'reviews' ) as $k )
 		{
 			$this->bitoptions[ $k ] = $values[ 'cbitoptions_' . $k ];
 		}
@@ -817,6 +836,11 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		if( isset( $values['ctypes'] ) )
 		{
 			$this->types = implode( ',', $values['ctypes'] );
+		}
+
+		if( isset( $values['ctypesnfo'] ) )
+		{
+			$this->types = implode( ',', $values['ctypesnfo'] );
 		}
 		
 		if ( $values['club_node_name'] )
@@ -827,7 +851,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		if ( !$this->_id )
 		{
 			$this->save();
-			\IPS\File::claimAttachments( 'downloads-new-cat', $this->id, NULL, 'description' );
+			\IPS\File::claimAttachments( 'bitracker-new-cat', $this->id, NULL, 'description' );
 		}
 	}
 	
