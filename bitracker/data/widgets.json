@@ -1,0 +1,67 @@
+{
+    "topSubmitters": {
+        "class": "\\IPS\\Widget\\StaticCache",
+        "restrict": [],
+        "default_area": "",
+        "allow_reuse": false,
+        "menu_style": "menu",
+        "embeddable": true
+    },
+    "bitrackerStats": {
+        "class": "\\IPS\\Widget\\StaticCache",
+        "restrict": [],
+        "default_area": "",
+        "allow_reuse": false,
+        "menu_style": "menu",
+        "embeddable": true
+    },
+    "bitrackerPeers": {
+        "class": "\\IPS\\Widget\\PermissionCache",
+        "restrict": [],
+        "default_area": "",
+        "allow_reuse": false,
+        "menu_style": "menu",
+        "embeddable": true
+    },
+    "topTorrents": {
+        "class": "\\IPS\\Widget\\PermissionCache",
+        "restrict": [],
+        "default_area": "",
+        "allow_reuse": false,
+        "menu_style": "menu",
+        "embeddable": true
+    },
+    "fileFeed": {
+        "class": "\\IPS\\Widget\\PermissionCache",
+        "restrict": [
+            "sidebar",
+            "cms"
+        ],
+        "default_area": "",
+        "allow_reuse": true,
+        "menu_style": "modal",
+        "embeddable": true
+    },
+    "bitrackerCommentFeed": {
+        "class": "\\IPS\\Widget\\PermissionCache",
+        "restrict": [
+            "sidebar",
+            "cms"
+        ],
+        "default_area": "",
+        "allow_reuse": true,
+        "menu_style": "modal",
+        "embeddable": true
+    },
+    "bitrackerReviewFeed": {
+        "class": "\\IPS\\Widget\\PermissionCache",
+        "restrict": [
+            "sidebar",
+            "cms"
+        ],
+        "default_area": "",
+        "allow_reuse": true,
+        "menu_style": "modal",
+        "embeddable": true
+    }
+}
