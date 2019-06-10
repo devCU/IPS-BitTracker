@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.0 Beta 1
+ * @version     2.0.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 MAR 2019
+ * @Updated     10 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -158,6 +158,7 @@ class _File extends \IPS\Content\Item implements
 	{
 		$return = parent::basicDataColumns();
 		$return[] = 'file_primary_screenshot';
+		$return[] = 'file_nfo';
 		$return[] = 'file_version';
 		$return[] = 'file_bitracker';
 		$return[] = 'file_cost';
@@ -1745,7 +1746,7 @@ class _File extends \IPS\Content\Item implements
 	{
 		if ( \is_array( $val ) )
 		{
-			foreach ( explode( ',', \IPS\Settings::i()->bit_link_blacklist ) as $blackListedDomain )
+			foreach ( explode( ',', '\IPS\Settings::i()->bit_link_blacklist' ) as $blackListedDomain )
 			{
 				foreach ( array_filter( $val ) as $url )
 				{
@@ -2328,6 +2329,7 @@ class _File extends \IPS\Content\Item implements
 	 * @apiresponse	string							version				Current version number
 	 * @apiresponse	string							changelog			Description of what changed between this version and the previous one
 	 * @apiresponse	[\IPS\File]						files				The files
+	 * @apiresponse	[\IPS\File]						nfo				The nfo
 	 * @apiresponse	[\IPS\File]						screenshots			Screenshots
 	 * @apiresponse	\IPS\File						primaryScreenshot	The primary screenshot
 	 * @apiresponse	int								bitracker			Number of downloads
@@ -2357,6 +2359,9 @@ class _File extends \IPS\Content\Item implements
 			'files'				=> array_values( array_map( function( $file ) use ( $authorizedMember ) {
 				return $file->apiOutput( $authorizedMember );
 			}, iterator_to_array( $this->files( $backup ? $backup['b_id'] : NULL ) ) ) ),
+			'nfo'		=> array_values( array_map( function( $file ) use ( $authorizedMember ) {
+				return $file->apiOutput( $authorizedMember );
+			}, iterator_to_array( $this->nfo( 0, TRUE, $backup ? $backup['b_id'] : NULL ) ) ) ),
 			'screenshots'		=> array_values( array_map( function( $file ) use ( $authorizedMember ) {
 				return $file->apiOutput( $authorizedMember );
 			}, iterator_to_array( $this->screenshots( 0, TRUE, $backup ? $backup['b_id'] : NULL ) ) ) ),
