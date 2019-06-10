@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     09 JUN 2019
+ * @Updated     10 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -129,6 +129,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @reqapiparam	string				description		The description as HTML (e.g. "<p>This is an file.</p>"). Will be sanatized for requests using an OAuth Access Token for a particular member; will be saved unaltered for requests made using an API Key or the Client Credentials Grant Type.
 	 * @apiparam	string				version			The version number
 	 * @reqapiparam	object				files			Files. Keys should be filename (e.g. 'file.txt') and values should be file content
+	 * @apiparam	object				NFO		        NFO. Keys should be filename (e.g. 'filename.nfo') and values should be file content.
 	 * @apiparam	object				screenshots		Screenshots. Keys should be filename (e.g. 'screenshot1.png') and values should be file content.
 	 * @apiparam	string				prefix			Prefix tag
 	 * @apiparam	string				tags			Comma-separated list of tags (do not include prefix)
@@ -142,7 +143,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @throws		1S303/8				NO_AUTHOR		The author ID does not exist
 	 * @throws		1S303/9				NO_TITLE		No title was supplied
 	 * @throws		1S303/A				NO_DESC			No description was supplied
-	 * @throws		1S303/B				NO_FILES		No files were supplied
+	 * @throws		1S303/B				NO_TORRENTS		No torrent files were supplied
 	 * @throws		2S303/H				NO_PERMISSION	The authorized user does not have permission to create a file in that category
 	 * @throws		1S303/I				BAD_FILE_EXT	One of the files has a file type that is not allowed
 	 * @throws		1S303/J				BAD_FILE_SIZE	One of the files is too big
@@ -206,7 +207,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 		}
 		if ( $this->member )
 		{
-			$this->_validateFilesForMember( $category );
+			$this->_validateTorrentsForMember( $category );
 		}
 		
 		/* Create torrent record */
@@ -217,7 +218,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 		{
 			$fileObject = \IPS\File::create( 'bitracker_Torrents', $name, $_POST['torrents'][ $name ] );
 			
-			\IPS\Db::i()->insert( 'bitracker_files_records', array(
+			\IPS\Db::i()->insert( 'bitracker_torrents_records', array(
 				'record_file_id'	=> $file->id,
 				'record_type'		=> 'upload',
 				'record_location'	=> (string) $fileObject,
@@ -233,12 +234,12 @@ class _torrents extends \IPS\Content\Api\ItemController
 				$fileObject = \IPS\File::create( 'bitracker_Nfo', $name, $_POST['nfo'][ $name ] );
 				
 				\IPS\Db::i()->insert( 'bitracker_torrents_records', array(
-					'record_file_id'		=> $file->id,
-					'record_type'			=> 'nfoupload',
-					'record_location'		=> (string) $fileObject,
-					'record_realname'		=> $fileObject->originalFilename,
-					'record_size'			=> \strlen( $fileObject->contents() ),
-					'record_time'			=> time(),
+				'record_file_id'		=> $file->id,
+				'record_type'			=> 'nfoupload',
+				'record_location'	=> (string) $fileObject,
+				'record_realname'	=> $fileObject->originalFilename,
+				'record_size'		=> $fileObject->filesize(),
+				'record_time'		=> time(),
 				) );
 			
 		if ( $category->bitoptions['allowss'] and isset( \IPS\Request::i()->screenshots ) )
@@ -278,7 +279,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @param	\IPS\bitracker\Category	$category	The category
 	 * @return	void
 	 */
-	protected function _validateFilesForMember( $category )
+	protected function _validateTorrentsForMember( $category )
 	{
 		foreach ( \IPS\Request::i()->files as $name => $content )
 		{
@@ -294,6 +295,24 @@ class _torrents extends \IPS\Content\Api\ItemController
 			if ( $category->maxfile and \strlen( $content ) > ( $category->maxfile * 1024 ) )
 			{
 				throw new \IPS\Api\Exception( 'BAD_FILE_SIZE', '1S303/J', 400 );
+			}
+		}
+
+		if ( $category->bitoptions['allownfo'] )
+		{
+			if ( isset( \IPS\Request::i()->nfo ) and \IPS\Request::i()->nfo )
+			{
+				foreach ( \IPS\Request::i()->nfo as $name => $content )
+				{
+					if ( $category->maxnfo and \strlen( $content ) > ( $category->maxnfo * 1024 ) )
+					{
+						throw new \IPS\Api\Exception( 'BAD_NFO_SIZE', '1S303/L', 400 );
+					}
+				}
+			}
+			elseif ( $category->bitoptions['reqnfo'] )
+			{
+				throw new \IPS\Api\Exception( 'NO_NFO', '1S303/N', 400 );
 			}
 		}
 		
@@ -334,7 +353,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	}
 	
 	/**
-	 * POST /bitracker/files/{id}
+	 * POST /bitracker/torrents/{id}
 	 * Edit a file
 	 *
 	 * @note	For requests using an OAuth Access Token for a particular member, any parameters the user doesn't have permission to use are ignored (for example, locked will only be honoured if the authenticated user has permission to lock records).
@@ -472,7 +491,14 @@ class _torrents extends \IPS\Content\Api\ItemController
 	protected function _recalculate( $file )
 	{
 		/* File size */
-		$file->size = floatval( \IPS\Db::i()->select( 'SUM(record_size)', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0', $file->id, 'upload' ) )->first() );
+		$file->size = \floatval( \IPS\Db::i()->select( 'SUM(record_size)', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0', $file->id, 'upload' ) )->first() );
+		
+		/* Work out nfo*/
+		try
+		{
+		$file->size = \floatval( \IPS\Db::i()->select( 'SUM(record_size)', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0', $file->id, 'nfoupload' ) )->first() );
+		}
+		catch ( \UnderflowException $e ) { }
 		
 		/* Work out the new primary screenshot */
 		try
@@ -540,7 +566,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @param		int		$id			ID Number
 	 * @throws		2S303/4	INVALID_ID	The file ID does not exist or the authorized user does not have permission to view it
 	 * @return		array
-	 * @apiresponse	int		id			The version ID number (use to get more information about this version in GET /bitracker/files/{id})
+	 * @apiresponse	int		id			The version ID number (use to get more information about this version in GET /bitracker/torrents/{id})
 	 * @apiresponse	string	version		The version number provided by the user
 	 * @apiresponse	string	changelog	What was new in this version
 	 * @apiresponse	datetime	date	Datetime the backup was stored
@@ -587,10 +613,11 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @apiparam	string				changelog		What changed in this version
 	 * @apiparam	int					save			If 1 this will be saved as a new version and the previous version available in the history. If 0, will simply replace the existing files/screenshots. Defaults to 1. Ignored if category does not have versioning enabled or authorized user does not have permission to disable.
 	 * @reqapiparam	object				files			Files. Keys should be filename (e.g. 'file.txt') and values should be file content - will replace all current files
+	 * @apiparam	object				NFO		        NFO. Keys should be filename (e.g. 'filename.nfo') and values should be file content.
 	 * @apiparam	object				screenshots		Screenshots. Keys should be filename (e.g. 'screenshot1.png') and values should be file content - will replace all current screenshots
 	 * @param		int		$id			ID Number
 	 * @throws		2S303/F				INVALID_ID		The file ID is invalid or the authorized user does not have permission to view it
-	 * @throws		1S303/G				NO_FILES		No files were supplied
+	 * @throws		1S303/G				NO_TORRENTS	No torrent files were supplied
 	 * @throws		2S303/Q				NO_PERMISSION	The authorized user does not have permission to edit the file
 	 * @throws		1S303/I				BAD_FILE_EXT	One of the files has a file type that is not allowed
 	 * @throws		1S303/J				BAD_FILE_SIZE	One of the files is too big
@@ -623,14 +650,14 @@ class _torrents extends \IPS\Content\Api\ItemController
 			}
 			if ( $this->member )
 			{
-				$this->_validateFilesForMember( $category );
+				$this->_validateTorrentsForMember( $category );
 			}
 			
 			/* Save current version? */
 			$save = FALSE;
 			if ( $category->versioning !== 0 )
 			{
-				if ( $this->member and !$this->member->group['idm_bypass_revision'] )
+				if ( $this->member and !$this->member->group['bit_bypass_revision'] )
 				{
 					$save = TRUE;
 				}
@@ -647,11 +674,29 @@ class _torrents extends \IPS\Content\Api\ItemController
 			{
 				foreach ( \IPS\Db::i()->select( 'record_location', 'bitracker_torrents_records', array( 'record_file_id=?', $file->id ) ) as $record )
 				{
-					if ( /in_array( $record['record_type'], array( 'upload', 'ssupload' ) ) )
+					if ( /in_array( $record['record_type'], array( 'upload', 'nfoupload', 'ssupload' ) ) )
 					{
+//						try
+//						{
+//							\IPS\File::get( $record['record_type'] == 'upload' ? 'bitracker_Torrents' : 'bitracker_Screenshots', $record['record_location'] )->delete();
+//						}
+//						catch ( \Exception $e ) { }
+//					}
+//				}
+
 						try
 						{
-							\IPS\File::get( $record['record_type'] == 'upload' ? 'bitracker_Torrents' : 'bitracker_Screenshots', $record['record_location'] )->delete();
+                            if ( $record['record_type'] == 'upload' ) 
+                               {
+                                   $record['record_type'] = \IPS\File::get( 'bitracker_Torrents', $record['record_location'] )->delete();
+                               }
+                                 elseif ( $record['record_type'] == 'nfoupload' ) 
+                               {
+                                   $record['record_type'] = \IPS\File::get( 'bitracker_Nfo', $record['record_location'] )->delete();
+                               }
+                                 elseif ( $record['record_type'] == 'ssupload' ) 
+                               {
+                                   $record['record_type'] = \IPS\File::get( 'bitracker_Screenshots', $record['record_location'] )->delete();
 						}
 						catch ( \Exception $e ) { }
 					}
@@ -680,12 +725,12 @@ class _torrents extends \IPS\Content\Api\ItemController
 					$fileObject = \IPS\File::create( 'bitracker_Nfo', $name, $_POST['nfo'][ $name ] );
 					
 					\IPS\Db::i()->insert( 'bitracker_torrents_records', array(
-						'record_file_id'		=> $file->id,
-						'record_type'			=> 'nfoupload',
-						'record_location'		=> (string) $fileObject,
-						'record_realname'		=> $fileObject->originalFilename,
-						'record_size'			=> \strlen( $fileObject->contents() ),
-						'record_time'			=> time(),
+					'record_file_id'	=> $file->id,
+					'record_type'	=> 'nfoupload',
+					'record_location'	=> (string) $fileObject,
+					'record_realname'	=> $fileObject->originalFilename,
+					'record_size'		=> $fileObject->filesize(),
+					'record_time'		=> time(),
 					) );
 				}
 			} 
