@@ -1,0 +1,54 @@
+{
+    "admin": {
+        "dashboard": {
+            "default_controller": "overview",
+            "protected": 0
+        },
+        "tracker": {
+            "default_controller": "announce",
+            "protected": 0
+        },
+        "configure": {
+            "default_controller": "categories",
+            "protected": 0
+        },
+        "settings": {
+            "default_controller": "general",
+            "protected": 0
+        },
+        "members": {
+            "default_controller": "members",
+            "protected": 0
+        },
+        "stats": {
+            "default_controller": "torrents",
+            "protected": 0
+        },
+        "about": {
+            "default_controller": "about",
+            "protected": 0
+        }
+    },
+    "front": {
+        "portal": {
+            "default_controller": "main",
+            "protected": 0
+        },
+        "client": {
+            "default_controller": "clients",
+            "protected": 0
+        },
+        "stats": {
+            "default_controller": "overview",
+            "protected": 0
+        },
+        "submit": {
+            "default_controller": "submit",
+            "protected": 0
+        },
+        "system": {
+            "default_controller": "settings",
+            "protected": 0
+        }
+    }
+}
