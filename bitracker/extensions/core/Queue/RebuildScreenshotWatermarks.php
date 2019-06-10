@@ -66,8 +66,8 @@ class _RebuildScreenshotWatermarks
 				$where[] = array( 'record_no_watermark<>?', '' );
 			}
 
-			$data['count']		= \IPS\Db::i()->select( 'MAX(record_id)', 'bitracker_files_records', $where )->first();
-			$data['realCount']	= \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_files_records', $where )->first();
+			$data['count']		= \IPS\Db::i()->select( 'MAX(record_id)', 'bitracker_torrents_records', $where )->first();
+			$data['realCount']	= \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_torrents_records', $where )->first();
 		}
 		catch( \Exception $ex )
 		{
@@ -103,7 +103,7 @@ class _RebuildScreenshotWatermarks
 			$where[] = array( 'record_no_watermark<>?', '' );
 		}
 
-		$select = \IPS\Db::i()->select( '*', 'bitracker_files_records', $where, 'record_id', array( 0, $this->rebuild ) );
+		$select = \IPS\Db::i()->select( '*', 'bitracker_torrents_records', $where, 'record_id', array( 0, $this->rebuild ) );
 
 		foreach ( $select as $row )
 		{
@@ -122,7 +122,7 @@ class _RebuildScreenshotWatermarks
 
 					if ( !$watermark )
 					{
-						\IPS\Db::i()->update( 'bitracker_files_records', array(
+						\IPS\Db::i()->update( 'bitracker_torrents_records', array(
 							'record_location'		=> (string) $original,
 							'record_thumb'			=> (string) $original->thumbnail( 'bitracker_Screenshots' ),
 							'record_no_watermark'	=> NULL
@@ -144,7 +144,7 @@ class _RebuildScreenshotWatermarks
 
 				$newFile = \IPS\File::create( 'bitracker_Screenshots', $original->originalFilename, $image );
 
-				\IPS\Db::i()->update( 'bitracker_files_records', array(
+				\IPS\Db::i()->update( 'bitracker_torrents_records', array(
 					'record_location'		=> (string) $newFile,
 					'record_thumb'			=> (string) $newFile->thumbnail( 'bitracker_Screenshots' ),
 					'record_no_watermark'	=> (string) $original
