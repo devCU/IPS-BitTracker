@@ -1,0 +1,23 @@
+[
+    {
+        "method": "changeColumn",
+        "params": [
+            "bitracker_categories",
+            "ctypes",
+            {
+                "name": "ctypes",
+                "type": "TEXT",
+                "length": 0,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": "[\"torrent\", \"nfo\", \"jpg\", \"png\", \"gif\", \"jpeg\"]",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    }
+]
