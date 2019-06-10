@@ -8,8 +8,8 @@
 	    "bitracker_cat": {
 		    "friendly": "category/{#id}-{?}",
 		    "real": "app=bitracker&module=portal&controller=main",
-		    "verify": "\\IPS\\bitracker\\Category"
-            "seoPagination" : true
+		    "verify": "\\IPS\\bitracker\\Category",
+		    "seoPagination" : true
 	    },
 		"bitracker_clubs": {
 			"friendly": "category/clubs",
@@ -22,8 +22,8 @@
 		"bitracker_torrent": {
 			"friendly": "file/{#id}-{?}",
 			"real": "app=bitracker&module=portal&controller=view",
-			"verify": "\\IPS\\bitracker\\File"
-            "seoPagination" : true
+			"verify": "\\IPS\\bitracker\\File",
+		    "seoPagination" : true
 		},
 		"bitracker_rss": {
 			"friendly": "files.xml",
