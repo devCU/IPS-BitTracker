@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.0 Beta 1
+ * @version     2.0.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     31 MAR 2019
+ * @Updated     09 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -200,7 +200,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 		}
 		
 		/* Validate torrents */
-		if ( !isset( \IPS\Request::i()->torrents ) or !/is_array( \IPS\Request::i()->torrents ) or empty( \IPS\Request::i()->torrents ) )
+		if ( !isset( \IPS\Request::i()->torrents ) or !\is_array( \IPS\Request::i()->torrents ) or empty( \IPS\Request::i()->torrents ) )
 		{
 			throw new \IPS\Api\Exception( 'NO_TORRENTS', '1L296/B', 400 );
 		}
@@ -213,11 +213,11 @@ class _torrents extends \IPS\Content\Api\ItemController
 		$file = $this->_create( $category, $author );
 				
 		/* Save records */
-		foreach ( \IPS\Request::i()->torrents as $name => $content )
+		foreach ( array_keys( \IPS\Request::i()->torrents ) as $name )
 		{
-			$fileObject = \IPS\File::create( 'bitracker_Torrents', $name, $content );
+			$fileObject = \IPS\File::create( 'bitracker_Torrents', $name, $_POST['torrents'][ $name ] );
 			
-			\IPS\Db::i()->insert( 'bitracker_torrents_records', array(
+			\IPS\Db::i()->insert( 'bitracker_files_records', array(
 				'record_file_id'	=> $file->id,
 				'record_type'		=> 'upload',
 				'record_location'	=> (string) $fileObject,
@@ -285,7 +285,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 			if ( $category->types )
 			{
 				$ext = mb_substr( $name, mb_strrpos( $name, '.' ) + 1 );
-				if( !/in_array( mb_strtolower( $ext ), array_map( 'mb_strtolower', $category->types ) ) )
+				if( !\in_array( mb_strtolower( $ext ), array_map( 'mb_strtolower', $category->types ) ) )
 				{
 					throw new \IPS\Api\Exception( 'BAD_FILE_EXT', '1S303/I', 400 );
 				}
@@ -349,6 +349,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @apiparam	int					locked			1/0 indicating if the file should be locked
 	 * @apiparam	int					hidden			0 = unhidden; 1 = hidden, pending moderator approval; -1 = hidden (as if hidden by a moderator)
 	 * @apiparam	int					featured		1/0 indicating if the file should be featured
+	 * @param		int		$id			ID Number
 	 * @throws		2S303/C				INVALID_ID		The file ID is invalid or the authorized user does not have permission to view it
 	 * @throws		1S303/D				NO_CATEGORY		The category ID does not exist or the authorized user does not have permission to post in it
 	 * @throws		1S303/E				NO_AUTHOR		The author ID does not exist
@@ -542,6 +543,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @apiresponse	int		id			The version ID number (use to get more information about this version in GET /bitracker/files/{id})
 	 * @apiresponse	string	version		The version number provided by the user
 	 * @apiresponse	string	changelog	What was new in this version
+	 * @apiresponse	datetime	date	Datetime the backup was stored
 	 * @apiresponse	bool	hidden		If this version is hidden
 	 */
 	public function GETitem_history( $id )
@@ -563,6 +565,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 					'version'	=> $backup['b_version'],
 					'changelog'	=> $backup['b_changelog'],
 					'hidden'	=> (bool) $backup['b_hidden'],
+					'date'		=> \IPS\DateTime::ts( $backup['b_backup'] )->rfc3339()
 				);
 			}
 			
@@ -585,6 +588,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @apiparam	int					save			If 1 this will be saved as a new version and the previous version available in the history. If 0, will simply replace the existing files/screenshots. Defaults to 1. Ignored if category does not have versioning enabled or authorized user does not have permission to disable.
 	 * @reqapiparam	object				files			Files. Keys should be filename (e.g. 'file.txt') and values should be file content - will replace all current files
 	 * @apiparam	object				screenshots		Screenshots. Keys should be filename (e.g. 'screenshot1.png') and values should be file content - will replace all current screenshots
+	 * @param		int		$id			ID Number
 	 * @throws		2S303/F				INVALID_ID		The file ID is invalid or the authorized user does not have permission to view it
 	 * @throws		1S303/G				NO_FILES		No files were supplied
 	 * @throws		2S303/Q				NO_PERMISSION	The authorized user does not have permission to edit the file
@@ -613,7 +617,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 			$category = $file->container();
 			
 			/* Validate torrents */
-			if ( !isset( \IPS\Request::i()->torrents ) or !/is_array( \IPS\Request::i()->torrents ) or empty( \IPS\Request::i()->torrents ) )
+			if ( !isset( \IPS\Request::i()->torrents ) or !\is_array( \IPS\Request::i()->torrents ) or empty( \IPS\Request::i()->torrents ) )
 			{
 				throw new \IPS\Api\Exception( 'NO_TORRENTS', '1L296/B', 400 );
 			}
@@ -647,7 +651,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 					{
 						try
 						{
-							\IPS\File::get( $record['record_type'] == 'upload' ? 'bitracker_Torrents' : 'bitracker_Screenshots', $url )->delete();
+							\IPS\File::get( $record['record_type'] == 'upload' ? 'bitracker_Torrents' : 'bitracker_Screenshots', $record['record_location'] )->delete();
 						}
 						catch ( \Exception $e ) { }
 					}
