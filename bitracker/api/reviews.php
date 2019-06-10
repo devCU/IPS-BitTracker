@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     09 JUN 2019
+ * @Updated     10 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -165,7 +165,7 @@ class _reviews extends \IPS\Content\Api\CommentController
 		}
 		
 		/* Check we have a rating */
-		if ( !\IPS\Request::i()->rating or !in_array( (int) \IPS\Request::i()->rating, range( 1, \IPS\Settings::i()->reviews_rating_out_of ) ) )
+		if ( !\IPS\Request::i()->rating or !\in_array( (int) \IPS\Request::i()->rating, range( 1, \IPS\Settings::i()->reviews_rating_out_of ) ) )
 		{
 			throw new \IPS\Api\Exception( 'INVALID_RATING', '1D305/5', 403 );
 		}
@@ -207,7 +207,7 @@ class _reviews extends \IPS\Content\Api\CommentController
 			}
 			
 			/* Check */
-			if ( isset( \IPS\Request::i()->rating ) and !in_array( (int) \IPS\Request::i()->rating, range( 1, \IPS\Settings::i()->reviews_rating_out_of ) ) )
+			if ( isset( \IPS\Request::i()->rating ) and !\in_array( (int) \IPS\Request::i()->rating, range( 1, \IPS\Settings::i()->reviews_rating_out_of ) ) )
 			{
 				throw new \IPS\Api\Exception( 'INVALID_RATING', '1D305/8', 403 );
 			}						
