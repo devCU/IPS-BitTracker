@@ -139,7 +139,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 				'reviews_mod'			=> 2048,	// Reviews must be approved?
 				'reviews_bitrack'		=> 4096,// Users must have downloaded before they can review?
 				'topic_delete'			=> 8192,// Delete created topics when file is deleted?
-				'topic_screenshot'		=> 16384_,// Include screenshot with topics?
+				'topic_screenshot'		=> 16384,// Include screenshot with topics?
 			)
 		)
 	);
