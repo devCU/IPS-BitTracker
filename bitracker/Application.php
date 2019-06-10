@@ -109,7 +109,7 @@ class _Application extends \IPS\Application
 	 */
 	public function convertLegacyParameters()
 	{
-		if ( isset( \IPS\Request::i()->showfile ) AND is_numeric( \IPS\Request::i()->showfile ) )
+		if ( isset( \IPS\Request::i()->showfile ) AND \is_numeric( \IPS\Request::i()->showfile ) )
 		{
 			try
 			{
