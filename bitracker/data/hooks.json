@@ -1,0 +1,14 @@
+{ 
+    "Forums" : { 
+        "type" : "C",
+        "class" : "\\IPS\\forums\\Forum"
+    },
+    "nexusPackage" : { 
+        "type" : "C",
+        "class" : "\\IPS\\nexus\\Package\\Item"
+    },
+    "Forum" : { 
+        "type" : "C",
+        "class" : "\\IPS\\forums\\modules\\admin\\forums\\forums"
+    }
+}
