@@ -170,9 +170,10 @@ class _File extends \IPS\Content\Item implements
 	 * Query to get additional data for search result / stream view
 	 *
 	 * @param	array	$items	Item data (will be an array containing values from basicDataColumns())
+	 * @param	\IPS\Member\NULL	$member		Member profile we are viewing (if any)
 	 * @return	array
 	 */
-	public static function searchResultExtraData( $items )
+	public static function searchResultExtraData( $items, $member=NULL )
 	{
 		$screenshotIds = array();
 		foreach ( $items as $itemData )
@@ -183,7 +184,7 @@ class _File extends \IPS\Content\Item implements
 			}
 		}
 		
-		if ( count( $screenshotIds ) )
+		if ( \count( $screenshotIds ) )
 		{
 			return iterator_to_array( \IPS\Db::i()->select( array( 'record_file_id', 'record_location', 'record_thumb' ), 'bitracker_torrents_records', \IPS\Db::i()->in( 'record_id', $screenshotIds ) )->setKeyField( 'record_file_id' ) );
 		}
@@ -699,10 +700,11 @@ class _File extends \IPS\Content\Item implements
 		return \count( $images ) ? $images : NULL;
 	}
 	
-	/*
+	/**
 	 * @brief Cached primary screenshot
 	 */
 	protected $_primaryScreenshot	= FALSE;
+
 
 	/**
 	 * Get primary screenshot
@@ -1151,6 +1153,12 @@ class _File extends \IPS\Content\Item implements
 			}
 		}
 		
+		/* If restrictions aren't applying to Paid files, stop here */
+		if ( !$member->group['bit_paid_restrictions'] )
+		{
+			return TRUE;
+		}
+		
 		/* Minimum posts */
 		if ( $member->member_id and $restrictions['min_posts'] and $restrictions['min_posts'] > $member->member_posts )
 		{
@@ -1218,7 +1226,7 @@ class _File extends \IPS\Content\Item implements
 	/**
 	 * Download check
 	 *
-	 * @parsm	array|NULL			$record		Specific record to download
+	 * @param	array|NULL			$record		Specific record to download
 	 * @param	\IPS\Member|NULL	$member		The member to check or NULL for currently logged in member
 	 * @return	void
 	 * @throws	\DomainException
@@ -1266,9 +1274,15 @@ class _File extends \IPS\Content\Item implements
 					}
 				}
 			}
+			
+			/* If restrictions aren't applying to Paid files, stop here */
+			if ( !$member->group['bit_paid_restrictions'] )
+			{
+				return;
+			}
 		}
+
 		
-		/* Minimum posts */
 		if ( $member->member_id and $restrictions['min_posts'] and $restrictions['min_posts'] > $member->member_posts )
 		{
 			throw new \DomainException( $member->language()->addToStack( 'download_min_posts', FALSE, array( 'pluralize' => array( $restrictions['min_posts'] ) ) ) );
@@ -1407,7 +1421,7 @@ class _File extends \IPS\Content\Item implements
 		$return = parent::formElements( $item, $container );
 
 		/* Description */
-		$return['description'] = new \IPS\Helpers\Form\Editor( 'file_desc', $item ? $item->desc : NULL, TRUE, array( 'app' => 'bitracker', 'key' => 'bitracker', 'autoSaveKey' => 'bitracker-new-file', 'attachIds' => ( $item === NULL ? NULL : array( $item->id, NULL, 'desc' ) ) ), '\IPS\Helpers\Form::floodCheck' );
+		$return['description'] = new \IPS\Helpers\Form\Editor( 'file_desc', $item ? $item->desc : NULL, TRUE, array( 'app' => 'bitracker', 'key' => 'Bitracker', 'autoSaveKey' => 'bitracker-new-file', 'attachIds' => ( $item === NULL ? NULL : array( $item->id, NULL, 'desc' ) ) ), '\IPS\Helpers\Form::floodCheck' );
 		
 		/* Primary screenshot */
 		if ( $item )
@@ -1620,7 +1634,7 @@ class _File extends \IPS\Content\Item implements
 	protected function processBeforeCreate( $values )
 	{
 		/* Set version */
-		$this->version = $values['file_version'];
+		$this->version = ( isset( $values['file_version'] ) ) ? $values['file_version'] : NULL;
 		
 		/* Try to set the primary screenshot */
 		try
@@ -2273,7 +2287,7 @@ class _File extends \IPS\Content\Item implements
 	 */
 	public function embedImage()
 	{
-		return $this->primary_screenshot_thumb ? \IPS\File::get( 'bitracker_Screenshots', $this->primary_screenshot_thumb ) : NULL;
+		return $this->primary_screenshot_thumb ?: NULL;
 	}
 
 	/**
