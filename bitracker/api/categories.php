@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.0 Beta 1
+ * @version     2.0.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     31 MAR 2019
+ * @Updated     09 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -99,7 +99,8 @@ class _categories extends \IPS\Node\Api\NodeController
 			throw new \IPS\Api\Exception( 'NO_TITLE', '1D365/2', 400 );
 		}
 
-		retur
+		return new \IPS\Api\Response( 201, $this->_create()->apiOutput( $this->member ) );
+	}
 
 	/**
 	 * POST /bitracker/category/{id}
