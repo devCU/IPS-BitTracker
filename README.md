@@ -2,8 +2,8 @@
 
 [![License](https://img.shields.io/badge/License-GNUv3-blue.svg)](https://github.com/devCU/IPS-4.4-BitTracker/blob/master/LICENSE) 
 [![Version](https://img.shields.io/badge/Version-2.0.0-ff69b4.svg)](https://www.devcu.com/devcu-tracker/)
-[![Build](https://img.shields.io/badge/Build-Beta-yellow.svg)](https://www.devcu.com/devcu-tracker/)
-[![Status](https://img.shields.io/badge/Status-Incomplete-inactive.svg)](https://www.devcu.com/devcu-tracker/)
+[![Build](https://img.shields.io/badge/Build-RC1-yellow.svg)](https://www.devcu.com/devcu-tracker/)
+[![Status](https://img.shields.io/badge/Status-Release-inactive.svg)](https://www.devcu.com/devcu-tracker/)
 [![Development](https://img.shields.io/badge/Development-Active-success.svg)](https://www.devcu.com/devcu-tracker/)
 [![Platform](https://img.shields.io/badge/Platform-IPS4.4+-blue.svg)](https://www.devcu.com/devcu-tracker/)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/GaalexxC/IPS-4.4-BitTracker/master.svg)](https://www.devcu.com/devcu-tracker/)
@@ -33,20 +33,16 @@
 </pre>
 
 
-```diff
-- WARNING!! THIS IS AN INCOMPLETE DEVELOPMENT VERSION AND SHOULD NOT BE USED IN A PRODUCTION ENVIRONMENT!
-```
-
 # IPS 4.4x BitTracker
 
 #### Full featured bit torrent tracker application for IPS 4.4x Community Suite focusing on privacy and security
 
 ## ** Updated Notes **
 
-06/07/19
+06/10/19
 
 - 2.0.0 RC 1 currently in beta testing
-- Release middle of June for Patrons
+- Release immediately after beta is complete for Patrons
 - Release early July for Public
 - Will do a release of compiled source in IPS .tar file format for import installations
 - Looking for an older version? [IPS 4.2x/4.3x version](https://github.com/GaalexxC/IPS-4.3-BitTracker) in active development
