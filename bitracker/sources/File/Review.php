@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     10 JUN 2019
+ * @Updated     12 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -112,8 +112,10 @@ class _Review extends \IPS\Content\Review implements \IPS\Content\EditHistory, \
 	 *
 	 * @param	string|NULL		$action		Action
 	 * @return	\IPS\Http\Url
+	 * @throws	\BadMethodCallException
+	 * @throws	\IPS\Http\Url\Exception
 	 */
-	public function url( $action=NULL )
+	public function url( $action='find' )
 	{
 		return parent::url( $action )->setQueryString( 'tab', 'reviews' );
 	}
