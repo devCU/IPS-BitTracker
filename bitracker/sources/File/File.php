@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     10 JUN 2019
+ * @Updated     12 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -170,10 +170,9 @@ class _File extends \IPS\Content\Item implements
 	 * Query to get additional data for search result / stream view
 	 *
 	 * @param	array	$items	Item data (will be an array containing values from basicDataColumns())
-	 * @param	\IPS\Member\NULL	$member		Member profile we are viewing (if any)
 	 * @return	array
 	 */
-	public static function searchResultExtraData( $items, $member=NULL )
+	public static function searchResultExtraData( $items )
 	{
 		$screenshotIds = array();
 		foreach ( $items as $itemData )
