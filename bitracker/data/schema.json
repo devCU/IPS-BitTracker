@@ -1,0 +1,4225 @@
+{
+    "bitracker_announce_error_log": {
+        "name": "bitracker_announce_error_log",
+        "columns": {
+            "lid": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 11,
+                "name": "lid",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "request_ip": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 64,
+                "name": "request_ip",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "request_client": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "request_client",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "request_infohash": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 40,
+                "name": "request_infohash",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "request_perm_key": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 32,
+                "name": "request_perm_key",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "request_time": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "request_time",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "error_code": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 4,
+                "name": "error_code",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "error_string": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "error_string",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "lid"
+                ]
+            }
+        }
+    },
+    "bitracker_bonus": {
+        "name": "bitracker_bonus",
+        "columns": {
+            "id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 5,
+                "name": "id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "name": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 50,
+                "name": "name",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "points": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": 2,
+                "default": null,
+                "length": 7,
+                "name": "points",
+                "type": "DECIMAL",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "description": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": "",
+                "name": "description",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "type": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "traffic",
+                "length": 10,
+                "name": "type",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "quantity": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": 0,
+                "length": 20,
+                "name": "quantity",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "id"
+                ]
+            }
+        }
+    },
+    "bitracker_bookmarks": {
+        "name": "bitracker_bookmarks",
+        "columns": {
+            "id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "userid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "userid",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrentid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 7,
+                "name": "torrentid",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "id"
+                ]
+            }
+        }
+    },
+    "bitracker_categories": {
+        "name": "bitracker_categories",
+        "columns": {
+            "cid": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "cid",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cparent": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "cparent",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "copen": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "1",
+                "length": 1,
+                "name": "copen",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cposition": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "cposition",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "ccfields": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "ccfields",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cname_furl": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "cname_furl",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "ctags_disabled": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 1,
+                "name": "ctags_disabled",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "ctags_noprefixes": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 1,
+                "name": "ctags_noprefixes",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "ctags_predefined": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "ctags_predefined",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cbitoptions": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Bitwise options",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "cbitoptions",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "ctypes": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "JSON array of allowed file extensions or NULL for no restriction.",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "ctypes",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "ctypesnfo": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "JSON array of allowed file extensions or NULL for no restriction.",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "ctypesnfo",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "csortorder": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "The default sort order",
+                "decimals": null,
+                "default": "updated DESC",
+                "length": 255,
+                "name": "csortorder",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cmaxfile": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Maximum file size",
+                "decimals": null,
+                "default": "512000",
+                "length": 10,
+                "name": "cmaxfile",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "cmaxnfo": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Maximum nfo size",
+                "decimals": null,
+                "default": "512000",
+                "length": 10,
+                "name": "cmaxnfo",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "cmaxss": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Maximum screenshot size",
+                "decimals": null,
+                "default": "512000",
+                "length": 10,
+                "name": "cmaxss",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "cmaxdims": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Maximum screenshot dimensions",
+                "decimals": null,
+                "default": null,
+                "length": 128,
+                "name": "cmaxdims",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cversioning": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Number of versions of files to keep. 0 means disabled, NULL means keep all versions.",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "cversioning",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "clog": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Number of days to keep download logs. 0 means disables, NULL means never delete logs.",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "clog",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "cforum_id": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "IP.Board integration: forum ID",
+                "decimals": null,
+                "default": null,
+                "length": 5,
+                "name": "cforum_id",
+                "type": "SMALLINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "ctopic_prefix": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "IP.Board integration: topic prefix",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "ctopic_prefix",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "ctopic_suffix": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "IP.Board integration: topic suffix",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "ctopic_suffix",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "clast_file_id": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Latest file ID in this category or any sub-category",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "clast_file_id",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "clast_file_date": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Latest file date in this category or any sub-category",
+                "decimals": null,
+                "default": "0",
+                "length": 11,
+                "name": "clast_file_date",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "cclub_id": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "The club ID if this category belongs to a club, or NULL",
+                "decimals": null,
+                "default": null,
+                "length": 20,
+                "name": "cclub_id",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "cid"
+                ]
+            },
+            "cparent": {
+                "type": "key",
+                "name": "cparent",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "cparent"
+                ]
+            },
+            "position_order": {
+                "type": "key",
+                "name": "position_order",
+                "length": [
+                    null,
+                    null
+                ],
+                "columns": [
+                    "cparent",
+                    "cposition"
+                ]
+            }
+        },
+        "collation": "utf8mb4_unicode_ci",
+        "inserts": [
+            {
+                "cid": "1",
+                "cparent": "0",
+                "copen": "1",
+                "cposition": "1",
+                "ccfields": null,
+                "cname_furl": "tracker",
+                "ctags_disabled": "0",
+                "ctags_noprefixes": "0",
+                "ctags_predefined": null,
+                "cbitoptions": "1",
+                "ctypes": "\"torrent\"",
+                "ctypesnfo": "\"nfo\"",
+                "csortorder": "updated",
+                "cmaxfile": "2048",
+                "cmaxnfo": "2048",
+                "cmaxss": "4096",
+                "cmaxdims": "",
+                "cversioning": "",
+                "clog": "1",
+                "cforum_id": "0",
+                "ctopic_prefix": "",
+                "ctopic_suffix": "",
+                "clast_file_id": "0",
+                "clast_file_date": "0",
+                "cclub_id": ""
+            }
+        ],
+        "reporting": "count"
+    },
+    "bitracker_cfields": {
+        "name": "bitracker_cfields",
+        "columns": {
+            "cf_id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 5,
+                "name": "cf_id",
+                "type": "SMALLINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cf_content": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "cf_content",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cf_type": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 250,
+                "name": "cf_type",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cf_not_null": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "cf_not_null",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cf_max_input": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 6,
+                "name": "cf_max_input",
+                "type": "SMALLINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cf_input_format": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "cf_input_format",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cf_position": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 6,
+                "name": "cf_position",
+                "type": "SMALLINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cf_topic": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "cf_topic",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cf_search_type": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "loose",
+                "length": 5,
+                "name": "cf_search_type",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "cf_multiple": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "cf_multiple",
+                "type": "TINYINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "cf_format": {
+                "name": "cf_format",
+                "type": "TEXT",
+                "length": 0,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "cf_allow_attachments": {
+                "name": "cf_allow_attachments",
+                "type": "TINYINT",
+                "length": 1,
+                "decimals": null,
+                "values": null,
+                "allow_null": false,
+                "default": "1",
+                "comment": "",
+                "unsigned": true,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "cf_id"
+                ]
+            },
+            "cf_position": {
+                "type": "key",
+                "name": "cf_position",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "cf_position"
+                ]
+            }
+        },
+        "comment": "",
+        "reporting": "count"
+    },
+    "bitracker_torrents": {
+        "name": "bitracker_torrents",
+        "columns": {
+            "file_id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "file_id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_name": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 255,
+                "name": "file_name",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_cat": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 8,
+                "name": "file_cat",
+                "type": "MEDIUMINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_open": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "file_open",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_broken": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "file_broken",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_broken_reason": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "file_broken_reason",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_broken_info": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "file_broken_info",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_views": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "file_views",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_bitracker": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "file_bitracker",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_submitted": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "file_submitted",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_updated": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "file_updated",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_desc": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "file_desc",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_size": {
+                "name": "file_size",
+                "type": "BIGINT",
+                "length": 20,
+                "decimals": null,
+                "values": [],
+                "allow_null": false,
+                "default": "0",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "file_submitter": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "file_submitter",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "file_approver": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "file_approver",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "file_approvedon": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "file_approvedon",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_topicid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "file_topicid",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_pendcomments": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 4,
+                "name": "file_pendcomments",
+                "type": "SMALLINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_ipaddress": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 46,
+                "name": "file_ipaddress",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_votes": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "file_votes",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_rating": {
+                "name": "file_rating",
+                "type": "DECIMAL",
+                "length": 10,
+                "decimals": 1,
+                "values": [],
+                "allow_null": false,
+                "default": "0",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "file_new": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "file_new",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_name_furl": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "file_name_furl",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_topicseoname": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "file_topicseoname",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_post_key": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 32,
+                "name": "file_post_key",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_cost": {
+                "name": "file_cost",
+                "type": "TEXT",
+                "length": 0,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": "",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "file_nexus": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "file_nexus",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_version": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 32,
+                "name": "file_version",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_changelog": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "file_changelog",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_renewal_term": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 5,
+                "name": "file_renewal_term",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_renewal_units": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 1,
+                "name": "file_renewal_units",
+                "type": "CHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_renewal_price": {
+                "name": "file_renewal_price",
+                "type": "TEXT",
+                "length": 0,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": "",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "file_featured": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "file_featured",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_pinned": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "file_pinned",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_comments": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 11,
+                "name": "file_comments",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_primary_screenshot": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "The record_id of the primary screenshot",
+                "decimals": null,
+                "default": null,
+                "length": 11,
+                "name": "file_primary_screenshot",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "file_reviews": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "file_reviews",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "file_locked": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "If the file is locked (no comments\/reviews allowed)",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "file_locked",
+                "type": "TINYINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "file_last_comment": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Timestamp the last comment was made",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "file_last_comment",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "file_last_review": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Unix timestamp of last review",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "file_last_review",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "file_unapproved_comments": {
+                "name": "file_unapproved_comments",
+                "type": "INT",
+                "length": 10,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": true,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "file_hidden_comments": {
+                "name": "file_hidden_comments",
+                "type": "INT",
+                "length": 10,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": true,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "file_unapproved_reviews": {
+                "name": "file_unapproved_reviews",
+                "type": "INT",
+                "length": 10,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": true,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "file_hidden_reviews": {
+                "name": "file_hidden_reviews",
+                "type": "INT",
+                "length": 10,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": true,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "file_meta_data": {
+                "name": "file_meta_data",
+                "type": "BIT",
+                "length": 1,
+                "decimals": null,
+                "values": null,
+                "allow_null": false,
+                "default": "0",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "file_purchasable": {
+                "name": "file_purchasable",
+                "type": "BIT",
+                "length": 1,
+                "decimals": null,
+                "values": null,
+                "allow_null": false,
+                "default": "1",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "file_id"
+                ]
+            },
+            "file_views": {
+                "type": "key",
+                "name": "file_views",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "file_views"
+                ]
+            },
+            "file_submitter": {
+                "type": "key",
+                "name": "file_submitter",
+                "length": [
+                    null,
+                    null,
+                    null
+                ],
+                "columns": [
+                    "file_submitter",
+                    "file_open",
+                    "file_updated"
+                ]
+            },
+            "file_broken": {
+                "type": "key",
+                "name": "file_broken",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "file_broken"
+                ]
+            },
+            "file_open": {
+                "type": "key",
+                "name": "file_open",
+                "length": [
+                    null,
+                    null,
+                    null
+                ],
+                "columns": [
+                    "file_open",
+                    "file_cat",
+                    "file_submitted"
+                ]
+            },
+            "file_rating": {
+                "type": "key",
+                "name": "file_rating",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "file_rating"
+                ]
+            },
+            "file_post_key": {
+                "type": "key",
+                "name": "file_post_key",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "file_post_key"
+                ]
+            },
+            "file_featured": {
+                "type": "key",
+                "name": "file_featured",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "file_featured"
+                ]
+            },
+            "file_cat": {
+                "type": "key",
+                "name": "file_cat",
+                "length": [
+                    null,
+                    null
+                ],
+                "columns": [
+                    "file_cat",
+                    "file_updated"
+                ]
+            },
+            "ip_lookup": {
+                "type": "key",
+                "name": "ip_lookup",
+                "columns": [
+                    "file_ipaddress"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        },
+        "comment": "",
+        "reporting": "count"
+    },
+    "bitracker_torrents_records": {
+        "name": "bitracker_torrents_records",
+        "columns": {
+            "record_id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 11,
+                "name": "record_id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_post_key": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 32,
+                "name": "record_post_key",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_file_id": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 11,
+                "name": "record_file_id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_type": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "file",
+                "length": 32,
+                "name": "record_type",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_location": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "record_location",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_thumb": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "record_thumb",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_realname": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "record_realname",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_link_type": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "record_link_type",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_size": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "record_size",
+                "type": "BIGINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_backup": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "record_backup",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_default": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "record_default",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "record_time": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Unix timestamp of when file was uploaded",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "record_time",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "record_no_watermark": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "If the record is for a screenshot, the URL to the un-watermarked version",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "record_no_watermark",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "record_id"
+                ]
+            },
+            "record_post_key": {
+                "type": "key",
+                "name": "record_post_key",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "record_post_key"
+                ]
+            },
+            "record_file_id": {
+                "type": "key",
+                "name": "record_file_id",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "record_file_id"
+                ]
+            },
+            "record_realname": {
+                "type": "key",
+                "name": "record_realname",
+                "length": [
+                    191
+                ],
+                "columns": [
+                    "record_realname"
+                ]
+            },
+            "record_type": {
+                "type": "key",
+                "name": "record_type",
+                "length": [
+                    null,
+                    null,
+                    null
+                ],
+                "columns": [
+                    "record_type",
+                    "record_file_id",
+                    "record_backup"
+                ]
+            }
+        },
+        "comment": "",
+        "reporting": "count"
+    },
+    "bitracker_comments": {
+        "name": "bitracker_comments",
+        "columns": {
+            "comment_id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "comment_id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "comment_fid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "comment_fid",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "comment_mid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "comment_mid",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "comment_date": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "comment_date",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "comment_open": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "comment_open",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "comment_text": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "comment_text",
+                "type": "MEDIUMTEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "comment_append_edit": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "comment_append_edit",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "comment_edit_time": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "comment_edit_time",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "comment_edit_name": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "comment_edit_name",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "comment_ip_address": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 46,
+                "name": "comment_ip_address",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "comment_author": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "comment_author",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "comment_id"
+                ]
+            },
+            "comment_fid": {
+                "type": "key",
+                "name": "comment_fid",
+                "length": [
+                    null,
+                    null
+                ],
+                "columns": [
+                    "comment_fid",
+                    "comment_date"
+                ]
+            },
+            "comment_ip_address": {
+                "type": "key",
+                "name": "comment_ip_address",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "comment_ip_address"
+                ]
+            },
+            "comment_approved": {
+                "type": "key",
+                "name": "comment_approved",
+                "length": [
+                    null,
+                    null
+                ],
+                "columns": [
+                    "comment_open",
+                    "comment_date"
+                ]
+            },
+            "comment_mid": {
+                "type": "key",
+                "name": "comment_mid",
+                "columns": [
+                    "comment_mid",
+                    "comment_date"
+                ],
+                "length": [
+                    null,
+                    null
+                ]
+            }
+        }
+    },
+    "bitracker_reviews": {
+        "name": "bitracker_reviews",
+        "columns": {
+            "review_id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "ID Number",
+                "decimals": null,
+                "default": null,
+                "length": 20,
+                "name": "review_id",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "review_fid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "The file ID",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "review_fid",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "review_mid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "The member ID of the review author",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "review_mid",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "review_text": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "The review contents",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "review_text",
+                "type": "MEDIUMTEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "review_append_edit": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Boolean indicating if edit message should show",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "review_append_edit",
+                "type": "TINYINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "review_edit_time": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Unix timestamp of when the review was last edited",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "review_edit_time",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "review_edit_name": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Username of user who last edited review",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "review_edit_name",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "review_date": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Unix timestamp of when review was made",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "review_date",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "review_ip": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "IP address review was made from",
+                "decimals": null,
+                "default": "",
+                "length": 46,
+                "name": "review_ip",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "review_author_name": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Username of user who made review",
+                "decimals": null,
+                "default": "",
+                "length": 255,
+                "name": "review_author_name",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "review_rating": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "The rating (out of 5) with the review",
+                "decimals": null,
+                "default": null,
+                "length": 1,
+                "name": "review_rating",
+                "type": "TINYINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "review_votes": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "The number of people who have voted \"helpful\" or \"unhelpful\"",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "review_votes",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "review_votes_helpful": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "The number of people who have voted \"helpful\"",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "review_votes_helpful",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "review_votes_data": {
+                "name": "review_votes_data",
+                "type": "TEXT",
+                "length": 0,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": "",
+                "comment": "JSON object containing data about who has voted helpful\/unhelpful ",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "review_version": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "The version being reviewed",
+                "decimals": null,
+                "default": null,
+                "length": 32,
+                "name": "review_version",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "review_approved": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "Review is approved?",
+                "decimals": null,
+                "default": "1",
+                "length": 1,
+                "name": "review_approved",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "review_author_response": {
+                "name": "review_author_response",
+                "type": "MEDIUMTEXT",
+                "length": null,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "review_id"
+                ]
+            },
+            "review_fid": {
+                "type": "key",
+                "name": "review_fid",
+                "columns": [
+                    "review_fid"
+                ],
+                "length": [
+                    null
+                ]
+            },
+            "review_mid": {
+                "type": "key",
+                "name": "review_mid",
+                "columns": [
+                    "review_mid",
+                    "review_date"
+                ],
+                "length": [
+                    null,
+                    null
+                ]
+            },
+            "review_ip": {
+                "type": "key",
+                "name": "review_ip",
+                "columns": [
+                    "review_ip"
+                ],
+                "length": [
+                    null
+                ]
+            },
+            "review_approved": {
+                "type": "key",
+                "name": "review_approved",
+                "columns": [
+                    "review_approved",
+                    "review_date"
+                ],
+                "length": [
+                    null,
+                    null
+                ]
+            }
+        },
+        "comment": "",
+        "reporting": "count"
+    },
+    "bitracker_downloads": {
+        "name": "bitracker_downloads",
+        "columns": {
+            "did": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "did",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dfid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "dfid",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dtime": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "dtime",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dip": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 55,
+                "name": "dip",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dmid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "dmid",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "dsize": {
+                "name": "dsize",
+                "type": "BIGINT",
+                "length": 20,
+                "decimals": null,
+                "values": [],
+                "allow_null": false,
+                "default": "0",
+                "comment": "",
+                "unsigned": true,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            },
+            "dua": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "dua",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dbrowsers": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 25,
+                "name": "dbrowsers",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dos": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 25,
+                "name": "dos",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "did"
+                ]
+            },
+            "dfid": {
+                "type": "key",
+                "name": "dfid",
+                "length": [
+                    null,
+                    null
+                ],
+                "columns": [
+                    "dfid",
+                    "dsize"
+                ]
+            },
+            "dtime": {
+                "type": "key",
+                "name": "dtime",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "dtime"
+                ]
+            },
+            "dmid": {
+                "type": "key",
+                "name": "dmid",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "dmid"
+                ]
+            },
+            "dip": {
+                "type": "key",
+                "name": "dip",
+                "columns": [
+                    "dip"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        }
+    },
+    "bitracker_filebackup": {
+        "name": "bitracker_filebackup",
+        "columns": {
+            "b_id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "b_id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "b_fileid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "b_fileid",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "b_filetitle": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 255,
+                "name": "b_filetitle",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "b_filedesc": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "b_filedesc",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "b_hidden": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "b_hidden",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "b_backup": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "b_backup",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "b_updated": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "b_updated",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "b_records": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "b_records",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "b_version": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 32,
+                "name": "b_version",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "b_changelog": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "b_changelog",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "b_id"
+                ]
+            },
+            "b_fileid": {
+                "type": "key",
+                "name": "b_fileid",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "b_fileid"
+                ]
+            }
+        },
+        "comment": "",
+        "reporting": "count"
+    },
+    "bitracker_ccontent": {
+        "name": "bitracker_ccontent",
+        "columns": {
+            "file_id": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "file_id",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "updated": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "updated",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "field_14": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "field_14",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "file_id"
+                ]
+            },
+            "field_14": {
+                "type": "key",
+                "name": "field_14",
+                "length": [
+                    191
+                ],
+                "columns": [
+                    "field_14"
+                ]
+            }
+        },
+        "collation": "utf8mb4_unicode_ci"
+    },
+    "bitracker_sessions": {
+        "name": "bitracker_sessions",
+        "columns": {
+            "dsess_id": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 32,
+                "name": "dsess_id",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dsess_mid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "dsess_mid",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dsess_ip": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 46,
+                "name": "dsess_ip",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dsess_file": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "dsess_file",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dsess_start": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "dsess_start",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "dsess_end": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "dsess_end",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "dsess_id"
+                ]
+            },
+            "dsess_mid": {
+                "type": "key",
+                "name": "dsess_mid",
+                "length": [
+                    null,
+                    null
+                ],
+                "columns": [
+                    "dsess_mid",
+                    "dsess_ip"
+                ]
+            },
+            "dsess_start": {
+                "type": "key",
+                "name": "dsess_start",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "dsess_start"
+                ]
+            }
+        }
+    },
+    "bitracker_snatched": {
+        "name": "bitracker_snatched",
+        "columns": {
+            "id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 11,
+                "name": "id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "userid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 11,
+                "name": "userid",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "torrent",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "port": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 5,
+                "name": "port",
+                "type": "SMALLINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "uploaded": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "uploaded",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "downloaded": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "downloaded",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "to_go": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "to_go",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "seeder": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "no",
+                "length": 0,
+                "name": "seeder",
+                "type": "ENUM",
+                "unsigned": false,
+                "values": [
+                    "yes",
+                    "no"
+                ],
+                "zerofill": false
+            },
+            "last_action": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "DATETIME",
+                "decimals": null,
+                "default": "0000-00-00 00:00:00",
+                "length": 0,
+                "name": "last_action",
+                "type": "DATETIME",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "started": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "DATETIME",
+                "decimals": null,
+                "default": "0000-00-00 00:00:00",
+                "length": 0,
+                "name": "started",
+                "type": "DATETIME",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "completed": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "DATETIME",
+                "decimals": null,
+                "default": "0000-00-00 00:00:00",
+                "length": 0,
+                "name": "completed",
+                "type": "DATETIME",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "connectable": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "yes",
+                "length": 0,
+                "name": "connectable",
+                "type": "ENUM",
+                "unsigned": false,
+                "values": [
+                    "yes",
+                    "no"
+                ],
+                "zerofill": false
+            },
+            "finished": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "no",
+                "length": 0,
+                "name": "finished",
+                "type": "ENUM",
+                "unsigned": false,
+                "values": [
+                    "yes",
+                    "no"
+                ],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "id"
+                ]
+            },
+            "snatch": {
+                "type": "key",
+                "name": "snatch",
+                "columns": [
+                    "torrent",
+                    "userid"
+                ],
+                "length": [
+                    null,
+                    null
+                ]
+            }
+        }
+    },
+    "bitracker_torrent_data": {
+        "name": "bitracker_torrent_data",
+        "columns": {
+            "torrent_id": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 11,
+                "name": "torrent_id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_post_key": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 32,
+                "name": "torrent_post_key",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_name": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 255,
+                "name": "torrent_name",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_infohash": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 40,
+                "name": "torrent_infohash",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_filelist": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "torrent_filelist",
+                "type": "MEDIUMTEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_filesize": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "torrent_filesize",
+                "type": "BIGINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_file_count": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 2,
+                "name": "torrent_file_count",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_comment": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "torrent_comment",
+                "type": "MEDIUMTEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_seeders": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "torrent_seeders",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_leechers": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "torrent_leechers",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_times_comp": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "torrent_times_comp",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_announce": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "torrent_announce",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_announce_list": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "torrent_announce_list",
+                "type": "MEDIUMTEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_private_flag": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "torrent_private_flag",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_encoding": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "torrent_encoding",
+                "type": "TINYTEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_created_date": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "torrent_created_date",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_created_by": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "torrent_created_by",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "pieces": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "pieces",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "piece_length": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "piece_length",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "torrent_id"
+                ]
+            },
+            "torrent_infohash": {
+                "type": "key",
+                "name": "torrent_infohash",
+                "columns": [
+                    "torrent_infohash"
+                ],
+                "length": [
+                    null
+                ]
+            },
+            "torrent_post_key": {
+                "type": "key",
+                "name": "torrent_post_key",
+                "columns": [
+                    "torrent_post_key"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        }
+    },
+    "bitracker_torrent_peers": {
+        "name": "bitracker_torrent_peers",
+        "columns": {
+            "id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 11,
+                "name": "id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "torrent",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "peer_id": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 40,
+                "name": "peer_id",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "compact": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "no",
+                "length": 0,
+                "name": "compact",
+                "type": "ENUM",
+                "unsigned": false,
+                "values": [
+                    "yes",
+                    "no"
+                ],
+                "zerofill": false
+            },
+            "peer_ip": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 64,
+                "name": "peer_ip",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "peer_ipv6": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 16,
+                "name": "peer_ipv6",
+                "type": "VARBINARY",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "peer_port": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 5,
+                "name": "peer_port",
+                "type": "SMALLINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "uploaded": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "uploaded",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "downloaded": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "downloaded",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "to_go": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "to_go",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "seeder": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "no",
+                "length": 0,
+                "name": "seeder",
+                "type": "ENUM",
+                "unsigned": false,
+                "values": [
+                    "yes",
+                    "no"
+                ],
+                "zerofill": false
+            },
+            "started": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "started",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "last_action": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "last_action",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "connectable": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "yes",
+                "length": 0,
+                "name": "connectable",
+                "type": "ENUM",
+                "unsigned": false,
+                "values": [
+                    "yes",
+                    "no"
+                ],
+                "zerofill": false
+            },
+            "client": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 60,
+                "name": "client",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "mem_id": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 32,
+                "name": "mem_id",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "perm_key": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 32,
+                "name": "perm_key",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "session_key": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 8,
+                "name": "session_key",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "id"
+                ]
+            },
+            "mem_id": {
+                "type": "key",
+                "name": "mem_id",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "mem_id"
+                ]
+            }
+        },
+        "collation": "utf8mb4_unicode_ci"
+    },
+    "bitracker_torrent_peers_history": {
+        "name": "bitracker_torrent_peers_history",
+        "columns": {
+            "id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "torrent_id": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "torrent_id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "member_id": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "member_id",
+                "type": "INT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "uploaded": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "uploaded",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "downloaded": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "downloaded",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "history_left": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "history_left",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "info_hash": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 40,
+                "name": "info_hash",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "last_updated": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "last_updated",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "history_completed": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "no",
+                "length": 0,
+                "name": "history_completed",
+                "type": "ENUM",
+                "unsigned": false,
+                "values": [
+                    "yes",
+                    "no"
+                ],
+                "zerofill": false
+            },
+            "history_date_completed": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "history_date_completed",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "id"
+                ]
+            }
+        },
+        "collation": "utf8mb4_unicode_ci"
+    },
+    "bitracker_scrape": {
+        "name": "bitracker_scrape",
+        "columns": {
+            "tid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "tid",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "info_hash": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 40,
+                "name": "info_hash",
+                "type": "VARBINARY",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "url": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 40,
+                "name": "url",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "seeders": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 10,
+                "name": "seeders",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "leechers": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 10,
+                "name": "leechers",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "completed": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 10,
+                "name": "completed",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "last_update": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "CURRENT_TIMESTAMP",
+                "length": 0,
+                "name": "last_update",
+                "type": "TIMESTAMP",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "state": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "ok",
+                "length": 0,
+                "name": "state",
+                "type": "ENUM",
+                "unsigned": false,
+                "values": [
+                    "ok",
+                    "error"
+                ],
+                "zerofill": false
+            },
+            "error": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 100,
+                "name": "error",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null,
+                    null
+                ],
+                "columns": [
+                    "info_hash",
+                    "url"
+                ]
+            },
+            "tid": {
+                "type": "key",
+                "name": "tid",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "tid"
+                ]
+            }
+        },
+        "collation": "utf8mb4_unicode_ci"
+    },
+    "bitracker_sites": {
+        "name": "bitracker_sites",
+        "columns": {
+            "site_id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 10,
+                "name": "site_id",
+                "type": "INT",
+                "unsigned": true,
+                "values": [],
+                "zerofill": false
+            },
+            "site_name": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "site_name",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "site_enabled": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 1,
+                "name": "site_enabled",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "site_host": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "site_host",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "site_url": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "site_url",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            },
+            "site_oembed": {
+                "allow_null": true,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "site_oembed",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "site_id"
+                ]
+            }
+        },
+        "inserts": [
+            {
+                "site_id": "1",
+                "site_name": "IMDB API",
+                "site_enabled": "1",
+                "site_host": "imdb.com",
+                "site_url": "http:\/\/www.imdb.com",
+                "site_oembed": "http:\/\/www.imdb.com\/api"
+            }
+        ],
+        "comment": ""
+    }
+}
