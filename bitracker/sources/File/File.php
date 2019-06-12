@@ -160,7 +160,7 @@ class _File extends \IPS\Content\Item implements
 		$return[] = 'file_primary_screenshot';
 		$return[] = 'file_nfo';
 		$return[] = 'file_version';
-		$return[] = 'file_bitracker';
+		$return[] = 'file_torrents';
 		$return[] = 'file_cost';
 		$return[] = 'file_nexus';
 		return $return;
@@ -1281,7 +1281,7 @@ class _File extends \IPS\Content\Item implements
 			}
 		}
 
-		
+		/* Minimum posts */
 		if ( $member->member_id and $restrictions['min_posts'] and $restrictions['min_posts'] > $member->member_posts )
 		{
 			throw new \DomainException( $member->language()->addToStack( 'download_min_posts', FALSE, array( 'pluralize' => array( $restrictions['min_posts'] ) ) ) );
@@ -1290,7 +1290,7 @@ class _File extends \IPS\Content\Item implements
 		/* Simultaneous downloads */
 		if ( $restrictions['limit_sim'] )
 		{
-			if ( $this->getCurrentDownloadSessions( $member ) >= $restrictions['limit_sim'] )
+			if ( $this->getCurrentTrackerSessions( $member ) >= $restrictions['limit_sim'] )
 			{
 				throw new \DomainException( $member->language()->addToStack( 'max_simultaneous_bitracker', FALSE, array( 'pluralize' => array( $restrictions['limit_sim'] ) ) ) );
 			}
@@ -1367,7 +1367,7 @@ class _File extends \IPS\Content\Item implements
 	/**
 	 * @brief Cached number of current download sessions
 	 */
-	protected $_currentDownloadSessions = array();
+	protected $_CurrentTrackerSessions = array();
 
 	/**
 	 * Get the current number of download sessions
@@ -1375,14 +1375,14 @@ class _File extends \IPS\Content\Item implements
 	 * @param	\IPS\Member		$member		Member to check
 	 * @return int
 	 */
-	public function getCurrentDownloadSessions( $member )
+	public function getCurrentTrackerSessions( $member )
 	{
-		if( !array_key_exists( $member->member_id, $this->_currentDownloadSessions ) )
+		if( !array_key_exists( $member->member_id, $this->_CurrentTrackerSessions ) )
 		{
-			$this->_currentDownloadSessions[ $member->member_id ] = \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_sessions', array( array( 'dsess_start > ?', time() - ( 60 * 15 ) ), $member->member_id ? array( 'dsess_mid=?', $member->member_id ) : array( 'dsess_ip=?', \IPS\Request::i()->ipAddress() ) ) )->first();
+			$this->_CurrentTrackerSessions[ $member->member_id ] = \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_sessions', array( array( 'dsess_start > ?', time() - ( 60 * 15 ) ), $member->member_id ? array( 'dsess_mid=?', $member->member_id ) : array( 'dsess_ip=?', \IPS\Request::i()->ipAddress() ) ) )->first();
 		}
 
-		return $this->_currentDownloadSessions[ $member->member_id ];
+		return $this->_CurrentTrackerSessions[ $member->member_id ];
 	}
 	
 	/**
@@ -1871,13 +1871,29 @@ class _File extends \IPS\Content\Item implements
 				{
 					foreach ( \IPS\Db::i()->select( '*', 'bitracker_torrents_records', \IPS\Db::i()->in( 'record_id', explode( ',', $backUp['b_records'] ) ) ) as $k => $file )
 					{
+//						try
+//						{
+//							if ( !\in_array( $file['record_location'], $locations ) )
+//							{
+//								$file = \IPS\File::get( $file['record_type'] == 'upload' ? 'bitracker_Files' : 'bitracker_Screenshots', $file['record_location'] )->delete();
+//							}
+//						}
 						try
 						{
 							if ( !\in_array( $file['record_location'], $locations ) )
 							{
-								$file = \IPS\File::get( $file['record_type'] == 'upload' ? 'bitracker_Files' : 'bitracker_Screenshots', $file['record_location'] )->delete();
-							}
+                                   $record['record_type'] = \IPS\File::get( 'bitracker_Torrents', $record['record_location'] )->delete();
+                               }
+                                 elseif ( $record['record_type'] == 'nfoupload' ) 
+                               {
+                                   $record['record_type'] = \IPS\File::get( 'bitracker_Nfo', $record['record_location'] )->delete();
+                               }
+                                 elseif ( $record['record_type'] == 'ssupload' ) 
+                               {
+                                   $record['record_type'] = \IPS\File::get( 'bitracker_Screenshots', $record['record_location'] )->delete();
+                               }
 						}
+
 						catch ( \Exception $e ) { }
 
 						if( $file['record_type'] == 'ssupload' )
