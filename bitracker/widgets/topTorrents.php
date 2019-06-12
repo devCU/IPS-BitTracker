@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     08 JUN 2019
+ * @Updated     12 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -104,7 +104,7 @@ class _topTorrents extends \IPS\Widget\PermissionCache
 			$categories[]	= $category;
 		}
 
-		if( !count( $categories ) )
+		if( !\count( $categories ) )
 		{
 			return '';
 		}
@@ -126,7 +126,7 @@ class _topTorrents extends \IPS\Widget\PermissionCache
 				$cases[]	= "WHEN file_id={$tracker['dfid']} THEN {$tracker['bitracker']}";
 			}
 
-			if( count( $ids ) )
+			if( \count( $ids ) )
 			{
 				$$time = new \IPS\Patterns\ActiveRecordIterator(
 					\IPS\Db::i()->select(
