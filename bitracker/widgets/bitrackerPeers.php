@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     08 JUN 2019
+ * @Updated     12 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -58,11 +58,12 @@ class _bitrackerPeers extends \IPS\Widget\PermissionCache
 	 * @brief	Plugin
 	 */
 	public $plugin = '';
-	
+
 	/**
-	 * Class
+	 * @brief	Cache Expiration
+	 * @note	We allow this cache to be valid for 48 hours
 	 */
-	protected static $class = 'IPS\bitracker\File';
+	public $cacheExpiration = 172800;
 
 	/**
 	* Init the widget
@@ -72,59 +73,78 @@ class _bitrackerPeers extends \IPS\Widget\PermissionCache
 	public function init()
 	{
 		\IPS\Output::i()->cssFiles = array_merge( \IPS\Output::i()->cssFiles, \IPS\Theme::i()->css( 'widgets.css', 'bitracker', 'front' ) );
-		\IPS\Output::i()->cssFiles = array_merge( \IPS\Output::i()->cssFiles, \IPS\Theme::i()->css( 'bitracker.css', 'bitracker', 'front' ) );
+
 		parent::init();
 	}
-
+	
 	/**
 	 * Specify widget configuration
 	 *
 	 * @param	null|\IPS\Helpers\Form	$form	Form object
-	 * @return	null|\IPS\Helpers\Form
+	 * @return	\IPS\Helpers\Form
 	 */
 	public function configuration( &$form=null )
-	{
+ 	{
 		$form = parent::configuration( $form );
-
-		if ( \IPS\Application::appIsEnabled( 'nexus' ) and \IPS\Settings::i()->bit_nexus_on )
-		{
-			$options = array(
-				'free'		=> 'file_free',
-				'paid'		=> 'file_paid',
-				'any'		=> 'any'
-			);
-
-			$form->add( new \IPS\Helpers\Form\Radio( 'file_cost_type', isset( $this->configuration['file_cost_type'] ) ? $this->configuration['file_cost_type'] : 'any', TRUE, array( 'options'	=> $options ) ) );
-		}
-
+ 		
+		$form->add( new \IPS\Helpers\Form\Number( 'number_to_show', isset( $this->configuration['number_to_show'] ) ? $this->configuration['number_to_show'] : 5, TRUE ) );
 		return $form;
-	}
+ 	}
 
 	/**
-	 * Get where clause
+	 * Render a widget
 	 *
-	 * @return	array
+	 * @return	string
 	 */
-	protected function buildWhere()
+	public function render()
 	{
-		$where = parent::buildWhere();
+		$categories = array();
 
-		if ( \IPS\Application::appIsEnabled( 'nexus' ) and \IPS\Settings::i()->bit_nexus_on )
+		foreach( \IPS\Db::i()->select( 'perm_type_id', 'core_permission_index', array( 'app=? and perm_type=? and (' . \IPS\Db::i()->findInSet( 'perm_' . \IPS\bitracker\Category::$permissionMap['read'], \IPS\Member::loggedIn()->groups ) . ' OR ' . 'perm_' . \IPS\bitracker\Category::$permissionMap['read'] . '=? )', 'bitracker', 'category', '*' ) ) as $category )
 		{
-			if( isset( $this->configuration['file_cost_type'] ) )
-			{
-				switch( $this->configuration['file_cost_type'] )
-				{
-					case 'free':
-						$where[] = array( "( ( file_cost='' OR file_cost IS NULL ) AND ( file_nexus='' OR file_nexus IS NULL ) )" );
-						break;
-					case 'paid':
-						$where[] = array( "( file_cost<>'' OR file_nexus>0 )" );
-						break;
-				}
-			}
+			$categories[]	= $category;
 		}
 
-		return $where;
+		if( !\count( $categories ) )
+		{
+			return '';
+		}
+
+		foreach ( array( 'week' => 'P1W', 'month' => 'P1M', 'year' => 'P1Y', 'all' => NULL ) as $time => $interval )
+		{			
+			$where = array( array( 'file_cat IN(' . implode( ',', $categories ) . ')' ) );
+			if ( $interval )
+			{
+				$where[] = array( 'dtime>?', \IPS\DateTime::create()->sub( new \DateInterval( $interval ) )->getTimestamp() );
+			}
+			
+			$ids	= array();
+			$cases	= array();
+
+			foreach( \IPS\Db::i()->select( 'dfid, COUNT(*) AS bitracker', 'bitracker_downloads', $where, 'bitracker DESC', isset( $this->configuration['number_to_show'] ) ? $this->configuration['number_to_show'] : 5, array( 'dfid' ) )->join( 'bitracker_torrents', 'dfid=file_id' ) as $tracker )
+			{
+				$ids[]		= $tracker['dfid'];
+				$cases[]	= "WHEN file_id={$tracker['dfid']} THEN {$tracker['bitracker']}";
+			}
+
+			if( \count( $ids ) )
+			{
+				$$time = new \IPS\Patterns\ActiveRecordIterator(
+					\IPS\Db::i()->select(
+						'*, CASE ' . implode( ' ', $cases ) . ' END AS file_torrents',
+						'bitracker_torrents',
+						'file_id IN(' . implode( ',', $ids ) . ')',
+						'file_torrents DESC'
+					),
+					'IPS\bitracker\File'
+				);
+			}
+			else
+			{
+				$$time = array();
+			}
+		}
+		
+		return $this->output( $week, $month, $year, $all );
 	}
 }
