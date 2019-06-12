@@ -37,15 +37,18 @@
 
 #### Full featured bit torrent tracker application for IPS 4.4x Community Suite focusing on privacy and security
 
+<img src="https://www.devcu.net/mediasrc/userSettings.PNG?V=1.7" width="30%"></img>
+<img src="https://www.devcu.net/mediasrc/ACPoverview.PNG?V=1.4" width="40%"></img>
+
 ## ** Updated Notes **
 
-06/10/19
+06/12/19
 
 - 2.0.0 RC 1 currently in beta testing
 - Release immediately after beta is complete for Patrons
 - Release early July for Public
 - Will do a release of compiled source in IPS .tar file format for import installations
-- Looking for an older version? [IPS 4.2x/4.3x version](https://github.com/GaalexxC/IPS-4.3-BitTracker) in active development
+- Looking for an older version? [IPS 4.2x/4.3x version](https://github.com/GaalexxC/IPS-4.3-BitTracker) in slow development
 
 
 ## License
