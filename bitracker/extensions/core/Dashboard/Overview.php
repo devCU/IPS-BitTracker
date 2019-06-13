@@ -69,7 +69,7 @@ class _Overview
 			'total_torrents'				=> (int) \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_torrents' )->first(),
 			'total_peers'				=> (int) \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_torrents' )->first(),
 			'total_views'				=> (int) \IPS\Db::i()->select( 'SUM(file_views)', 'bitracker_torrents' )->first(),
-			'total_downloads'			=> (int) \IPS\Db::i()->select( 'SUM(file_bitracker)', 'bitracker_torrents' )->first(),
+			'total_downloads'			=> (int) \IPS\Db::i()->select( 'SUM(file_torrents)', 'bitracker_torrents' )->first(),
 			'total_bandwidth'			=> (int) \IPS\Db::i()->select( 'SUM(dsize)', 'bitracker_downloads' )->first(),
 			'current_month_bandwidth'	=> (int) \IPS\Db::i()->select( 'SUM(dsize)', 'bitracker_downloads', array( 'dtime>?', $oneMonthAgo ) )->first(),
 		);
@@ -79,7 +79,7 @@ class _Overview
 		{
 			$data['largest_file'] = \IPS\bitracker\File::constructFromData( \IPS\Db::i()->select( '*', 'bitracker_torrents', NULL, 'file_size DESC', 1 )->first() );
 			$data['most_viewed_file'] = \IPS\bitracker\File::constructFromData( \IPS\Db::i()->select( '*', 'bitracker_torrents', NULL, 'file_views DESC', 1 )->first() );
-			$data['most_downloaded_file'] = \IPS\bitracker\File::constructFromData( \IPS\Db::i()->select( '*', 'bitracker_torrents', NULL, 'file_bitracker DESC', 1 )->first() );
+			$data['most_downloaded_file'] = \IPS\bitracker\File::constructFromData( \IPS\Db::i()->select( '*', 'bitracker_torrents', NULL, 'file_torrents DESC', 1 )->first() );
 		}
 		catch ( \Exception $e ) { }
 		
