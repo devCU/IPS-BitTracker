@@ -1009,8 +1009,8 @@ class _view extends \IPS\Content\Controller
 				$existingNfo = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'nfoupload', 0 ) ) ) );
 				$existingScreenshots = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'ssupload', 0 ) ) ) );
 				$existingLinks = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'link', 0 ) )->setKeyField('record_id')->setValueField('record_location') ) );
-                $existingNfoLinks = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'nfolink', 0 ) )->setKeyField('record_id')->setValueField('record_location') ) );
-                $existingScreenshotLinks = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'sslink', 0 ) )->setKeyField('record_id')->setValueField('record_location') ) );
+				$existingNfoLinks = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'nfolink', 0 ) )->setKeyField('record_id')->setValueField('record_location') ) );
+				$existingScreenshotLinks = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'sslink', 0 ) )->setKeyField('record_id')->setValueField('record_location') ) );
 			}
 			
 			/* Insert the new records */
@@ -1083,6 +1083,8 @@ class _view extends \IPS\Content\Controller
 				}
 			}
 
+			if ( isset( $values['nfo'] ) )
+			{
 			foreach ( $values['nfo'] as $file )
 			{
 				$key = array_search( (string) $file, $existingRecords );
@@ -1100,7 +1102,8 @@ class _view extends \IPS\Content\Controller
 						'record_realname'	=> $file->originalFilename,
 						'record_size'		=> $file->filesize(),
 						'record_time'		=> time(),
-					) );
+						) );
+					}
 				}
 			}
 
