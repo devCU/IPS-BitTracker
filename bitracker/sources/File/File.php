@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     12 JUN 2019
+ * @Updated     13 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -1875,7 +1875,7 @@ class _File extends \IPS\Content\Item implements
 //						{
 //							if ( !\in_array( $file['record_location'], $locations ) )
 //							{
-//								$file = \IPS\File::get( $file['record_type'] == 'upload' ? 'bitracker_Files' : 'bitracker_Screenshots', $file['record_location'] )->delete();
+//								$file = \IPS\File::get( $file['record_type'] == 'upload' ? 'bitracker_Torrents' : 'bitracker_Screenshots', $file['record_location'] )->delete();
 //							}
 //						}
 						try
