@@ -1367,7 +1367,7 @@ class _File extends \IPS\Content\Item implements
 	/**
 	 * @brief Cached number of current download sessions
 	 */
-	protected $_CurrentTrackerSessions = array();
+	protected $_currentTrackerSessions = array();
 
 	/**
 	 * Get the current number of download sessions
@@ -1377,12 +1377,12 @@ class _File extends \IPS\Content\Item implements
 	 */
 	public function getCurrentTrackerSessions( $member )
 	{
-		if( !array_key_exists( $member->member_id, $this->_CurrentTrackerSessions ) )
+		if( !array_key_exists( $member->member_id, $this->_currentTrackerSessions ) )
 		{
-			$this->_CurrentTrackerSessions[ $member->member_id ] = \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_sessions', array( array( 'dsess_start > ?', time() - ( 60 * 15 ) ), $member->member_id ? array( 'dsess_mid=?', $member->member_id ) : array( 'dsess_ip=?', \IPS\Request::i()->ipAddress() ) ) )->first();
+			$this->_currentTrackerSessions[ $member->member_id ] = \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_sessions', array( array( 'dsess_start > ?', time() - ( 60 * 15 ) ), $member->member_id ? array( 'dsess_mid=?', $member->member_id ) : array( 'dsess_ip=?', \IPS\Request::i()->ipAddress() ) ) )->first();
 		}
 
-		return $this->_CurrentTrackerSessions[ $member->member_id ];
+		return $this->_currentTrackerSessions[ $member->member_id ];
 	}
 	
 	/**
