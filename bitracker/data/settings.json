@@ -1,68 +1,55 @@
 [
     {
         "key": "bit_announce_enable",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_announce_scrape_interval",
-        "default": "20",
-        "report" : "full"
+        "default": "20"
     },
     {
         "key": "bit_announce_url",
-        "default": "",
-        "report" : "full"
+        "default": ""
     },
     {
         "key": "bit_antileech",
-        "default" : "1",
-        "report" : "full"
+        "default": "1"
     },
     {
         "key": "bit_application_name",
-        "default": "BitTrak",
-        "report" : "bool"
+        "default": "BitTrak"
     },
     {
         "key": "bit_breadcrumb_name",
-        "default": "BitTrak",
-        "report" : "bool"
+        "default": "BitTrak"
     },
     {
         "key": "bit_breadcrumb_name_enable",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_cusmenu_name",
-        "default": "BitTrak",
-        "report" : "bool"
+        "default": "BitTrak"
     },
     {
         "key": "bit_cusmenu_name_enable",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_featured_count",
-        "default" : "4",
-        "report" : "full"
+        "default": "4"
     },
     {
         "key": "bit_filter_all_action",
-        "default": "open",
-        "report" : "full"
+        "default": "open"
     },
     {
         "key": "bit_filter_any_action",
-        "default": "open",
-        "report" : "full"
+        "default": "open"
     },
     {
         "key": "bit_filter_black_action",
-        "default": "block",
-        "report" : "full"
+        "default": "block"
     },
     {
         "key": "bit_filter_sbblack_action",
@@ -70,203 +57,167 @@
     },
     {
         "key": "bit_filter_sbwhite_action",
-        "default": "open",
-        "report" : "full"
+        "default": "open"
     },
     {
         "key": "bit_filter_white_action",
-        "default": "open",
-        "report" : "full"
+        "default": "open"
     },
     {
         "key": "bit_highest_rated_categories",
-        "default" : "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_link_blacklist",
-       "default" : "",
-       "report" : "bool"
+        "default": ""
     },
     {
         "key": "bit_member_ratio_enable",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_member_ratio_rules",
-        "default": "0",
-        "report" : "full"
+        "default": "0"
     },
     {
         "key": "bit_newest_categories",
-        "default" : "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_nexus_display",
-        "default": "purchases,downloads",
-        "report" : "full"
+        "default": "purchases,downloads"
     },
     {
         "key": "bit_nexus_gateways",
-        "default": "",
-        "report" : "bool"
+        "default": ""
     },
     {
         "key": "bit_nexus_on",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_nexus_percent",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_nexus_tax",
-        "default": "",
-        "report" : "bool"
+        "default": ""
     },
     {
         "key": "bit_nexus_transfee",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_profile_adv_enable",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_profile_enable",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_profile_name",
-        "default": "BitTrak",
-        "report" : "bool"
+        "default": "BitTrak"
     },
     {
         "key": "bit_profile_name_enable",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
+    },
+    {
+        "key": "bit_profile_private_enabled",
+        "default": "0"
     },
     {
         "key": "bit_rss",
-        "default" : "1",
-        "report" : "full"
+        "default": "1"
     },
     {
         "key": "bit_security_bindip",
-        "default": "",
-        "report" : "full"
+        "default": ""
     },
     {
         "key": "bit_security_filter_option",
-        "default": "none",
-        "report" : "full"
+        "default": "none"
     },
     {
         "key": "bit_security_forceip",
-        "default": "0",
-        "report" : "full"
+        "default": "0"
     },
     {
         "key": "bit_security_forcessl",
-        "default": "1",
-        "report" : "full"
+        "default": "1"
     },
     {
         "key": "bit_security_ipcount",
-        "default": "1",
-        "report" : "full"
+        "default": "1"
     },
     {
         "key": "bit_security_ipenable",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_security_multipleip",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_security_permkey",
-        "default": "1",
-        "report" : "full"
+        "default": "1"
     },
     {
         "key": "bit_security_sbblacklist",
-        "default": "",
-        "report" : "full"
+        "default": ""
     },
     {
         "key": "bit_security_sbwhitelist",
-        "default": "",
-        "report" : "full"
+        "default": ""
     },
     {
         "key": "bit_security_seedboxenable",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_security_seedboxip",
-        "default": "",
-        "report" : "full"
+        "default": ""
     },
     {
         "key": "bit_security_singleip",
-        "default": "1",
-        "report" : "full"
+        "default": "1"
     },
     {
         "key": "bit_show_featured",
-        "default" : "1",
-        "report" : "full"
+        "default": "1"
     },
     {
         "key": "bit_show_highest_rated",
-        "default" : "1",
-        "report" : "full"
+        "default": "1"
     },
     {
         "key": "bit_show_most_downloaded",
-        "default" : "1",
-        "report" : "full"
+        "default": "1"
     },
     {
         "key": "bit_show_most_downloaded_categories",
-        "default" : "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_show_newest",
-        "default" : "1",
-        "report" : "full"
+        "default": "1"
     },
     {
         "key": "bit_torrents_enable",
-        "default": "0",
-        "report" : "bool"
+        "default": "0"
     },
     {
         "key": "bit_tracker_blacklist",
-        "default": "",
-        "report" : "full"
+        "default": ""
     },
     {
         "key": "bit_tracker_filter_option",
-        "default": "none",
-        "report" : "full"
+        "default": "none"
     },
     {
         "key": "bit_tracker_whitelist",
-        "default": "",
-        "report" : "full"
+        "default": ""
     },
     {
         "key": "bit_view_portal_switch",
@@ -274,17 +225,14 @@
     },
     {
         "key": "bit_view_table_categories",
-        "default": "5",
-        "report" : "full"
+        "default": "5"
     },
     {
         "key": "bit_view_table_torrents",
-        "default": "10",
-        "report" : "full"
+        "default": "10"
     },
     {
         "key": "bit_watermarkpath",
-        "default" : "",
-        "report" : "bool"
+        "default": ""
     }
 ]
