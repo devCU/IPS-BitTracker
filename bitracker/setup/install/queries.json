@@ -120,6 +120,36 @@
 	"9": {
 		"method": "addColumn",
 		"params": [
+			"core_groups",
+			{
+				"name": "bit_linked_nfo",
+				"type": "TINYINT",
+				"length": 1,
+				"null": false,
+				"default": 0,
+				"comment": "Can submit NFO Links?",
+				"unsigned": true
+			}
+		]
+	},
+	"10": {
+		"method": "addColumn",
+		"params": [
+			"core_groups",
+			{
+				"name": "bit_import_nfo",
+				"type": "TINYINT",
+				"length": 1,
+				"null": false,
+				"default": 0,
+				"comment": "Can import NFO from a path?",
+				"unsigned": true
+			}
+		]
+	},
+	"11": {
+		"method": "addColumn",
+		"params": [
 			"core_members",
 			{
 				"name": "bit_block_submissions",
@@ -132,7 +162,7 @@
 			}
 		]
 	},
-	"10": {
+	"12": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -147,7 +177,7 @@
 			}
 		]
 	},
-	"11": {
+	"13": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -162,7 +192,7 @@
 			}
 		]
 	},
-	"12": {
+	"14": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -177,7 +207,7 @@
 			}
 		]
 	},
-	"13": {
+	"15": {
 		"method": "insert",
 		"params": [
 			"core_permission_index",
@@ -193,7 +223,7 @@
 			}
 		]
 	},
-	"14": {
+	"16": {
 		"method": "insert",
 		"params": [
 			"core_permission_index",
@@ -210,7 +240,7 @@
 			}
 		]
 	},
-	"15": {
+	"17": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -224,7 +254,7 @@
 			}
 		]
 	},
-	"16": {
+	"18": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -238,7 +268,7 @@
 			}
 		]
 	},
-	"17": {
+	"19": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -252,7 +282,7 @@
 			}
 		]
 	},
-	"18": {
+	"20": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -266,7 +296,7 @@
 			}
 		]
 	},
-	"19": {
+	"21": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -280,7 +310,7 @@
 			}
 		]
 	},
-	"20": {
+	"22": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -294,7 +324,7 @@
 			}
 		]
 	},
-	"21": {
+	"23": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -308,7 +338,7 @@
 			}
 		]
 	},
-	"22": {
+	"24": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -322,7 +352,7 @@
 			}
 		]
 	},
-	"23": {
+	"25": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -336,7 +366,7 @@
 			}
 		]
 	},
-	"24": {
+	"26": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -350,7 +380,7 @@
 			}
 		]
 	},
-	"25": {
+	"27": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -364,7 +394,7 @@
 			}
 		]
 	},
-	"26": {
+	"28": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -378,7 +408,7 @@
 			}
 		]
 	},
-	"27": {
+	"29": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -393,7 +423,7 @@
 			}
 		]
 	},
-	"28": {
+	"30": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -407,7 +437,7 @@
 			}
 		]
 	},
-	"29": {
+	"31": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -421,7 +451,7 @@
 			}
 		]
 	},
-	"30": {
+	"32": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -429,34 +459,6 @@
 				"name": "bit_uploaded",
 				"type": "BIGINT",
 				"length": 20,
-				"null": false,
-				"default": 0,
-				"unsigned": true
-			}
-		]
-	},
-	"31": {
-		"method": "addColumn",
-		"params": [
-			"core_members",
-			{
-				"name": "bit_download_total",
-				"type": "BIGINT",
-				"length": 25,
-				"null": false,
-				"default": 0,
-				"unsigned": true
-			}
-		]
-	},
-	"32": {
-		"method": "addColumn",
-		"params": [
-			"core_members",
-			{
-				"name": "bit_upload_total",
-				"type": "BIGINT",
-				"length": 25,
 				"null": false,
 				"default": 0,
 				"unsigned": true
@@ -482,6 +484,34 @@
 		"params": [
 			"core_members",
 			{
+				"name": "bit_upload_total",
+				"type": "BIGINT",
+				"length": 25,
+				"null": false,
+				"default": 0,
+				"unsigned": true
+			}
+		]
+	},
+	"35": {
+		"method": "addColumn",
+		"params": [
+			"core_members",
+			{
+				"name": "bit_profile_private",
+				"type": "TINYINT",
+				"length": 1,
+				"null": false,
+				"default": 0,
+				"unsigned": true
+			}
+		]
+	},
+	"36": {
+		"method": "addColumn",
+		"params": [
+			"core_members",
+			{
 				"name": "bit_downloaded_his",
 				"type": "BIGINT",
 				"length": 20,
@@ -491,7 +521,7 @@
 			}
 		]
 	},
-	"35": {
+	"37": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -505,7 +535,7 @@
 			}
 		]
 	},
-	"36": {
+	"38": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -519,7 +549,7 @@
 			}
 		]
 	},
-	"37": {
+	"39": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -533,7 +563,7 @@
 			}
 		]
 	},
-	"38": {
+	"40": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
