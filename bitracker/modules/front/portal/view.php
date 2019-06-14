@@ -1107,31 +1107,6 @@ class _view extends \IPS\Content\Controller
 				}
 			}
 
-			if ( isset( $values['import_nfo'] ) )
-			{
-				foreach ( $values['import_nfo'] as $path )
-				{
-					$file = \IPS\File::create( 'bitracker_Torrents', mb_substr( $path, mb_strrpos( $path, DIRECTORY_SEPARATOR ) + 1 ), file_get_contents( $path ) );
-					
-					$key = array_search( (string) $file, $existingRecords );
-					if ( $key !== FALSE )
-					{
-						unset( $existingRecords[ $key ] );
-					}
-					else
-					{
-						\IPS\Db::i()->insert( 'bitracker_torrents_records', array(
-							'record_file_id'	=> $this->file->id,
-							'record_type'		=> 'nfoupload',
-							'record_location'	=> (string) $file,
-							'record_realname'	=> $file->originalFilename,
-							'record_size'		=> $file->filesize(),
-							'record_time'		=> time(),
-						) );
-					}
-				}
-			}
-
 			if ( isset( $values['url_nfo'] ) )
 			{
 				foreach ( $values['url_nfo'] as $url )
