@@ -66,7 +66,7 @@ class _submit extends \IPS\Dispatcher\Controller
 		$form = new \IPS\Helpers\Form( 'select_category', 'continue' );
 		$form->class = 'ipsForm_vertical ipsForm_noLabels';
 		$form->add( new \IPS\Helpers\Form\Node( 'select_category', isset( \IPS\Request::i()->category ) ? \IPS\Request::i()->category : NULL, TRUE, array(
-			'url'					=> \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'bitracker_submit' ),
+			'url'					=> \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'torrent_submit' ),
 			'class'					=> 'IPS\bitracker\Category',
 			'permissionCheck'		=> 'add',
 			'clubs'					=> \IPS\Settings::i()->club_nodes_in_apps
@@ -78,7 +78,7 @@ class _submit extends \IPS\Dispatcher\Controller
 
 		if ( $values = $form->values() )
 		{
-			$url = \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&do=submit', 'front', 'bitracker_submit' )->setQueryString( 'category', $values['select_category']->_id );
+			$url = \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&do=submit', 'front', 'torrent_submit' )->setQueryString( 'category', $values['select_category']->_id );
 			if ( isset( $values['bulk'] ) AND $values['bulk'] )
 			{
 				$url = $url->setQueryString( 'bulk', '1' );
@@ -106,7 +106,7 @@ class _submit extends \IPS\Dispatcher\Controller
 		$steps = array();
 
 		/**
-		 * Step 1: Upload files
+		 * Step 1: Upload Torrents
 		 */
 		$steps['upload_files'] = function( $data )
 		{
@@ -117,7 +117,7 @@ class _submit extends \IPS\Dispatcher\Controller
 			}
 			catch ( \OutOfRangeException $e )
 			{
-				\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&_step=select_category', 'front', 'bitracker_submit' ) );
+				\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&_step=select_category', 'front', 'torrent_submit' ) );
 			}
 
 			if( !$category->can('add') )
@@ -193,10 +193,10 @@ class _submit extends \IPS\Dispatcher\Controller
 
 				if ( $category->bitoptions['allownfo'] )
 				{
-					$form->add( new \IPS\Helpers\Form\Upload( 'nfo', $nfo, ( $category->bitoptions['reqnfo'] and !\IPS\Member::loggedIn()->group['bit_linked_torrents'] and !\IPS\Member::loggedIn()->group['bit_import_torrents'] ), array(
+					$form->add( new \IPS\Helpers\Form\Upload( 'nfo', $nfo, ( $category->bitoptions['reqnfo'] and !\IPS\Member::loggedIn()->group['bit_linked_torrents'] ), array(
 						'storageExtension'	=> 'bitracker_Nfo',
                         'allowedFileTypes' => $category->typesnfo,
-						 'maxFileSize' => $category->maxnfo !== NULL ? ( $category->maxnfo / 1024 ) : NULL,
+					    'maxFileSize' => $category->maxnfo !== NULL ? ( $category->maxnfo / 1024 ) : NULL,
 						'multiple'			=> TRUE,
                         'minimize' => FALSE ,
 					) ) );
@@ -249,7 +249,7 @@ class _submit extends \IPS\Dispatcher\Controller
 					$form->error = \IPS\Member::loggedIn()->language()->addToStack('err_no_torrents');
 					return \IPS\Theme::i()->getTemplate( 'submit' )->submitForm( $form, $category, $category->message('subterms'), ( \IPS\Member::loggedIn()->group['bit_bulk_submit'] && \IPS\Request::i()->bulk ) );
 				}
-				if ( !isset( \IPS\Request::i()->bulk ) && $category->bitoptions['reqnfo'] and empty( $values['nfo'] ) and empty( $values['url_nfo'] ) and empty( $values['import_nfo'] ) )
+				if ( !isset( \IPS\Request::i()->bulk ) && $category->bitoptions['reqnfo'] and empty( $values['nfo'] ) and empty( $values['url_nfo'] ) )
 				{
 					$form->error = \IPS\Member::loggedIn()->language()->addToStack('err_no_nfo');
 					return \IPS\Theme::i()->getTemplate( 'submit' )->submitForm( $form, $category, $category->message('subterms'), ( \IPS\Member::loggedIn()->group['bit_bulk_submit'] && \IPS\Request::i()->bulk ) );
@@ -348,30 +348,6 @@ class _submit extends \IPS\Dispatcher\Controller
 					}
 					$k++;
 					unset( $existing[ (string) $file ] );
-				}
-				if ( isset( $values['import_nfo'] ) )
-				{
-					\IPS\File::$copyFiles = TRUE;
-					foreach ( $values['import_nfo'] as $path )
-					{
-						$file = \IPS\File::create( 'bitracker_Nfo', mb_substr( $path, mb_strrpos( $path, DIRECTORY_SEPARATOR ) + 1 ), NULL, NULL, FALSE, $path );
-						
-						$nfo[ $k ] = (string) $file;
-						if ( !isset( $existing[ (string) $file ] ) )
-						{
-							\IPS\Db::i()->insert( 'bitracker_torrents_records', array(
-								'record_post_key'	=> isset( \IPS\Request::i()->bulk ) ? md5( \IPS\Request::i()->postKey . "-{$k}" ) : \IPS\Request::i()->postKey,
-								'record_type'		=> 'nfoupload',
-								'record_location'	=> (string) $file,
-								'record_realname'	=> $file->originalFilename,
-								'record_size'		=> $file->filesize(),
-								'record_time'		=> time(),
-							) );
-						}
-						$k++;
-					}
-
-					\IPS\File::$copyFiles = FALSE;
 				}
 				if ( isset( $values['url_nfo'] ) )
 				{
@@ -563,7 +539,7 @@ class _submit extends \IPS\Dispatcher\Controller
 			}
 			catch ( \OutOfRangeException $e )
 			{
-				\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'bitracker_submit' ) );
+				\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'torrent_submit' ) );
 			}
 			/* Init Form */
 			$form = new \IPS\Helpers\Form( 'file_information', 'continue' );
@@ -755,7 +731,7 @@ class _submit extends \IPS\Dispatcher\Controller
 
 
 		/* Build Wizard */
-		$url = \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&do=submit', 'front', 'bitracker_submit' );
+		$url = \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&do=submit', 'front', 'torrent_submit' );
 		if ( isset( \IPS\Request::i()->category ) and \IPS\Request::i()->category )
 		{
 			$url = $url->setQueryString( 'category', \IPS\Request::i()->category );
@@ -768,7 +744,7 @@ class _submit extends \IPS\Dispatcher\Controller
 		$wizard->template = array( \IPS\Theme::i()->getTemplate( 'submit' ), 'wizardForm' );
 		
 		/* Online User Location */
-		\IPS\Session::i()->setLocation( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'bitracker_submit' ), array(), 'loc_bitracker_adding_file' );
+		\IPS\Session::i()->setLocation( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'torrent_submit' ), array(), 'loc_bitracker_adding_file' );
 		
 		/* Display */
 		\IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack( isset( \IPS\Request::i()->bulk ) ? 'submit_multiple_files' : 'submit_a_file' );
