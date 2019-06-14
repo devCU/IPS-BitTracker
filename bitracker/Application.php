@@ -122,7 +122,7 @@ class _Application extends \IPS\Application
 
 		if ( isset( \IPS\Request::i()->module ) AND \IPS\Request::i()->module == 'post' AND isset( \IPS\Request::i()->controller ) AND \IPS\Request::i()->controller == 'submit' )
 		{
-			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit", "front", "bitracker_submit" ) );
+			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit", "front", "torrent_submit" ) );
 		}
 	}
 	
