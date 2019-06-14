@@ -479,7 +479,7 @@
                 "binary": false,
                 "comment": "Maximum file size",
                 "decimals": null,
-                "default" : "512",
+                "default": "512",
                 "length": 10,
                 "name": "cmaxfile",
                 "type": "INT",
@@ -893,19 +893,23 @@
                 "auto_increment": false,
                 "binary": false
             },
-            "cf_display_location" : { 
-                "name" : "cf_display_location",
-                "type" : "ENUM",
-                "length" : null,
-                "decimals" : null,
-                "values" : [ "below", "tab", "sidebar" ],
-                "allow_null" : false,
-                "default" : "sidebar",
-                "comment" : "Display location for custom fields",
-                "unsigned" : false,
-                "zerofill" : false,
-                "auto_increment" : false,
-                "binary" : false
+            "cf_display_location": {
+                "name": "cf_display_location",
+                "type": "ENUM",
+                "length": null,
+                "decimals": null,
+                "values": [
+                    "below",
+                    "tab",
+                    "sidebar"
+                ],
+                "allow_null": false,
+                "default": "sidebar",
+                "comment": "Display location for custom fields",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
             }
         },
         "indexes": {
@@ -1579,6 +1583,20 @@
                 "zerofill": false,
                 "auto_increment": false,
                 "binary": false
+            },
+            "file_nfo": {
+                "name": "file_nfo",
+                "type": "INT",
+                "length": 11,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "The record_id of the nfo",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
             }
         },
         "indexes": {
@@ -1656,27 +1674,39 @@
                     "file_featured"
                 ]
             },
-            "ip_lookup" : { 
-                "type" : "key",
-                "name" : "ip_lookup",
-                "columns" : [ "file_ipaddress" ],
-                "length" : [ null ]
+            "ip_lookup": {
+                "type": "key",
+                "name": "ip_lookup",
+                "columns": [
+                    "file_ipaddress"
+                ],
+                "length": [
+                    null
+                ]
             },
-            "file_approver" : { 
-                "type" : "key",
-                "name" : "file_approver",
-                "columns" : [ "file_approver" ],
-                "length" : [ null ]
+            "file_approver": {
+                "type": "key",
+                "name": "file_approver",
+                "columns": [
+                    "file_approver"
+                ],
+                "length": [
+                    null
+                ]
             },
-            "file_submitted" : { 
-                "type" : "key",
-                "name" : "file_submitted",
-                "columns" : [ "file_submitted" ],
-                "length" : [ null ]
+            "file_submitted": {
+                "type": "key",
+                "name": "file_submitted",
+                "columns": [
+                    "file_submitted"
+                ],
+                "length": [
+                    null
+                ]
             }
         },
-        "comment" : "",
-        "reporting" : "count"
+        "comment": "",
+        "reporting": "count"
     },
     "bitracker_torrents_records": {
         "name": "bitracker_torrents_records",
@@ -1905,16 +1935,24 @@
                     "record_realname"
                 ]
             },
-            "record_type" : { 
-                "type" : "key",
-                "name" : "record_type",
-                "length" : [ null, null, null ],
-                "columns" : [ "record_type", "record_file_id", "record_backup" ]
+            "record_type": {
+                "type": "key",
+                "name": "record_type",
+                "length": [
+                    null,
+                    null,
+                    null
+                ],
+                "columns": [
+                    "record_type",
+                    "record_file_id",
+                    "record_backup"
+                ]
             }
         },
-        "collation" : "utf8mb4_unicode_ci",
-        "comment" : "",
-        "reporting" : "count"
+        "collation": "utf8mb4_unicode_ci",
+        "comment": "",
+        "reporting": "count"
     },
     "bitracker_comments": {
         "name": "bitracker_comments",
@@ -2119,14 +2157,20 @@
                     "comment_date"
                 ]
             },
-            "comment_mid" : { 
-                "type" : "key",
-                "name" : "comment_mid",
-                "columns" : [ "comment_mid", "comment_date" ],
-                "length" : [ null, null ]
+            "comment_mid": {
+                "type": "key",
+                "name": "comment_mid",
+                "columns": [
+                    "comment_mid",
+                    "comment_date"
+                ],
+                "length": [
+                    null,
+                    null
+                ]
             }
         },
-        "collation" : "utf8mb4_unicode_ci"
+        "collation": "utf8mb4_unicode_ci"
     },
     "bitracker_reviews": {
         "name": "bitracker_reviews",
@@ -2602,14 +2646,18 @@
                     "dmid"
                 ]
             },
-            "dip" : { 
-                "type" : "key",
-                "name" : "dip",
-                "columns" : [ "dip" ],
-                "length" : [ null ]
+            "dip": {
+                "type": "key",
+                "name": "dip",
+                "columns": [
+                    "dip"
+                ],
+                "length": [
+                    null
+                ]
             }
         },
-        "collation" : "utf8mb4_unicode_ci"
+        "collation": "utf8mb4_unicode_ci"
     },
     "bitracker_filebackup": {
         "name": "bitracker_filebackup",
@@ -2837,45 +2885,49 @@
                     "file_id"
                 ]
             },
-            "field_14" : { 
-                "type" : "key",
-                "name" : "field_14",
-                "length" : [ 191 ],
-                "columns" : [ "field_14" ]
+            "field_14": {
+                "type": "key",
+                "name": "field_14",
+                "length": [
+                    191
+                ],
+                "columns": [
+                    "field_14"
+                ]
             }
         },
-        "collation" : "utf8mb4_unicode_ci"
+        "collation": "utf8mb4_unicode_ci"
     },
     "bitracker_sessions": {
         "name": "bitracker_sessions",
         "columns": {
-            "dsess_id" : { 
-                "allow_null" : false,
-                "auto_increment" : false,
-                "binary" : false,
-                "comment" : "",
-                "decimals" : null,
-                "default" : "",
-                "length" : 32,
-                "name" : "dsess_id",
-                "type" : "VARCHAR",
-                "unsigned" : false,
-                "values" : [ ],
-                "zerofill" : false
+            "dsess_id": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "",
+                "length": 32,
+                "name": "dsess_id",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
             },
-            "dsess_mid" : { 
-                "allow_null" : false,
-                "auto_increment" : false,
-                "binary" : false,
-                "comment" : "",
-                "decimals" : null,
-                "default" : "0",
-                "length" : 20,
-                "name" : "dsess_mid",
-                "type" : "BIGINT",
-                "unsigned" : false,
-                "values" : [ ],
-                "zerofill" : false
+            "dsess_mid": {
+                "allow_null": false,
+                "auto_increment": false,
+                "binary": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 20,
+                "name": "dsess_mid",
+                "type": "BIGINT",
+                "unsigned": false,
+                "values": [],
+                "zerofill": false
             },
             "dsess_ip": {
                 "allow_null": true,
