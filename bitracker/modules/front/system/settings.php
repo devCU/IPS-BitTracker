@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     13 JUN 2019
+ * @Updated     14 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -73,7 +73,7 @@ class _settings extends \IPS\Dispatcher\Controller
 		$area = \IPS\Request::i()->area ?: 'overview';
 		if ( method_exists( $this, "_{$area}" ) )
 		{
-			$output = call_user_func( array( $this, "_{$area}" ) );
+			$output = \call_user_func( array( $this, "_{$area}" ) );
 		}
 		
 		/* Display */
@@ -152,7 +152,7 @@ class _settings extends \IPS\Dispatcher\Controller
 			\IPS\Member::loggedIn()->bit_open = $values['bit_open'];
 			
 			\IPS\Member::loggedIn()->save();
-			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=settings&controller=settings&area=configure', 'front', 'settings' ), 'bit_open_changed' );
+			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=configure', 'front', 'settings' ), 'bit_open_changed' );
 	   }
 
 		return \IPS\Theme::i()->getTemplate( 'system' )->settingsConfigure( $form );
@@ -178,7 +178,7 @@ class _settings extends \IPS\Dispatcher\Controller
 			\IPS\Member::loggedIn()->bit_open = $values['bit_open'];
 			
 			\IPS\Member::loggedIn()->save();
-			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=settings&controller=settings&area=security', 'front', 'settings' ), 'bit_open_changed' );
+			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=security', 'front', 'settings' ), 'bit_open_changed' );
 	   }
 
 		return \IPS\Theme::i()->getTemplate( 'system' )->settingsSecurity( $form );
@@ -192,19 +192,20 @@ class _settings extends \IPS\Dispatcher\Controller
 	 */
 	protected function _privacy()
 	{
+
 		/* Build Form */
 		$form = new \IPS\Helpers\Form;
 		$form->class = 'ipsForm_collapseTablet';
-        $form->add( new \IPS\Helpers\Form\Text( 'bit_open', \IPS\Member::loggedIn()->bit_open, FALSE) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'bit_profile_private', \IPS\Member::loggedIn()->bit_profile_private, FALSE ) );
 
 		/* Handle submissions */
 		if ( $values = $form->values() )
 		{
 			
-			\IPS\Member::loggedIn()->bit_open = $values['bit_open'];
+			\IPS\Member::loggedIn()->bit_profile_private = $values['bit_profile_private'];
 			
 			\IPS\Member::loggedIn()->save();
-			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=settings&controller=settings&area=privacy', 'front', 'settings' ), 'bit_open_changed' );
+			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=privacy', 'front', 'settings' ), 'bit_profile_private_changed' );
 	   }
 
 		return \IPS\Theme::i()->getTemplate( 'system' )->settingsPrivacy( $form );
