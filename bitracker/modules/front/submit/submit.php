@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     13 JUN 2019
+ * @Updated     14 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -190,39 +190,22 @@ class _submit extends \IPS\Dispatcher\Controller
 						}
 					} ) );
 				}
-                
-			if ( $category->bitoptions['allownfo'] )
-			{
-			 $form->add( new \IPS\Helpers\Form\Upload( 'nfo', $nfo, ( !\IPS\Member::loggedIn()->group['bit_linked_nfo'] and !\IPS\Member::loggedIn()->group['bit_import_nfo'] ), array( 'storageExtension' => 'bitracker_Nfo', 'allowedFileTypes' => $category->types, 'maxFileSize' => $category->maxfile !== NULL ? ( $category->maxfile / 1024 ) : NULL, 'multiple' => TRUE, 'minimize' => FALSE ) ) );
 
-			 if ( !isset( \IPS\Request::i()->bulk ) )
-			 {
-				if ( \IPS\Member::loggedIn()->group['bit_linked_nfo'] )
+				if ( $category->bitoptions['allownfo'] )
 				{
-					$form->add( new \IPS\Helpers\Form\Stack( 'url_nfo', isset( $data['url_nfo'] ) ? $data['url_nfo'] : array(), FALSE, array( 'stackFieldType' => 'Url' ), array( 'IPS\bitracker\File', 'blacklistCheck' ) ) );
-				}
+					$form->add( new \IPS\Helpers\Form\Upload( 'nfo', $nfo, ( $category->bitoptions['reqnfo'] and !\IPS\Member::loggedIn()->group['bit_linked_torrents'] and !\IPS\Member::loggedIn()->group['bit_import_torrents'] ), array(
+						'storageExtension'	=> 'bitracker_Nfo',
+                        'allowedFileTypes' => $category->typesnfo,
+						 'maxFileSize' => $category->maxnfo !== NULL ? ( $category->maxnfo / 1024 ) : NULL,
+						'multiple'			=> TRUE,
+                        'minimize' => FALSE ,
+					) ) );
 
-			 	if ( \IPS\Member::loggedIn()->group['bit_import_nfo']  )
-			 	{
-					$form->add( new \IPS\Helpers\Form\Stack( 'import_nfo', array(), FALSE, array( 'placeholder' => \IPS\ROOT_PATH ), function( $val )
+					if ( \IPS\Member::loggedIn()->group['bit_linked_torrents'] )
 					{
-						if( $val and \is_array( $val ) )
-						{
-							foreach ( $val as $file )
-							{
-								if ( is_dir( $file ) )
-								{
-									throw new \DomainException( \IPS\Member::loggedIn()->language()->addToStack('err_import_nfo_dir', FALSE, array( 'sprintf' => array( $file ) ) ) );
-								}
-								elseif ( !is_file( $file ) )
-								{
-									throw new \DomainException( \IPS\Member::loggedIn()->language()->addToStack('err_nfo_files', FALSE, array( 'sprintf' => array( $file ) ) ) );
-								}
-							}
-						}
-					} ) );
+						$form->add( new \IPS\bitracker\Form\LinkedNfo( 'url_nfo', isset( $data['url_nfo'] ) ? array( 'values' => $data['url_nfo'] ) : array(), FALSE, array( 'stackFieldType' => 'Url' ), array( 'IPS\bitracker\File', 'blacklistCheck' ) ) );
+					}
 				}
-			}
 
 				if ( $category->bitoptions['allowss'] )
 				{
@@ -348,8 +331,7 @@ class _submit extends \IPS\Dispatcher\Controller
 						unset( $existing[ (string) $url ] );
 					}
 				}
-				if ( isset( $values['nfo'] ) )
-				{
+
 				foreach ( $values['nfo'] as $file )
 				{
 					$nfo[ $k ] = (string) $file;
@@ -372,7 +354,7 @@ class _submit extends \IPS\Dispatcher\Controller
 					\IPS\File::$copyFiles = TRUE;
 					foreach ( $values['import_nfo'] as $path )
 					{
-						$file = \IPS\File::create( 'bitracker_Torrents', mb_substr( $path, mb_strrpos( $path, DIRECTORY_SEPARATOR ) + 1 ), NULL, NULL, FALSE, $path );
+						$file = \IPS\File::create( 'bitracker_Nfo', mb_substr( $path, mb_strrpos( $path, DIRECTORY_SEPARATOR ) + 1 ), NULL, NULL, FALSE, $path );
 						
 						$nfo[ $k ] = (string) $file;
 						if ( !isset( $existing[ (string) $file ] ) )
@@ -410,7 +392,7 @@ class _submit extends \IPS\Dispatcher\Controller
 						unset( $existing[ (string) $url ] );
 					}
 				}
-             }
+
 				if ( isset( $values['screenshots'] ) )
 				{
 					foreach ( $values['screenshots'] as $_key => $file )
@@ -590,7 +572,7 @@ class _submit extends \IPS\Dispatcher\Controller
 			foreach ( $data['files'] as $key => $file )
 			{
 				/* Header */
-				$file = \IPS\File::get( 'downloads_Files', $file );
+				$file = \IPS\File::get( 'bitracker_Torrents', $file );
 
 				try
 				{
