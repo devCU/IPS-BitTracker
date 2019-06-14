@@ -1,14 +1,18 @@
-{ 
-    "Forums" : { 
-        "type" : "C",
-        "class" : "\\IPS\\forums\\Forum"
+{
+    "Forums": {
+        "type": "C",
+        "class": "\\IPS\\forums\\Forum"
     },
-    "nexusPackage" : { 
-        "type" : "C",
-        "class" : "\\IPS\\nexus\\Package\\Item"
+    "nexusPackage": {
+        "type": "C",
+        "class": "\\IPS\\nexus\\Package\\Item"
     },
-    "Forum" : { 
-        "type" : "C",
-        "class" : "\\IPS\\forums\\modules\\admin\\forums\\forums"
+    "Forum": {
+        "type": "C",
+        "class": "\\IPS\\forums\\modules\\admin\\forums\\forums"
+    },
+    "BitMemberSettingsMenu": {
+        "type": "S",
+        "class": "\\IPS\\Theme\\class_core_front_global"
     }
 }
