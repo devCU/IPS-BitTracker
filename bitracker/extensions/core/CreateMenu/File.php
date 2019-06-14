@@ -57,7 +57,7 @@ class _File
 			{
 				return array(
 					'file_bitrack' => array(
-						'link' 	=> \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit&do=submit&_new=1&category=" . $theOnlyNode->_id, 'front', 'bitracker_submit' ),
+						'link' 	=> \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit&do=submit&_new=1&category=" . $theOnlyNode->_id, 'front', 'torrent_submit' ),
 					)
 				);
 			}
@@ -65,7 +65,7 @@ class _File
 			{
 				return array(
 					'file_bitrack' => array(
-						'link' 		=> \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit&_new=1", 'front', 'bitracker_submit' ),
+						'link' 		=> \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit&_new=1", 'front', 'torrent_submit' ),
 						'title' 	=> 'select_category',
 						'extraData'	=> array( 'data-ipsDialog' => true, 'data-ipsDialog-size' => "narrow" )
 					)
