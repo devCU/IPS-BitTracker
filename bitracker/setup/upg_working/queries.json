@@ -19,5 +19,25 @@
                 "binary": false
             }
         ]
+    },
+    {
+        "method": "addColumn",
+        "params": [
+            "bitracker_torrents",
+            {
+                "name": "file_nfo",
+                "type": "INT",
+                "length": 11,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "The record_id of the nfo",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
     }
 ]
