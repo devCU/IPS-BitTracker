@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     13 JUN 2019
+ * @Updated     14 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -549,7 +549,7 @@ class _view extends \IPS\Content\Controller
 					) );
 				}
 
-				$this->file->downloads++;
+				$this->file->torrents++;
 				$this->file->save();
 			}
 			if ( \IPS\Application::appIsEnabled( 'nexus' ) and \IPS\Settings::i()->bit_nexus_on and ( $this->file->cost or $this->file->nexus ) )
@@ -593,9 +593,9 @@ class _view extends \IPS\Content\Controller
 		/* Log session (but we don't need to create a new session on subsequent requests) */
 		if( !isset( $_SERVER['HTTP_RANGE'] ) )
 		{
-			$downloadSessionId = \IPS\Login::generateRandomString();
+			$torrentSessionId = \IPS\Login::generateRandomString();
 			\IPS\Db::i()->insert( 'bitracker_sessions', array(
-				'dsess_id'		=> $downloadSessionId,
+				'dsess_id'		=> $torrentSessionId,
 				'dsess_mid'		=> (int) \IPS\Member::loggedIn()->member_id,
 				'dsess_ip'		=> \IPS\Request::i()->ipAddress(),
 				'dsess_file'	=> $this->file->id,
@@ -606,8 +606,8 @@ class _view extends \IPS\Content\Controller
 		/* If a user aborts the connection the shutdown function is not executed, and we need it to be */
 		ignore_user_abort( true );
 
-		register_shutdown_function( function() use( $downloadSessionId ) {
-			\IPS\Db::i()->delete( 'bitracker_sessions', array( 'dsess_id=?', $downloadSessionId ) );
+		register_shutdown_function( function() use( $torrentSessionId ) {
+			\IPS\Db::i()->delete( 'bitracker_sessions', array( 'dsess_id=?', $torrentSessionId ) );
 		} );
 		
 		/* If it's an AWS file just redirect to it */
@@ -630,7 +630,7 @@ class _view extends \IPS\Content\Controller
 		}
 		catch( \RuntimeException $e )
 		{
-			\IPS\Log::log( $e, 'file_download' );
+			\IPS\Log::log( $e, 'file_torrent' );
 
 			\IPS\Output::i()->error( 'bitracker_no_file', '4D161/J', 403, '' );
 		}
@@ -935,7 +935,7 @@ class _view extends \IPS\Content\Controller
 				'retainDeleted'		=> TRUE,
 				'template'			=> "bitracker.submit.nfo",
 			) ) );
-
+		}
 		if ( $category->bitoptions['allowss'] )
 		{
 			$screenshots = iterator_to_array( $this->file->screenshots( 2, FALSE ) );
