@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     14 JUN 2019
+ * @Updated     15 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -196,7 +196,14 @@ class _settings extends \IPS\Dispatcher\Controller
 		/* Build Form */
 		$form = new \IPS\Helpers\Form;
 		$form->class = 'ipsForm_collapseTablet';
+			if ( \IPS\Settings::i()->bit_profile_private_enabled )
+			{
 		$form->add( new \IPS\Helpers\Form\YesNo( 'bit_profile_private', \IPS\Member::loggedIn()->bit_profile_private, FALSE ) );
+			}
+			else
+			{
+		$form->add( new \IPS\Helpers\Form\YesNo( 'bit_profile_private', FALSE, FALSE, array( 'disabled' => TRUE ) ) );
+			}
 
 		/* Handle submissions */
 		if ( $values = $form->values() )
