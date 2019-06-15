@@ -216,6 +216,7 @@
 				"perm_type": "category",
 				"perm_type_id": 1,
 				"perm_view": "<%NO_GUESTS%>",
+				"perm_2": "<%NO_GUESTS%>",
 				"perm_3": "<%NO_GUESTS%>",
 				"perm_4": "<%NO_GUESTS%>",
 				"perm_5": "<%NO_GUESTS%>",
