@@ -567,6 +567,20 @@
 	"40": {
 		"method": "addColumn",
 		"params": [
+			"core_members",
+			{
+				"name": "bit_profile_private_followers",
+				"type": "TINYINT",
+				"length": 1,
+				"null": false,
+				"default": 0,
+				"unsigned": true
+			}
+		]
+	},
+	"41": {
+		"method": "addColumn",
+		"params": [
 			"core_groups",
 			{
 				"name": "bit_single_submit",
