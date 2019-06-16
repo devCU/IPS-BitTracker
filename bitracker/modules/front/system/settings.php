@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.0 RC 1
+ * @version     2.0.0 RC 2
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     15 JUN 2019
+ * @Updated     16 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -103,7 +103,7 @@ class _settings extends \IPS\Dispatcher\Controller
 			\IPS\Output::i()->output .= $output;
 		}
 	}
-	
+
 	/**
 	 * Wrap output in template
 	 *
@@ -119,7 +119,7 @@ class _settings extends \IPS\Dispatcher\Controller
 		/* Return */
 		return \IPS\Theme::i()->getTemplate( 'system' )->settings( $area, $output );
 	}
-	
+
 	/**
 	 * Build and return the settings form: Overview
 	 *
@@ -128,8 +128,49 @@ class _settings extends \IPS\Dispatcher\Controller
 	 */
 	protected function _overview()
 	{
+
+	if ( !empty($_SERVER['HTTP_CLIENT_IP'] ))   
+	   {
+    $live_ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+	   }
+	elseif ( !empty($_SERVER['HTTP_X_FORWARDED_FOR'] ))  
+	   {
+	   $live_ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	   }
+	else
+	   {
+    $live_ipaddress = $_SERVER['REMOTE_ADDR'];
+  }
+
 		\IPS\Output::i()->jsFiles = array_merge( \IPS\Output::i()->jsFiles, \IPS\Output::i()->js( 'front_settings.js', 'bitracker', 'front' ) );
-		return \IPS\Theme::i()->getTemplate( 'system' )->settingsOverview( );
+		return \IPS\Theme::i()->getTemplate( 'system' )->settingsOverview( $live_ipaddress );
+	}
+
+	/**
+	 * Build and return the settings form: UpdatetIP
+	 *
+	 * @note	Abstracted to allow third party devs to extend easier
+	 * @return	\IPS\Helpers\Form
+	 */
+	protected function _updateip()
+	{
+
+	if ( !empty($_SERVER['HTTP_CLIENT_IP'] ))   
+	   {
+    $live_ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+	   }
+	elseif ( !empty($_SERVER['HTTP_X_FORWARDED_FOR'] ))  
+	   {
+	   $live_ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	   }
+	else
+	   {
+    $live_ipaddress = $_SERVER['REMOTE_ADDR'];
+  }
+
+	    	\IPS\Db::i()->update( 'core_members', array( 'ip_address' => $live_ipaddress ) );
+
+			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=overview', 'front', 'settings' ), 'system_ipaddress_updated' );
 	}
 
 	/**
@@ -198,7 +239,9 @@ class _settings extends \IPS\Dispatcher\Controller
 		$form->class = 'ipsForm_collapseTablet';
 			if ( \IPS\Settings::i()->bit_profile_private_enabled )
 			{
-		$form->add( new \IPS\Helpers\Form\YesNo( 'bit_profile_private', \IPS\Member::loggedIn()->bit_profile_private, FALSE ) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'bit_profile_private', \IPS\Member::loggedIn()->bit_profile_private, FALSE, array('togglesOn' => array( 'bit_profile_private_followers' ) ) ) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'bit_profile_private_followers', \IPS\Member::loggedIn()->bit_profile_private_followers, FALSE, array(), NULL, NULL, NULL, 'bit_profile_private_followers' ) );
+
 			}
 			else
 			{
@@ -210,6 +253,7 @@ class _settings extends \IPS\Dispatcher\Controller
 		{
 			
 			\IPS\Member::loggedIn()->bit_profile_private = $values['bit_profile_private'];
+			\IPS\Member::loggedIn()->bit_profile_private_followers = $values['bit_profile_private_followers'];
 			
 			\IPS\Member::loggedIn()->save();
 			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=privacy', 'front', 'settings' ), 'bit_profile_private_changed' );
