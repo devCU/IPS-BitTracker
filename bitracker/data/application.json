@@ -4,5 +4,5 @@
     "app_directory": "bitracker",
     "app_protected": 0,
     "app_website": "https:\/\/devcu.com",
-    "app_update_check": "https:\/\/devcu.com"
+    "app_update_check": "https:\/\/devcu.com\/updates\/ips\/bitracker44\/appcheck.php"
 }
