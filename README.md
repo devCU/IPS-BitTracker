@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-GNUv3-blue.svg)](https://github.com/devCU/IPS-4.4-BitTracker/blob/master/LICENSE) 
 [![Version](https://img.shields.io/badge/Version-2.0.0-ff69b4.svg)](https://www.devcu.com/devcu-tracker/)
-[![Build](https://img.shields.io/badge/Build-RC1-yellow.svg)](https://www.devcu.com/devcu-tracker/)
+[![Build](https://img.shields.io/badge/Build-RC2-yellow.svg)](https://www.devcu.com/devcu-tracker/)
 [![Status](https://img.shields.io/badge/Status-Release-inactive.svg)](https://www.devcu.com/devcu-tracker/)
 [![Development](https://img.shields.io/badge/Development-Active-success.svg)](https://www.devcu.com/devcu-tracker/)
 [![Platform](https://img.shields.io/badge/Platform-IPS4.4+-blue.svg)](https://www.devcu.com/devcu-tracker/)
@@ -27,13 +27,13 @@
 \   ||       |\_)      devCU Software      (_/|       ||   /
  \  | \  . \ ;  |   Open Source Projects   || ; / .  / |  /
   '\_\ \\ \ \ \ |                          ||/ / / // /_/'
-        \\ \ \ \|    IPS 4.4x BitTracker   |/ / / //
+        \\ \ \ \|        DCU Tracker       |/ / / //
          `'-\_\_\         v 2.0.0          /_/_/-'`
                 '--------------------------'
 </pre>
 
 
-# IPS 4.4x BitTracker
+# DCU Tracker
 
 #### Full featured bit torrent tracker application for IPS 4.4x Community Suite focusing on privacy and security
 
