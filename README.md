@@ -42,9 +42,10 @@
 
 ## ** Updated Notes **
 
-06/12/19
+06/16/19
 
 - 2.0.0 RC 1 currently in beta testing
+- 2.0.0 RC 2 dev build active
 - Release immediately after beta is complete for Patrons
 - Release early July for Public
 - Will do a release of compiled source in IPS .tar file format for import installations
