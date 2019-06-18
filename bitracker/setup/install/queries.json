@@ -581,6 +581,20 @@
 	"41": {
 		"method": "addColumn",
 		"params": [
+			"core_members",
+			{
+				"name": "bit_member_ipbind",
+				"type": "TINYINT",
+				"length": 1,
+				"null": false,
+				"default": 0,
+				"unsigned": true
+			}
+		]
+	},
+	"42": {
+		"method": "addColumn",
+		"params": [
 			"core_groups",
 			{
 				"name": "bit_single_submit",
