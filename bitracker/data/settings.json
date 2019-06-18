@@ -17,11 +17,11 @@
     },
     {
         "key": "bit_application_name",
-        "default": "BitTrak"
+        "default": "Tracker"
     },
     {
         "key": "bit_breadcrumb_name",
-        "default": "BitTrak"
+        "default": "Tracker"
     },
     {
         "key": "bit_breadcrumb_name_enable",
@@ -29,7 +29,7 @@
     },
     {
         "key": "bit_cusmenu_name",
-        "default": "BitTrak"
+        "default": "Tracker"
     },
     {
         "key": "bit_cusmenu_name_enable",
@@ -117,7 +117,7 @@
     },
     {
         "key": "bit_profile_name",
-        "default": "BitTrak"
+        "default": "Tracker"
     },
     {
         "key": "bit_profile_name_enable",
@@ -133,7 +133,11 @@
     },
     {
         "key": "bit_security_bindip",
-        "default": ""
+        "default": "0"
+    },
+    {
+        "key": "bit_security_bindip_rule",
+        "default": "0"
     },
     {
         "key": "bit_security_filter_option",
@@ -153,11 +157,7 @@
     },
     {
         "key": "bit_security_ipenable",
-        "default": "0"
-    },
-    {
-        "key": "bit_security_multipleip",
-        "default": "0"
+        "default": "1"
     },
     {
         "key": "bit_security_permkey",
