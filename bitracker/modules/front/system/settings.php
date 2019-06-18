@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     16 JUN 2019
+ * @Updated     17 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -129,21 +129,24 @@ class _settings extends \IPS\Dispatcher\Controller
 	protected function _overview()
 	{
 
+			$announceURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] ; 
+
 	if ( !empty($_SERVER['HTTP_CLIENT_IP'] ))   
 	   {
     $live_ipaddress = $_SERVER['HTTP_CLIENT_IP'];
 	   }
-	elseif ( !empty($_SERVER['HTTP_X_FORWARDED_FOR'] ))  
+	elseif ( !empty($_SERVER['HTTP_X_FORWARDED_FOR'] ))
 	   {
 	   $live_ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
 	   }
 	else
 	   {
-    $live_ipaddress = $_SERVER['REMOTE_ADDR'];
+	   $live_ipaddress = $_SERVER['REMOTE_ADDR'];
+
   }
 
 		\IPS\Output::i()->jsFiles = array_merge( \IPS\Output::i()->jsFiles, \IPS\Output::i()->js( 'front_settings.js', 'bitracker', 'front' ) );
-		return \IPS\Theme::i()->getTemplate( 'system' )->settingsOverview( $live_ipaddress );
+		return \IPS\Theme::i()->getTemplate( 'system' )->settingsOverview( $live_ipaddress, $announceURL );
 	}
 
 	/**
@@ -168,7 +171,8 @@ class _settings extends \IPS\Dispatcher\Controller
     $live_ipaddress = $_SERVER['REMOTE_ADDR'];
   }
 
-	    	\IPS\Db::i()->update( 'core_members', array( 'ip_address' => $live_ipaddress ) );
+            $where = array( array( 'member_id=?', \IPS\Member::loggedIn()->member_id ) );
+	    	\IPS\Db::i()->update( 'core_members', array( 'ip_address' => $live_ipaddress ), $where);
 
 			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=overview', 'front', 'settings' ), 'system_ipaddress_updated' );
 	}
@@ -184,20 +188,50 @@ class _settings extends \IPS\Dispatcher\Controller
 		/* Build Form */
 		$form = new \IPS\Helpers\Form;
 		$form->class = 'ipsForm_collapseTablet';
-        $form->add( new \IPS\Helpers\Form\Text( 'bit_open', \IPS\Member::loggedIn()->bit_open, FALSE) );
+			if ( \IPS\Settings::i()->bit_security_ipenable AND \IPS\Settings::i()->bit_security_ipcount >= 2 )
+			{
+		$form->add( new \IPS\Helpers\Form\Text( 'bit_ip_address2', \IPS\Member::loggedIn()->bit_ip_address2, FALSE) );
+			}
+			if ( \IPS\Settings::i()->bit_security_ipenable AND \IPS\Settings::i()->bit_security_ipcount == 3 )
+			{
+		$form->add( new \IPS\Helpers\Form\Text( 'bit_ip_address3', \IPS\Member::loggedIn()->bit_ip_address3, FALSE) );
+			}
 
 		/* Handle submissions */
 		if ( $values = $form->values() )
 		{
 			
-			\IPS\Member::loggedIn()->bit_open = $values['bit_open'];
+			\IPS\Member::loggedIn()->bit_ip_address2 = $values['bit_ip_address2'];
+			\IPS\Member::loggedIn()->bit_ip_address3 = $values['bit_ip_address3'];
 			
 			\IPS\Member::loggedIn()->save();
-			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=configure', 'front', 'settings' ), 'bit_open_changed' );
+			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=configure', 'front', 'settings' ), 'system_ipaddress_updated' );
 	   }
 
 		return \IPS\Theme::i()->getTemplate( 'system' )->settingsConfigure( $form );
    }
+
+	/**
+	 * Build and return the settings form: Security Passkey
+	 *
+	 * @note	Abstracted to allow third party devs to extend easier
+	 * @return	\IPS\Helpers\Form
+	 */
+
+	protected function _getPasskey()
+	{
+        $length = 32;
+        $chars = str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
+		$stringToHash = \IPS\Member::loggedIn()->ip_address . \IPS\Member::loggedIn()->joined . \IPS\Member::loggedIn()->member_pass_hash . $chars;
+		$hash = md5( $stringToHash, $length);
+        $permkey = bin2hex($hash);
+
+            $where = array( array( 'member_id=?', \IPS\Member::loggedIn()->member_id ) );
+            \IPS\Db::i()->update( 'core_members', array( 'bit_perm_key' => $permkey ), $where);
+
+
+			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=security', 'front', 'settings' ), 'system_passkey_updated' );
+	}
 
 	/**
 	 * Build and return the settings form: Security
@@ -210,16 +244,24 @@ class _settings extends \IPS\Dispatcher\Controller
 		/* Build Form */
 		$form = new \IPS\Helpers\Form;
 		$form->class = 'ipsForm_collapseTablet';
-        $form->add( new \IPS\Helpers\Form\Text( 'bit_open', \IPS\Member::loggedIn()->bit_open, FALSE) );
+			if ( \IPS\Settings::i()->bit_security_bindip AND \IPS\Settings::i()->bit_security_bindip_rule == 2 )
+			{
+		$form->add( new \IPS\Helpers\Form\YesNo( 'bit_member_ipbind', \IPS\Member::loggedIn()->bit_member_ipbind, FALSE) );
+			}
+			else
+			{
+		$form->add( new \IPS\Helpers\Form\YesNo( 'bit_member_ipbind', FALSE, FALSE, array( 'disabled' => TRUE ) ) );
+			}
 
 		/* Handle submissions */
 		if ( $values = $form->values() )
 		{
 			
-			\IPS\Member::loggedIn()->bit_open = $values['bit_open'];
+			\IPS\Member::loggedIn()->bit_member_ipbind = $values['bit_member_ipbind'];
+
 			
 			\IPS\Member::loggedIn()->save();
-			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=security', 'front', 'settings' ), 'bit_open_changed' );
+			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=system&controller=settings&area=security', 'front', 'settings' ), 'bit_security_updated' );
 	   }
 
 		return \IPS\Theme::i()->getTemplate( 'system' )->settingsSecurity( $form );
