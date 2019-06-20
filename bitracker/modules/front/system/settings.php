@@ -9,7 +9,7 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.0 RC 2
+ * @version     2.0.0 RC 3
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
@@ -129,8 +129,8 @@ class _settings extends \IPS\Dispatcher\Controller
 	protected function _overview()
 	{
 
-			$announceURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] ; 
-            $live_ipaddress = \IPS\Request::i()->ipAddress();
+			$announceURL = 	\IPS\bitracker\Request::i()->url();
+            $live_ipaddress = \IPS\bitracker\Request::i()->ipAddress();
 
 		\IPS\Output::i()->jsFiles = array_merge( \IPS\Output::i()->jsFiles, \IPS\Output::i()->js( 'front_settings.js', 'bitracker', 'front' ) );
 		return \IPS\Theme::i()->getTemplate( 'system' )->settingsOverview( $live_ipaddress, $announceURL );
@@ -145,7 +145,7 @@ class _settings extends \IPS\Dispatcher\Controller
 	protected function _updateip()
 	{
 
-            $live_ipaddress = \IPS\Request::i()->ipAddress();
+            $live_ipaddress = \IPS\bitracker\Request::i()->ipAddress();
             $where = array( array( 'member_id=?', \IPS\Member::loggedIn()->member_id ) );
 	    	\IPS\Db::i()->update( 'core_members', array( 'ip_address' => $live_ipaddress ), $where);
 
