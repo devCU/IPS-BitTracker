@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     17 JUN 2019
+ * @Updated     19 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -130,20 +130,7 @@ class _settings extends \IPS\Dispatcher\Controller
 	{
 
 			$announceURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] ; 
-
-	if ( !empty($_SERVER['HTTP_CLIENT_IP'] ))   
-	   {
-    $live_ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-	   }
-	elseif ( !empty($_SERVER['HTTP_X_FORWARDED_FOR'] ))
-	   {
-	   $live_ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	   }
-	else
-	   {
-	   $live_ipaddress = $_SERVER['REMOTE_ADDR'];
-
-  }
+            $live_ipaddress = \IPS\Request::i()->ipAddress();
 
 		\IPS\Output::i()->jsFiles = array_merge( \IPS\Output::i()->jsFiles, \IPS\Output::i()->js( 'front_settings.js', 'bitracker', 'front' ) );
 		return \IPS\Theme::i()->getTemplate( 'system' )->settingsOverview( $live_ipaddress, $announceURL );
@@ -158,19 +145,7 @@ class _settings extends \IPS\Dispatcher\Controller
 	protected function _updateip()
 	{
 
-	if ( !empty($_SERVER['HTTP_CLIENT_IP'] ))   
-	   {
-    $live_ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-	   }
-	elseif ( !empty($_SERVER['HTTP_X_FORWARDED_FOR'] ))  
-	   {
-	   $live_ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	   }
-	else
-	   {
-    $live_ipaddress = $_SERVER['REMOTE_ADDR'];
-  }
-
+            $live_ipaddress = \IPS\Request::i()->ipAddress();
             $where = array( array( 'member_id=?', \IPS\Member::loggedIn()->member_id ) );
 	    	\IPS\Db::i()->update( 'core_members', array( 'ip_address' => $live_ipaddress ), $where);
 
