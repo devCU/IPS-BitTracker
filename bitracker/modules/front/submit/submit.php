@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     14 JUN 2019
+ * @Updated     15 JUN 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -438,17 +438,17 @@ class _submit extends \IPS\Dispatcher\Controller
 
 						try
 						{
-                            if ( $record['record_type'] == 'upload' ) 
+                            if ( $file['record_type'] == 'upload' ) 
                                {
-                                   $record['record_type'] = \IPS\File::get( 'bitracker_Torrents', $record['record_location'] )->delete();
+                                   $file['record_type'] = \IPS\File::get( 'bitracker_Torrents', $location )->delete();
                                }
-                                 elseif ( $record['record_type'] == 'nfoupload' ) 
+                                 elseif ( $file['record_type'] == 'nfoupload' ) 
                                {
-                                   $record['record_type'] = \IPS\File::get( 'bitracker_Nfo', $record['record_location'] )->delete();
+                                   $file['record_type'] = \IPS\File::get( 'bitracker_Nfo', $location )->delete();
                                }
-                                 elseif ( $record['record_type'] == 'ssupload' ) 
+                                 elseif ( $file['record_type'] == 'ssupload' ) 
                                {
-                                   $record['record_type'] = \IPS\File::get( 'bitracker_Screenshots', $record['record_location'] )->delete();
+                                   $file['record_type'] = \IPS\File::get( 'bitracker_Screenshots', $location )->delete();
                                }
 						}
 
