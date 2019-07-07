@@ -1882,18 +1882,20 @@ class _File extends \IPS\Content\Item implements
 						{
 							if ( !\in_array( $file['record_location'], $locations ) )
 							{
-                                   $record['record_type'] = \IPS\File::get( 'bitracker_Torrents', $record['record_location'] )->delete();
-                               }
-                                 elseif ( $record['record_type'] == 'nfoupload' ) 
+                             if ( $record['record_type'] == 'upload' ) 
                                {
-                                   $record['record_type'] = \IPS\File::get( 'bitracker_Nfo', $record['record_location'] )->delete();
+                                   $file['record_type'] = \IPS\File::get( 'bitracker_Torrents', $file['record_location'] )->delete();
                                }
-                                 elseif ( $record['record_type'] == 'ssupload' ) 
+                                 elseif ( $file['record_type'] == 'nfoupload' ) 
                                {
-                                   $record['record_type'] = \IPS\File::get( 'bitracker_Screenshots', $record['record_location'] )->delete();
+                                   $file['record_type'] = \IPS\File::get( 'bitracker_Nfo', $file['record_location'] )->delete();
                                }
-						}
-
+                                 elseif ( $file['record_type'] == 'ssupload' ) 
+                               {
+                                   $file['record_type'] = \IPS\File::get( 'bitracker_Screenshots', $file['record_location'] )->delete();
+                               }
+						 }
+					}
 						catch ( \Exception $e ) { }
 
 						if( $file['record_type'] == 'ssupload' )
