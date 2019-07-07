@@ -3482,33 +3482,33 @@
                 "values": [],
                 "zerofill": false
             },
-            "pieces": {
-                "allow_null": false,
-                "auto_increment": false,
-                "binary": false,
-                "comment": "",
-                "decimals": null,
-                "default": "0",
-                "length": 20,
-                "name": "pieces",
+            "torrent_pieces": {
+                "name": "torrent_pieces",
                 "type": "INT",
-                "unsigned": false,
+                "length": 20,
+                "decimals": null,
                 "values": [],
-                "zerofill": false
+                "allow_null": false,
+                "default": "0",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
             },
-            "piece_length": {
-                "allow_null": false,
-                "auto_increment": false,
-                "binary": false,
-                "comment": "",
-                "decimals": null,
-                "default": "0",
-                "length": 20,
-                "name": "piece_length",
+            "torrent_piece_length": {
+                "name": "torrent_piece_length",
                 "type": "INT",
-                "unsigned": false,
+                "length": 20,
+                "decimals": null,
                 "values": [],
-                "zerofill": false
+                "allow_null": false,
+                "default": "0",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
             }
         },
         "indexes": {
