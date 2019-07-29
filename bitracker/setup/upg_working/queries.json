@@ -39,5 +39,47 @@
                 "binary": false
             }
         ]
+    },
+    {
+        "method": "changeColumn",
+        "params": [
+            "bitracker_torrent_data",
+            "pieces",
+            {
+                "name": "torrent_pieces",
+                "type": "INT",
+                "length": 20,
+                "decimals": null,
+                "values": [],
+                "allow_null": false,
+                "default": "0",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    {
+        "method": "changeColumn",
+        "params": [
+            "bitracker_torrent_data",
+            "piece_length",
+            {
+                "name": "torrent_piece_length",
+                "type": "INT",
+                "length": 20,
+                "decimals": null,
+                "values": [],
+                "allow_null": false,
+                "default": "0",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
     }
 ]

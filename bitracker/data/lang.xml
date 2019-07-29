@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language>
+ <app key="bitracker" version="20010">
+  <word key="__app_bitracker" js="0">DCU Tracker</word>
+  <word key="profile_bitracker_Bitracker" js="0">Torrents</word>
+  <word key="menutab__bitracker" js="0">DCU Tracker</word>
+  <word key="menutab__bitracker_icon" js="0">cloud</word>
+  <word key="frontnavigation_bitracker" js="0">DCU Tracker</word>
+  <word key="menu__bitracker_dashboard" js="0">Dashboard</word>
+  <word key="menu__bitracker_dashboard_overview" js="0">Overview</word>
+  <word key="menu__bitracker_tracker" js="0">Tracker</word>
+  <word key="menu__bitracker_tracker_torrents" js="0">Torrents</word>
+  <word key="menu__bitracker_tracker_announce" js="0">Announce</word>
+  <word key="menu__bitracker_tracker_security" js="0">Security</word>
+  <word key="menu__bitracker_members" js="0">Members</word>
+  <word key="menu__bitracker_members_members" js="0">Members</word>
+  <word key="menu__bitracker_members_profiles" js="0">Profiles</word>
+  <word key="menu__bitracker_configure" js="0">Setup</word>
+  <word key="menu__bitracker_configure_categories" js="0">Categories</word>
+  <word key="menu__bitracker_configure_fields" js="0">Extra Fields</word>
+  <word key="menu__bitracker_settings" js="0">Configure</word>
+  <word key="menu__bitracker_settings_general" js="0">General</word>
+  <word key="menu__bitracker_settings_file" js="0">Files</word>
+  <word key="menu__bitracker_settings_topics" js="0">Topics</word>
+  <word key="menu__bitracker_settings_sites" js="0">Sites API</word>
+  <word key="menu__bitracker_settings_storage" js="0">Storage Manager</word>
+  <word key="menu__bitracker_settings_menu" js="0">Menu Manager</word>
+  <word key="menu__bitracker_settings_permissions" js="0">Permissions</word>
+  <word key="menu__bitracker_settings_clients" js="0">Clients</word>
+  <word key="menu__bitracker_about" js="0">About</word>
+  <word key="menu__bitracker_about_about" js="0">About</word>
+  <word key="menu__bitracker_about_version" js="0">Version</word>
+  <word key="menu__bitracker_about_update" js="0">Update</word>
+  <word key="menu__bitracker_stats" js="0">Stats</word>
+  <word key="menu__bitracker_stats_torrent" js="0">Torrents</word>
+  <word key="menu__bitracker_stats_network" js="0">Network</word>
+  <word key="menu__bitracker_stats_member" js="0">Member</word>
+  <word key="menu__bitracker_stats_peers" js="0">Top Peers</word>
+  <word key="menu__bitracker_stats_submitters" js="0">Top Submitters</word>
+  <word key="menu_tracker_settings" js="0">Tracker Settings</word>
+  <word key="edit_tracker_settings" js="0">Modify Tracker Settings</word>
+  <word key="module__bitracker_bitracker" js="0">DCU Tracker</word>
+  <word key="module__bitracker_stats" js="0">Statistics</word>
+  <word key="module__bitracker_sites" js="0">Sites API</word>
+  <word key="module__bitracker_client" js="0">Clients</word>
+  <word key="module__bitracker_portal" js="0">Tracker</word>
+  <word key="module__bitracker_submit" js="0">Submit</word>
+  <word key="module__bitracker_system" js="0">System</word>
+  <word key="customized_bitracker" js="0">Customize Tracker Settings</word>
+  <word key="bit_application_name" js="0">Tracker</word>
+  <word key="bit_application_name_desc" js="0">Customize the name of your tracker</word>
+  <word key="bit_breadcrumb_name_enable" js="0">Breadcrumb Name Enable?</word>
+  <word key="bit_breadcrumb_name_enable_desc" js="0">Customize breadcrumb links, defaults to Application Name when disabled</word>
+  <word key="bit_breadcrumb_name" js="0">Custom Breadcrumb Name</word>
+  <word key="bit_cusmenu_name_enable" js="0">Menu Name Enable?</word>
+  <word key="bit_cusmenu_name_enable_desc" js="0">Customize menu links, defaults to Application Name when disabled</word>
+  <word key="bit_cusmenu_name" js="0">Custom Menu Name</word>
+  <word key="bit_profile_name_enable" js="0">Profile Tab Name Enable?</word>
+  <word key="bit_profile_name_enable_desc" js="0">Customize profile tab, defaults to Application Name when disabled</word>
+  <word key="bit_profile_name" js="0">Custom Profile Tab Name</word>
+  <word key="bit_profile_enable" js="0">Profile Tab Enable?</word>
+  <word key="bit_profile_enable_desc" js="0">When enabled adds a tab to members profile for torrent uploads by the member</word>
+  <word key="bit_profile_adv_enable" js="0">Profile Advanced Enable?</word>
+  <word key="bit_profile_private_enabled" js="0">Profile Privacy Enable?</word>
+  <word key="bit_profile_private_enabled_desc" js="0">If enabled members can choose to make their torrent activity private on their profiles</word>
+  <word key="bit_profile_private_followers" js="0">Allow Followers?</word>
+  <word key="bit_profile_private_followers_desc" js="0">When enabled only your followers can see your tracker activity</word>
+  <word key="bit_profile_private" js="0">Profile Privacy Enable?</word>
+  <word key="bit_profile_private_changed" js="0">Profile Privacy Updated</word>
+  <word key="g_bit_add_torrent" js="0">Can upload torrents?</word>
+  <word key="g_bit_edit_torrent" js="0">Can edit own torrents?</word>
+  <word key="g_bit_add_comments" js="0">Can add comments?</word>
+  <word key="g_bit_edit_comments" js="0">Can edit own comments?</word>
+  <word key="g_bit_rate_torrent" js="0">Can rate torrents?</word>
+  <word key="g_bit_delete_torrent" js="0">Can delete own torrents?</word>
+  <word key="g_bit_delete_comments" js="0">Can delete own torrents?</word>
+  <word key="g_bit_m_edit_torrent" js="0">Can edit any torrents?</word>
+  <word key="g_bit_m_delete_torrent" js="0">Can delete any torrents?</word>
+  <word key="g_bit_m_edit_comments" js="0">Can delete any comment?</word>
+  <word key="g_bit_m_delete_comments" js="0">Can delete any comment?</word>
+  <word key="g_bit_m_manage" js="0">Can manage application</word>
+  <word key="__indefart_bitracker_torrent_comment" js="0">a comment on a torrent</word>
+  <word key="__indefart_bitracker_torrent" js="0">a torrent</word>
+  <word key="__indefart_bitracker_torrent_review" js="0">a review on a torrent</word>
+  <word key="__defart_bitracker_torrent_comment" js="0">comment on a torrent</word>
+  <word key="__defart_bitracker_torrent" js="0">torrent</word>
+  <word key="__defart_bitracker_torrent_review" js="0">review on a torrent</word>
+  <word key="system_bitracker_settings" js="0">Tracker Settings</word>
+  <word key="system_bitracker_settings_blurb" js="0">Modify your tracker settings</word>
+  <word key="system_notification_options" js="0">Tracker Notifications</word>
+  <word key="system_bitracker_overview" js="0">Overview</word>
+  <word key="system_bitracker_configure" js="0">Configure</word>
+  <word key="system_bitracker_security" js="0">Security</word>
+  <word key="system_bitracker_privacy" js="0">Privacy</word>
+  <word key="system_bitracker_privacy_description" js="0">When enabled you can choose to keep your public profiles tracker activity private (hidden) from other members, Admins can still see your profile details always but guests can never see your tracker activity no matter the setting.</word>
+  <word key="system_bitracker_configure_description" js="0">When enabled you can add additional IP address for the Tracker to connect to. For instance a seedbox IP, work IP, or another home IP address</word>
+  <word key="system_privacy_disabled" js="0">Disabled</word>
+  <word key="system_connection_ipaddress" js="0">Connection IP Address</word>
+  <word key="system_data_ipaddress" js="0">Stored Connection IP</word>
+  <word key="system_current_ipaddress" js="0">Live Connection IP</word>
+  <word key="system_add_ipaddress" js="0">Additional IP Addresses</word>
+  <word key="system_security_passkey_header" js="0">Passkey Security</word>
+  <word key="system_bitracker_passkey_description" js="0">When enabled torrents are downloaded and a special unique passkey is embedded in the file and announce URL. This ensures only users with a passkey can connect, when coupled with IP rules this prevents non members from accessing the tracker</word>
+  <word key="system_profile_privacy" js="0">Profile Privacy</word>
+  <word key="system_profile_privacy_enabled" js="0">Your public profile tracker activity is only visible to Administrators</word>
+  <word key="system_profile_privacy_disabled" js="0">Your public profile tracker activity is visible to all Members</word>
+  <word key="system_profile_privacy_enabled_followers" js="0">Your public profile tracker activity is only visible to Followers and Administrators</word>
+  <word key="system_connection_security" js="0">Tracker Security</word>
+  <word key="system_bitracker_info" js="0">Tracker Info</word>
+  <word key="system_bitracker_announceurl" js="0">Announce URL</word>
+  <word key="system_bitracker_announceurl_tip" js="0">Your announce URL for creating torrents</word>
+  <word key="system_bitracker_enabled" js="0">Enabled</word>
+  <word key="system_bitracker_disabled" js="0">Disabled</word>
+  <word key="system_bitracker_optional" js="0">Optional</word>
+  <word key="system_bitracker_forced" js="0">Forced</word>
+  <word key="system_private_tracker" js="0">Private Tracker is</word>
+  <word key="system_private_tracker_enabled" js="0">Tracker will only accept private torrents</word>
+  <word key="system_private_tracker_disabled" js="0">Tracker will accept public torrents</word>
+  <word key="system_ssl_secure" js="0">HTTPS (SSL Encrypted) Only is</word>
+  <word key="system_ssl_secure_enabled" js="0">Tracker will only accept SSL secure connections</word>
+  <word key="system_ssl_secure_disabled" js="0">Tracker will accept non-SSL insecure connections</word>
+  <word key="system_ssl_secure_passkey" js="0">Private PassKey Access is</word>
+  <word key="system_passkey_secure_enabled" js="0">Tracker will only accept announce with unique passkey</word>
+  <word key="system_passkey_secure_disabled" js="0">Tracker will accept announce with no unique passkey</word>
+  <word key="system_passkey_updated" js="0">New PassKey Generated</word>
+  <word key="system_security_ppasskey_warning" js="0">Warning! If you generate a new passkey all torrents using the previous key will be obsolete and you will need to redownload them to get the new passkey</word>
+  <word key="system_seedbox_enabled" js="0">Enabled</word>
+  <word key="system_seedbox_disabled" js="0">Disabled</word>
+  <word key="system_privacy_enabled" js="0">Enabled</word>
+  <word key="system_privacy_options_feature" js="0">This feature has been</word>
+  <word key="system_privacy_options_admin" js="0">by the Administrator</word>
+  <word key="system_ipaddress_updated" js="0">IP Address Updated</word>
+  <word key="system_ipaddress_enabled" js="0">Enabled</word>
+  <word key="system_ipaddress_disabled" js="0">Disabled</word>
+  <word key="system_seedboxip_access" js="0">Seedbox IP Access is</word>
+  <word key="system_seedboxip_register" js="0">Admin has required Seedbox Registration on all accounts</word>
+  <word key="system_ipaddress_access" js="0">Multiple IP Access is</word>
+  <word key="system_ipaddress_bind" js="0">IP Address Bind is</word>
+  <word key="system_ipaddress_bindforced" js="0">Admin has forced IP Bind connection member live IP must match stored IP</word>
+  <word key="system_ipaddress_bindoptional" js="0">You can choose to force IP Bind your account or not</word>
+  <word key="system_ipaddress_bindenable" js="0">IP address secuirty measure which allows only known IP addresses to connect</word>
+  <word key="system_ipaddress_bindenabled" js="0">Admin has allowed optional IP Bind for members</word>
+  <word key="system_multiip_enabled" js="0">Tracker will accept additional IPs if set for account</word>
+  <word key="system_multiip_disabled" js="0">Tracker will not accept additional IPs</word>
+  <word key="system_multiip_configure" js="0">Tracker Configuration</word>
+  <word key="system_seedbox_register_enabled" js="0">Tracker will register seedbox IPs there may be Admin restrictions</word>
+  <word key="system_seedbox_register_disabled" js="0">Tracker will not register seedbox IPs</word>
+  <word key="head_tracker_overview" js="0">Tracker Overview</word>
+  <word key="head_tracker_torrents" js="0">Torrent Options</word>
+  <word key="head_tracker_announce" js="0">Announce Options</word>
+  <word key="head_tracker_security" js="0">Security Options</word>
+  <word key="head_tracker_torrent_configure" js="0">Configure Tracker Torrents</word>
+  <word key="head_members_options" js="0">Member Options</word>
+  <word key="head_profile_options" js="0">Profile Options</word>
+  <word key="head_about_about" js="0">About DCU Tracker</word>
+  <word key="head_about_version" js="0">DCU Tracker Version Info</word>
+  <word key="head_about_update" js="0">Update DCU Tracker</word>
+  <word key="head_client_options" js="0">Client Options</word>
+  <word key="general_settings" js="0">General Settings</word>
+  <word key="general_client_settings" js="0">General Client Settings</word>
+  <word key="general_files_settings" js="0">General Files Settings</word>
+  <word key="general_member_settings" js="0">General Member Settings</word>
+  <word key="general_profile_settings" js="0">General Profile Settings</word>
+  <word key="advanced_settings" js="0">Advanced Settings</word>
+  <word key="advanced_member_settings" js="0">Advanced Member Settings</word>
+  <word key="advanced_profile_settings" js="0">Advanced Profile Settings</word>
+  <word key="bit_torrents_enable" js="0">Enable Public Trackers?</word>
+  <word key="bit_torrents_enable_desc" js="0">This will enable a public torrent tracker on your system where members can upload torrents with public tracker announce. If you have enabled private announce this feature will be disabled automatically. You can either run a private tracker or a public tracker but not both. If you switch from public tracker to private tracker all public torrents will be disabled and vice-versa.</word>
+  <word key="bit_tracker_filter_option" js="0">Filter Public Trackers</word>
+  <word key="bit_tracker_blacklist" js="0">Disallowed Trackers</word>
+  <word key="bit_tracker_blacklist_desc" js="0">Use * as a wildcard. e.g. 'http://*.example.com/*'</word>
+  <word key="bit_tracker_whitelist" js="0">Allowed Trackers</word>
+  <word key="bit_tracker_whitelist_desc" js="0">Use * as a wildcard. e.g. 'http://*.example.com/*'</word>
+  <word key="bit_none" js="0">Allow all trackers</word>
+  <word key="bit_ip_address2" js="0">Secondary IP Connection</word>
+  <word key="bit_ip_address3" js="0">Tertiary IP Connection</word>
+  <word key="bit_blacklist" js="0">Allow all trackers except the trackers specified</word>
+  <word key="bit_whitelist" js="0">Allow only the trackers specified</word>
+  <word key="bit_filter_black_action" js="0">Blacklisted tracker submission action</word>
+  <word key="bit_filter_white_action" js="0">Whitelisted tracker submission action</word>
+  <word key="bit_filter_any_action" js="0">Public tracker submission action</word>
+  <word key="bit_filter_white_open" js="0">Open</word>
+  <word key="bit_filter_white_open_desc" js="0">Open submissions from whitelisted trackers.</word>
+  <word key="bit_filter_white_moderate" js="0">Moderate</word>
+  <word key="bit_filter_white_moderate_desc" js="0">Moderate submissions from whitelisted trackers.</word>
+  <word key="bit_filter_any_open" js="0">Open</word>
+  <word key="bit_filter_any_open_desc" js="0">Open submissions from public trackers.</word>
+  <word key="bit_filter_any_moderate" js="0">Moderate</word>
+  <word key="bit_filter_any_moderate_desc" js="0">Moderate submissions from public trackers.</word>
+  <word key="bit_filter_block" js="0">Block</word>
+  <word key="bit_filter_block_desc" js="0">Block submissions from blacklisted trackers.</word>
+  <word key="bit_filter_moderate" js="0">Moderate</word>
+  <word key="bit_filter_moderate_desc" js="0">Moderate submissions from blacklisted trackers.</word>
+  <word key="head_tracker_announce_configure" js="0">Configure Tracker Announce</word>
+  <word key="bit_announce_enable" js="0">Enable Private Tracker?</word>
+  <word key="bit_announce_enable_desc" js="0">If disabled you can only host remote public torrent trackers (NOT recommended) on your BitTracker by using the torrent upload and import torrent URL option. If you want to host your own private announce then enable and set the options below. Be sure and check security options as well when using a private announce for optimal security and privacy for your members. If enabled public trackers will be disabled and filter settings ignored.</word>
+  <word key="bit_announce_url" js="0">Announce URL</word>
+  <word key="bit_announce_url_desc" js="0">The above is your announce URL. You should enable perm key option for privacy. Also suggest a SSL/HTTPS only tracker for encryption security.</word>
+  <word key="bit_announce_scrape_interval" js="0">Announce Scrape Interval</word>
+  <word key="bit_announce_scrape_interval_desc" js="0">The time, in minutes, to scrape the announce and update all data on the tracker. Warning setting too low can cause resources issues on large trackers. Default is 20 minutes for optimal performance.</word>
+  <word key="head_tracker_security_configure" js="0">Configure Tracker Security</word>
+  <word key="bit_security_forcessl" js="0">Enable SSL Only Tracker?</word>
+  <word key="bit_security_forcessl_desc" js="0"><![CDATA[This will secure your tracker with SSL encrypted connections. You must have a valid SSL certificate for the domain announce URL. You can install a Free SSL from Lets Encrypt, more details and instructions can be found <a href='https://www.devcu.com/forums/topic/719-let%E2%80%99s-encrypt-ssl-setup/' target='_blank'>here</a>]]></word>
+  <word key="bit_security_permkey" js="0">Enable Passkey Access?</word>
+  <word key="bit_security_permkey_desc" js="0">If enabled this will generate a unique permkey for members to connect to your tracker enhancing its privacy. To further strengthen privacy and security for your members, using our triple secure tracker, use SSL only announce and IP access options available below.</word>
+  <word key="head_tracker_security_ipaccess" js="0">Configure IP Address Access</word>
+  <word key="bit_security_ipenable" js="0">Enable IP Address Rules?</word>
+  <word key="bit_security_ipenable_desc" js="0">When enabled only IP addresses of members located in the database will allow connections. This prevents non members from trying to access tracker. When disabled any IP can connect to the tracker. When used in conjunction with passkey makes your tracker private and secure for your members.</word>
+  <word key="bit_security_ipcount" js="0">IP address connections per member</word>
+  <word key="bit_security_singleip" js="0">Allow access from 1 IP address</word>
+  <word key="bit_security_doubleip" js="0">Allow access from 2 IP addresses</word>
+  <word key="bit_security_tripleip" js="0">Allow access from 3 IP addresses</word>
+  <word key="bit_security_bindip" js="0">Bind member IP to connection IP</word>
+  <word key="bit_security_bindip_desc" js="0">When enabled member can only connect from the IP address in the database. This guarantees only members can connect but has drawbacks for those with constantly changing dynamic IPs.</word>
+  <word key="bit_security_bindip_rule" js="0">Bind IP Rule?</word>
+  <word key="bit_security_bindip_rule_optional" js="0">Optional )Members can Choose</word>
+  <word key="bit_security_bindip_rule_force" js="0">Forced for all Members</word>
+  <word key="head_tracker_security_seedbox" js="0">Configure Seedbox Access</word>
+  <word key="bit_security_seedboxenable" js="0">Enable Seedbox Access?</word>
+  <word key="bit_security_seedboxenable_desc" js="0">Can members with seedboxes access the tracker?</word>
+  <word key="bit_security_seedboxip" js="0">Force member to register seedbox IP?</word>
+  <word key="bit_security_seedboxip_desc" js="0">When using IP address connections per member this must be enbled in order to allow seedbox access. Member will have a setting to enter their seedbox IP into the database in order to secure unique connection to your tracker.</word>
+  <word key="bit_security_filter_option" js="0">Filter Seedbox IPs</word>
+  <word key="bit_security_sbblacklist" js="0">Banned Seedbox IPs</word>
+  <word key="bit_security_sbwhitelist" js="0">Allowed Seedbox IPS</word>
+  <word key="bit_security_none" js="0">Allow all seedbox IPs</word>
+  <word key="bit_security_blacklist" js="0">Allow all seedbox IPs except the IPs specified</word>
+  <word key="bit_security_whitelist" js="0">Allow only the all seedbox IPs specified</word>
+  <word key="bit_member_ipbind" js="0">Bind IP Address?</word>
+  <word key="bit_security_updated" js="0">Security Settings Updated</word>
+  <word key="bit_member_ipbind_desc" js="0">When enabled your connection will bind to the IP address stored, your current/live IP must match to connect. This is beneficial for those with static IPs, those with constantly changing dynamic IPs possibly have IP connection issues</word>
+  <word key="bit_filter_sbblack_action" js="0">Blacklisted seedbox IP action</word>
+  <word key="bit_filter_sbwhite_action" js="0">Whitelisted seedbox IP action</word>
+  <word key="bit_filter_all_action" js="0">Seedbox IP action</word>
+  <word key="bit_filter_sbwhite_open" js="0">Open</word>
+  <word key="bit_filter_sbwhite_open_desc" js="0">Open access from whitelisted seedboxes.</word>
+  <word key="bit_filter_sbwhite_moderate" js="0">Moderate</word>
+  <word key="bit_filter_sbwhite_moderate_desc" js="0">Moderate access from whitelisted seedboxes.</word>
+  <word key="bit_filter_all_open" js="0">Open</word>
+  <word key="bit_filter_all_open_desc" js="0">Open access from public seedboxes.</word>
+  <word key="bit_filter_all_moderate" js="0">Moderate</word>
+  <word key="bit_filter_all_moderate_desc" js="0">Moderate access from public seedboxes.</word>
+  <word key="bit_filter_sbblock" js="0">Block</word>
+  <word key="bit_filter_sbblock_desc" js="0">Block access from blacklisted seedboxes.</word>
+  <word key="bit_filter_sbmoderate" js="0">Moderate</word>
+  <word key="bit_filter_sbmoderate_desc" js="0">Moderate access from blacklisted seedboxes.</word>
+  <word key="file_torrent" js="0">Torrent Download</word>
+  <word key="bitracker_file_container" js="0">category</word>
+  <word key="search_contextual_item_bitracker_categories" js="0">This Category</word>
+  <word key="search_contextual_item_bitracker_file" js="0">This File</word>
+  <word key="bitracker_categories" js="0">Torrent Categories</word>
+  <word key="filestorage__bitracker_Torrents" js="0">Torrents Files</word>
+  <word key="filestorage__bitracker_Nfo" js="0">Torrents NFO</word>
+  <word key="filestorage__bitracker_Screenshots" js="0">Torrents Screenshots</word>
+  <word key="filestorage__bitracker_FileField" js="0">Torrents Custom Fields</word>
+  <word key="bitracker_torrents" js="0">Torrents Files</word>
+  <word key="bitracker_torrent" js="0">Torrent</word>
+  <word key="modlog__action_restorebackup" js="0"><![CDATA[Restored a previous version for a file: <a href='%s'>%s</a>]]></word>
+  <word key="modlog__action_visibilitybackup" js="0"><![CDATA[Toggled visibility for a previous version for a file: <a href='%s'>%s</a>]]></word>
+  <word key="modlog__action_deletebackup" js="0"><![CDATA[Deleted a previous version for a file: <a href='%s'>%s</a>]]></word>
+  <word key="editor__bitracker_Categories" js="0">Torrent Categories</word>
+  <word key="editor__bitracker_Torrents" js="0">File Torrents</word>
+  <word key="editorMedia_bitracker_Torrents" js="0">File Torrents</word>
+  <word key="subcategories" js="0">Subcategories</word>
+  <word key="cname" js="0">Name</word>
+  <word key="cbitoptions_disfiles" js="0">Allow files?</word>
+  <word key="cbitoptions_disfiles_desc" js="0">You may want to disable to use this category as a container for other subcategories.</word>
+  <word key="ctypes" js="0">Allowed file extensions</word>
+  <word key="ctypesnfo" js="0">Allowed NFO file extensions</word>
+  <word key="cparent" js="0">Parent Category</word>
+  <word key="any_extensions" js="0">any extensions</word>
+  <word key="cmaxfile" js="0">Maximum file size</word>
+  <word key="ccfields" js="0">Extra fields</word>
+  <word key="category_screenshots" js="0">Screenshots</word>
+  <word key="cbitoptions_allowss" js="0">Allow screenshots?</word>
+  <word key="cbitoptions_allowss_desc" js="0">Images can be submitted with files to provide screenshots or other accompanying images to show in the file listing.</word>
+  <word key="cbitoptions_reqss" js="0">Require screenshots?</word>
+  <word key="cmaxss" js="0">Maximum screenshot filesize</word>
+  <word key="cmaxdims" js="0">Maximum screenshot dimensions</word>
+  <word key="category_nfo" js="0">NFO</word>
+  <word key="cbitoptions_allownfo" js="0">Allow NFO?</word>
+  <word key="cbitoptions_allownfo_desc" js="0">NFO file can be submitted with files to provide information to show in the file listing.</word>
+  <word key="cbitoptions_reqnfo" js="0">Require NFO?</word>
+  <word key="cmaxnfo" js="0">Maximum NFO filesize</word>
+  <word key="category_display" js="0">Category Display</word>
+  <word key="csortorder" js="0">Default sort order</word>
+  <word key="cbitoptions_comments" js="0">Allow comments?</word>
+  <word key="cbitoptions_reviews" js="0">Allow reviews?</word>
+  <word key="cbitoptions_reviews_mod" js="0">Reviews must be approved?</word>
+  <word key="cbitoptions_reviews_bitrack" js="0">Users must download before reviewing?</word>
+  <word key="cbitoptions_reviews_bitrack_desc" js="0">Requires download log to be on.</word>
+  <word key="cdisclaimer" js="0">Torrent Terms</word>
+  <word key="cdisclaimer_placeholder" js="0">Before downloading you must agree to the following terms...</word>
+  <word key="category_errors" js="0">Error Messages</word>
+  <word key="category_errors_blurb" js="0">You can define specific error messages to use within this category. If not provided, a generic error message will be used.</word>
+  <word key="noperm_view" js="0">Cannot view files</word>
+  <word key="noperm_view_placeholder" js="0">Add an error message...</word>
+  <word key="noperm_dl" js="0">Cannot download</word>
+  <word key="noperm_dl_placeholder" js="0">Add an error message...</word>
+  <word key="perm_file_perm__label" js="0"></word>
+  <word key="perm_file_perm__view" js="0">See Category</word>
+  <word key="perm_file_perm__read" js="0">View Torrents</word>
+  <word key="perm_file_perm__add" js="0">Upload Torrents</word>
+  <word key="perm_file_perm__download" js="0">Download Torrents</word>
+  <word key="perm_file_perm__comment" js="0">Comment</word>
+  <word key="perm_file_perm__rate" js="0">Rate Torrents</word>
+  <word key="perm_file_perm__reply" js="0">Comment</word>
+  <word key="perm_file_perm__review" js="0">Review Torrents</word>
+  <word key="cbitoptions_moderation" js="0">Torrents must be approved?</word>
+  <word key="cbitoptions_moderation_edits" js="0">New versions must be re-approved?</word>
+  <word key="cbitoptions_show_approver" js="0">Show who approved the torrent?</word>
+  <word key="cbitoptions_show_approver_desc" js="0">Other staff members are always able to see this information.</word>
+  <word key="cbitoptions_comment_moderation" js="0">Comments must be approved?</word>
+  <word key="cversioning_on" js="0">Keep previous versions?</word>
+  <word key="cversioning_on_desc" js="0">If enabled, when a new version of a file is uploaded, the previous version is stored and remains available.</word>
+  <word key="cversioning" js="0">Number of revisions to keep</word>
+  <word key="category_moderation" js="0">Moderation</word>
+  <word key="category_downloading" js="0">Downloading</word>
+  <word key="category_comments_and_reviews" js="0">Comments</word>
+  <word key="category_logs" js="0">Logs</word>
+  <word key="clog_on" js="0">Log downloads?</word>
+  <word key="clog" js="0">Keep logs for</word>
+  <word key="clog_recount" js="0">Recalculate Download Counts</word>
+  <word key="clog_recount_desc" js="0">This will reset the number of downloads for each file in this category to the number of records currently in the log. If you have updated the log settings, you will need to save them before running this tool. This action is irreversible.</word>
+  <word key="clog_recount_done" js="0">Counts Recalculated</word>
+  <word key="r__categories_recount_bitracker" js="0">Can recalculate download counts?</word>
+  <word key="cbitoptions_submitter_log" js="0">Allow file submitter to view log?</word>
+  <word key="cbitoptions_submitter_log_desc" js="0">You can also control which members can view the log from the group settings.</word>
+  <word key="category_submissions" js="0">Submissions</word>
+  <word key="category_allowed_files" js="0">Allowed Files</word>
+  <word key="category_versioning" js="0">Versioning</word>
+  <word key="csubmissionterms" js="0">Submission Terms</word>
+  <word key="csubmissionterms_placeholder" js="0">By submitting a file you agree to the following terms:</word>
+  <word key="file_cat" js="0">Category</word>
+  <word key="file_ipaddress" js="0">IP Address</word>
+  <word key="log_days" js="0">The log is pruned after {# [1:day][?:days]}</word>
+  <word key="category_forums_integration" js="0">Forum Topics</word>
+  <word key="cforum_on" js="0">Post a topic when a file is submitted?</word>
+  <word key="cforum_id" js="0">Forum</word>
+  <word key="ctopic_prefix" js="0">Topic prefix</word>
+  <word key="ctopic_suffix" js="0">Topic suffix</word>
+  <word key="cbitoptions_topic_delete" js="0">Delete topic if file is deleted?</word>
+  <word key="cbitoptions_topic_screenshot" js="0">Include screenshot in topic?</word>
+  <word key="node_no_parentd" js="0">No Parent</word>
+  <word key="view_all_files" js="0">View All Files</word>
+  <word key="modperms__core_Content_bitracker_File" js="0">Torrents</word>
+  <word key="download_categories" js="0">Categories</word>
+  <word key="can_pin_bitracker_file" js="0">Can pin files?</word>
+  <word key="can_unpin_bitracker_file" js="0">Can unpin files?</word>
+  <word key="can_feature_bitracker_file" js="0">Can feature files?</word>
+  <word key="can_unfeature_bitracker_file" js="0">Can unfeature files?</word>
+  <word key="can_move_bitracker_file" js="0">Can move files?</word>
+  <word key="can_move_bitracker_file_desc" js="0">Will be able to move files only between the categories they can create new content within.</word>
+  <word key="can_lock_bitracker_file" js="0">Can lock files?</word>
+  <word key="can_unlock_bitracker_file" js="0">Can unlock files?</word>
+  <word key="can_reply_to_locked_bitracker_file" js="0">Can comment on locked files?</word>
+  <word key="can_edit_bitracker_file" js="0">Can edit files?</word>
+  <word key="can_hide_bitracker_file" js="0">Can hide files?</word>
+  <word key="can_unhide_bitracker_file" js="0">Can unhide files?</word>
+  <word key="can_view_hidden_bitracker_file" js="0">Can view hidden files?</word>
+  <word key="can_delete_bitracker_file" js="0">Can delete files?</word>
+  <word key="can_edit_bitracker_file_comment" js="0">Can edit comments?</word>
+  <word key="can_hide_bitracker_file_comment" js="0">Can hide comments?</word>
+  <word key="can_unhide_bitracker_file_comment" js="0">Can unhide comments?</word>
+  <word key="can_view_hidden_bitracker_file_comment" js="0">Can view hidden comments?</word>
+  <word key="can_delete_bitracker_file_comment" js="0">Can delete comments?</word>
+  <word key="can_edit_bitracker_file_review" js="0">Can edit reviews?</word>
+  <word key="can_hide_bitracker_file_review" js="0">Can hide reviews?</word>
+  <word key="can_unhide_bitracker_file_review" js="0">Can unhide reviews?</word>
+  <word key="can_view_hidden_bitracker_file_review" js="0">Can view hidden reviews?</word>
+  <word key="can_delete_bitracker_file_review" js="0">Can delete reviews?</word>
+  <word key="can_feature_comments_bitracker_file" js="0">Can recommend comments on a file?</word>
+  <word key="can_unfeature_comments_bitracker_file" js="0">Can remove comment recommendations on a file?</word>
+  <word key="can_add_item_message_bitracker_file" js="0">Can add messages to files?</word>
+  <word key="can_edit_item_message_bitracker_file" js="0">Can edit messages on files?</word>
+  <word key="can_delete_item_message_bitracker_file" js="0">Can delete messages on files?</word>
+  <word key="cf_topic" js="0">Include field in topics?</word>
+  <word key="acplogs__bitracker_settings" js="0">Updated bitracker settings</word>
+  <word key="group__bitracker_Bitracker" js="0">Torrents</word>
+  <word key="content_stats__bitracker_Bitracker" js="0">Torrents</word>
+  <word key="member__bitracker_Bitracker" js="0">Torrents</word>
+  <word key="rss_bitracker" js="0">RSS Feed</word>
+  <word key="bit_rss" js="0">Enable Latest Files RSS feed?</word>
+  <word key="bit_rss_desc" js="0"><![CDATA[Only content that is available to guests will be shown. For more options, create a <a href='{internal.app=core&module=discovery&controller=rss}'>Custom RSS Feed</a>]]></word>
+  <word key="bit_link_blacklist" js="0">URL Submissions Blacklist</word>
+  <word key="bit_link_blacklist_desc" js="0">Users that are allowed to make URL submissions will not be able to use URLs from the specified domains.</word>
+  <word key="bit_antileech" js="0">Prevent direct linking?</word>
+  <word key="bit_antileech_desc" js="0">If enabled, users will not be able to obtain a URL which directly downloads a file; users will always have to go through the file's page.</word>
+  <word key="bit_watermarkpath" js="0">Screenshot watermark</word>
+  <word key="bit_watermarkpath_desc" js="0"><![CDATA[The image provided will be overlaid on all screenshot images (for example, to show a copyright message). For best results, use a small image with a transparent background.<br><br><a href='{internal.app=bitracker&module=settings&controller=general&do=rebuildWatermarks}'>Rebuild Existing Screenshots</a>]]></word>
+  <word key="acplogs__bitracker_recount_torrents" js="0">Recounted downloads for category: %s</word>
+  <word key="bit_view_approvers" js="0">Can view who approved torrents?</word>
+  <word key="bit_bypass_revision" js="0">Can manage torrent versions?</word>
+  <word key="bit_view_bitracker" js="0">Can view who downloaded torrent?</word>
+  <word key="bit_view_bitracker_desc" js="0">Note that the download log can be disabled per-category and cleared periodically.</word>
+  <word key="bit_view_table_categories" js="0">Display Categories</word>
+  <word key="bit_view_table_categories_desc" js="0">Select which categories to display on index.</word>
+  <word key="bit_view_table_torrents" js="0">Torrents Per Category</word>
+  <word key="bit_view_table_torrents_desc" js="0">The number of torrents diplayed per category on index.</word>
+  <word key="bit_throttling" js="0">Maximum Download Speed</word>
+  <word key="bit_throttling_suffix" js="0">kB/second</word>
+  <word key="bit_throttling_desc" js="0"><![CDATA[This will <em>throttle</em> torrents to the maximum speed set. If set too low, this may cause your server to time out and the download to fail.]]></word>
+  <word key="bit_throttling_unlimited" js="0">No restriction</word>
+  <word key="bit_wait_period" js="0">Time user must wait before download starts</word>
+  <word key="bit_bypass_revision_desc" js="0"><![CDATA[When an author uploads a new version of a file within a category that has versioning enabled, the previous version is stored and is available for download. When this setting is enabled, the user will be given the option to not store the previous version when uploading a new version, and will be able to restore, hide and delete their previous versions.<br>The user needs permission to edit the file.]]></word>
+  <word key="limit_sim" js="0">Maximum simultaneous torrents</word>
+  <word key="min_posts" js="0">Posts required to download</word>
+  <word key="download_min_posts" js="0">You may only download files after you have made {# [1:post][?:posts]}.</word>
+  <word key="daily_bw" js="0">Maximum bandwidth usage per day</word>
+  <word key="weekly_bw" js="0">Maximum bandwidth usage per week</word>
+  <word key="monthly_bw" js="0">Maximum bandwidth usage per month</word>
+  <word key="kb_per_day" js="0">kB/day</word>
+  <word key="kb_per_week" js="0">kB/week</word>
+  <word key="kb_per_month" js="0">kB/month</word>
+  <word key="daily_dl" js="0">Maximum torrents per day</word>
+  <word key="weekly_dl" js="0">Maximum torrents per week</word>
+  <word key="monthly_dl" js="0">Maximum torrents per month</word>
+  <word key="bitracker_requires_log" js="0">These settings rely on the download log which can be disabled per-category and cleared periodically. If using these settings, it is recommended that you leave the log turned on and set not to clear otherwise you may experience unexpected behavior.</word>
+  <word key="torrent_management" js="0">Torrent Management</word>
+  <word key="access_restrictions" js="0">Access Restrictions</word>
+  <word key="bandwidth_limits" js="0">Bandwidth Limits</word>
+  <word key="torrent_limits" js="0">Torrent Limits</word>
+  <word key="bitracker_per_day" js="0">torrents/day</word>
+  <word key="bitracker_per_week" js="0">torrents/week</word>
+  <word key="bitracker_per_month" js="0">torrents/month</word>
+  <word key="submission_permissions" js="0">Submission Permissions</word>
+  <word key="bit_linked_torrents" js="0">Can submit torrent URLs?</word>
+  <word key="bit_import_torrents" js="0">Can import torrents from the filesystem?</word>
+  <word key="bit_import_torrents_desc" js="0">When enabled, users will be able to import files located on your server. You should only enable this for staff groups where all the users are trusted.</word>
+  <word key="bit_bulk_submit" js="0">Can submit multiple torrents at once?</word>
+  <word key="bit_screenshot_for" js="0">Screenshot for %s</word>
+  <word key="rss_offline" js="0">This RSS feed is disabled</word>
+  <word key="rss_offline_admin" js="0"><![CDATA[The Bitracker option &quot;Enable Latest Files RSS feed&quot; is currently disabled. Toggle this option to yes in the admin control panel to enable the latest files RSS feed.]]></word>
+  <word key="submit_a_file" js="0">Submit a file</word>
+  <word key="submit_single_file" js="0">Submit single file</word>
+  <word key="submit_multiple_files" js="0">Submit multiple files</word>
+  <word key="submit_first_file" js="0">Submit the first file</word>
+  <word key="write_review" js="0">Write a review</word>
+  <word key="file_auto_follow" js="0"></word>
+  <word key="file_auto_follow_suffix" js="0">Notify me when other comments are posted</word>
+  <word key="file" js="0">File</word>
+  <word key="upload_files" js="0">Upload Your Files</word>
+  <word key="dl_get_support" js="0">Get Support</word>
+  <word key="dl_get_support_title" js="0">Get support for this download</word>
+  <word key="file_information" js="0">Torrent Information</word>
+  <word key="url_files" js="0">Linked Torrents</word>
+  <word key="url_files_no_perm" js="0">This torrent has a linked file, but you are no longer permitted to edit it. Please contact an administrator if you need to change it.</word>
+  <word key="import_files" js="0">Import Torrents</word>
+  <word key="url_nfo" js="0">Linked NFO</word>
+  <word key="screenshots" js="0">Screenshots</word>
+  <word key="screenshots_ct" js="0">{# [1:Screenshot][?:Screenshots]}</word>
+  <word key="url_screenshots" js="0">Linked Screenshots</word>
+  <word key="file_title" js="0">File Name</word>
+  <word key="file_submitter" js="0">Submitter</word>
+  <word key="file_submitted" js="0">Submitted</word>
+  <word key="view_file" js="0">View File</word>
+  <word key="version" js="0">Version</word>
+  <word key="file_version" js="0">Version number</word>
+  <word key="file_tags" js="0">Tags</word>
+  <word key="file_changelog" js="0">What's New</word>
+  <word key="new_version_details" js="0">New Version Details</word>
+  <word key="with_version" js="0">With version %s:</word>
+  <word key="file_desc" js="0">About This File</word>
+  <word key="bit_file_desc" js="0">About This Torrent</word>
+  <word key="file_primary_screenshot" js="0">Primary Screenshot</word>
+  <word key="file_primary_screenshot_desc" js="0">The primary screenshot is used in category listings.</word>
+  <word key="download_now" js="0">Download this file</word>
+  <word key="file_view_details" js="0">View file</word>
+  <word key="bit_downloads" js="0">Downloads</word>
+  <word key="x_downloads" js="0">{# [1:download][?:downloads]}</word>
+  <word key="bit_purchases" js="0">Purchases</word>
+  <word key="x_purchases" js="0">{# [1:purchase][?:purchases]}</word>
+  <word key="num_bitracker" js="0">{# [1:download][?:downloads]}</word>
+  <word key="files_no_number" js="0">{!# [1:file][?:files]}</word>
+  <word key="bitracker_file_comment" js="0">File Comment</word>
+  <word key="bitracker_file_review" js="0">File Review</word>
+  <word key="bitracker_file_pl" js="0">Files</word>
+  <word key="bitracker_file_pl_lc" js="0">files</word>
+  <word key="bitracker_file_comment_pl" js="0">File Comments</word>
+  <word key="bitracker_file_comment_pl_lc" js="0">file comments</word>
+  <word key="bitracker_file_review_pl" js="0">File Reviews</word>
+  <word key="bitracker_file_review_pl_lc" js="0">file reviews</word>
+  <word key="bitracker_category_select" js="0">Category:</word>
+  <word key="report_file" js="0">Report this file</word>
+  <word key="file_review_count" js="0">{# [1:Review][?:Reviews]}</word>
+  <word key="file_comment_count" js="0">{# [1:Comment][?:Comments]}</word>
+  <word key="subcategory" js="0">Sub Category</word>
+  <word key="download_no_perm" js="0">You are not allowed to download that file.</word>
+  <word key="add_files_no_perm" js="0">You are not allowed to upload files to this category.</word>
+  <word key="new_version_versioning" js="0">The previous version will be archived and users will still be able to download it.</word>
+  <word key="file_save_revision" js="0">Save Previous Version?</word>
+  <word key="bitracker_edit_details" js="0">Edit Details</word>
+  <word key="bitracker_edit_details_title" js="0">Edit this file's details</word>
+  <word key="file__comment_placeholder" js="0">Add a comment...</word>
+  <word key="file_submit_comment" js="0">Submit Comment</word>
+  <word key="whats_new_in_version" js="0"><![CDATA[What's New in Version <span data-role='versionTitle'>%s</span>]]></word>
+  <word key="see_changelog" js="0">See changelog</word>
+  <word key="see_changelog_for" js="0">See changelog for version %s</word>
+  <word key="see_changelog_title" js="0">See the version history for this file</word>
+  <word key="view_downloader_list" js="0">View list of downloaders</word>
+  <word key="who_downloaded" js="0">Who downloaded this?</word>
+  <word key="downloaders" js="0">Downloaders</word>
+  <word key="download_your_files" js="0">Download your files</word>
+  <word key="download_terms" js="0">Download Terms</word>
+  <word key="download_terms_desc" js="0">Your file is ready for download. Before downloading, you must agree to the following terms:</word>
+  <word key="bitrack_file_count" js="0">{# [1:file][?:files]}</word>
+  <word key="agree_and_download" js="0"><![CDATA[Agree &amp; Download]]></word>
+  <word key="cancel_downloading" js="0">Cancel download</word>
+  <word key="agree_and_download_full" js="0">Agree to the terms above and download file</word>
+  <word key="download_version" js="0">Download</word>
+  <word key="restore_version" js="0">Restore</word>
+  <word key="delete_version" js="0">Delete</word>
+  <word key="hide_version" js="0">Hide from members</word>
+  <word key="filesize" js="0">File Size</word>
+  <word key="file_pending_approval" js="0">This file is not yet approved and is only visible to staff.</word>
+  <word key="file_approved_by" js="0">(approved by %s, %s)</word>
+  <word key="torrent_requires_approval_g" js="0">The file you submitted must be approved by a staff member before it will be visible</word>
+  <word key="file_no_changelog" js="0">No changelog available for this version.</word>
+  <word key="file_version_released" js="0">Released %s</word>
+  <word key="restore" js="0">Restore</word>
+  <word key="hide_from_members" js="0">Hide from members</word>
+  <word key="unhide_from_members" js="0">Unhide from members</word>
+  <word key="version_restore_confirm" js="0">Are you sure you want to restore version %s?</word>
+  <word key="version_delete_confirm" js="0">Are you sure you want to delete version %s?</word>
+  <word key="bit_rss_title" js="0">Latest Files</word>
+  <word key="wait_x_seconds_noscript" js="0">Wait {# [1:second][?:seconds]}, then click Download again</word>
+  <word key="download_begins_in" js="0">Download begins in </word>
+  <word key="file_actions" js="0">File Actions</word>
+  <word key="max_simultaneous_bitracker" js="0">You may only download {# [1:file][?:files]} at a time. Wait until {!# [1:your other download has][?:some of your other torrents have]} finished, then try again.</word>
+  <word key="bandwidth_limit_daily" js="0">You may only download %s per day. You will be able to download this file after %s.</word>
+  <word key="bandwidth_limit_week" js="0">You may only download %s per week. You will be able to download this file after %s.</word>
+  <word key="bandwidth_limit_month" js="0">You may only download %s per month. The file you are trying to download is %s which is above your limit.</word>
+  <word key="bandwidth_limit_daily_never" js="0">You may only download %s per day. The file you are trying to download is %s which is above your limit.</word>
+  <word key="bandwidth_limit_weekly" js="0">You may only download %s per week. The file you are trying to download is %s which is above your limit.</word>
+  <word key="download_limit_daily" js="0">You may only download {# [1:file][?:files]} per day. You will be able to download this file after %s.</word>
+  <word key="download_limit_weekly" js="0">You may only download {# [1:file][?:files]} per week. You will be able to download this file after %s.</word>
+  <word key="download_limit_monthly" js="0">You may only download {# [1:file][?:files]} per month. You will be able to download this file after %s.</word>
+  <word key="file_rating_value" js="0">Your rating</word>
+  <word key="file_review_text" js="0">Your review</word>
+  <word key="file__review_placeholder" js="0">Add a review...</word>
+  <word key="err_no_torrents" js="0">You must upload or link to at least one torrent.</word>
+  <word key="err_no_screenshots" js="0">You must upload or link to at least one screenshot.</word>
+  <word key="err_url_file_blacklist" js="0">URLs from %s are not allowed.</word>
+  <word key="err_import_files" js="0">The file %s does not exist or is not readable.</word>
+  <word key="err_import_files_dir" js="0">%s is a directory. You must specify the path to a file.</word>
+  <word key="change_author_d" js="0">Change Author</word>
+  <word key="change_author_title" js="0">Change the member who owns this file</word>
+  <word key="err_submissions_blocked" js="0">You have been blocked from submitting files.</word>
+  <word key="upload_new_version_title" js="0">Upload a new version of this file</word>
+  <word key="feature_title_file" js="0">Feature this file</word>
+  <word key="unfeature_title_file" js="0">Unfeature this file</word>
+  <word key="pin_title_file" js="0">Pin this file</word>
+  <word key="unpin_title_file" js="0">Unpin this file</word>
+  <word key="hide_title_file" js="0">Hide this file</word>
+  <word key="unhide_title_file" js="0">Unhide this file</word>
+  <word key="approve_title_file" js="0">Approve this file</word>
+  <word key="lock_title_file" js="0">Lock this file</word>
+  <word key="unlock_title_file" js="0">Unlock this file</word>
+  <word key="bitracker_move_title" js="0">Move this file to another category</word>
+  <word key="bitracker_delete_title" js="0">Delete this file from the community</word>
+  <word key="find_users_files" js="0">Find their other files</word>
+  <word key="file_versioning_info" js="0"></word>
+  <word key="file_versioning_info_text" js="0">Click here if you would like to upload a new version of the file or screenshot</word>
+  <word key="browse_whats_new" js="0">What's New</word>
+  <word key="browse_highest_rated" js="0">Highest Rated</word>
+  <word key="browse_most_downloaded" js="0">Most Downloaded</word>
+  <word key="no_new_files" js="0">There have been no uploaded files yet.</word>
+  <word key="no_rated_files" js="0">No files have been rated yet.</word>
+  <word key="no_downloaded_files__week" js="0">No files have been downloaded yet this week.</word>
+  <word key="no_downloaded_files__month" js="0">No files have been downloaded yet this month.</word>
+  <word key="no_downloaded_files__year" js="0">No files have been downloaded yet this year.</word>
+  <word key="no_downloaded_files" js="0">No files have been downloaded yet.</word>
+  <word key="no_download_review" js="0">You may only provide a review once you have downloaded the file.</word>
+  <word key="index_discover" js="0">Discover</word>
+  <word key="index_explore" js="0">Explore Categories</word>
+  <word key="browse_categories_d" js="0">Browse Categories</word>
+  <word key="no_torrents_in_cat" js="0">No torrents in this category yet.</word>
+  <word key="submit_form_title" js="0">Adding New Torrent</word>
+  <word key="submit_form_title_bulk" js="0">Adding New Torrents</word>
+  <word key="bit_submit_form_desc" js="0"><![CDATA[Adding a torrent to <em>%s</em>]]></word>
+  <word key="bit_submit_form_desc_bulk" js="0"><![CDATA[Adding torrents to <em>%s</em>]]></word>
+  <word key="select_your_files" js="0">Select your files</word>
+  <word key="add_torrents_by_url" js="0">Add torrents by URL</word>
+  <word key="add_torrents_by_path" js="0">Add torrents from server path</word>
+  <word key="add_nfo_by_url" js="0">Add NFO by URL</word>
+  <word key="add_nfo" js="0">Add NFO</word>
+  <word key="submit_menu_confirm" js="0">Confirm</word>
+  <word key="add_screenshots" js="0">Add screenshots</word>
+  <word key="add_screenshots_by_url" js="0">Add screenshots by URL</word>
+  <word key="submit_file_information" js="0">File Information</word>
+  <word key="save_and_submit_files" js="0"><![CDATA[Save &amp; Submit Files]]></word>
+  <word key="submit_bulk_information" js="0">Enter File Information</word>
+  <word key="bulk_upload_button" js="0">I want to add multiple records at once</word>
+  <word key="upload_more_files" js="0">Upload more files</word>
+  <word key="featured_bitracker" js="0">Featured Torrents</word>
+  <word key="next_file" js="0">Next File</word>
+  <word key="prev_file" js="0">Previous File</word>
+  <word key="bitracker_category_id" js="0">Category</word>
+  <word key="announce_download_categories" js="0">Categories</word>
+  <word key="view_this_file" js="0">View the file %s</word>
+  <word key="file_locked_can_comment" js="0">This file is locked, but your permissions allow you to add new comments.</word>
+  <word key="file_locked_cannot_comment" js="0">This file is now closed to further comments.</word>
+  <word key="file__save" js="0">Save</word>
+  <word key="bitracker_no_file" js="0">File not found</word>
+  <word key="download_teaser" js="0">Create an account or sign in to download this</word>
+  <word key="bitracker_file_info" js="0">Downloads</word>
+  <word key="sort_file_bitracker" js="0">Most Downloaded</word>
+  <word key="block_bitracker_Overview" js="0">Torrents Overview</word>
+  <word key="total_disk_transfer" js="0">Total Transfer</word>
+  <word key="total_torrents" js="0">Total Torrents</word>
+  <word key="total_peers" js="0">Total Peers</word>
+  <word key="total_seeds" js="0">Total Seeds</word>
+  <word key="total_leetches" js="0">Total Leetches</word>
+  <word key="total_bitracker" js="0">Total Downloads *</word>
+  <word key="total_bandwidth" js="0">Total Bandwidth Used *</word>
+  <word key="current_month_bandwidth" js="0">Bandwidth Used This Month *</word>
+  <word key="largest_file" js="0">Largest File</word>
+  <word key="most_viewed_file" js="0">Most Viewed File</word>
+  <word key="most_downloaded_file" js="0">Most Downloaded Torrent</word>
+  <word key="total_files_front" js="0">Files</word>
+  <word key="total_authors" js="0">Authors</word>
+  <word key="latest_file" js="0">Latest File</word>
+  <word key="latest_submitter" js="0">Latest Submitter</word>
+  <word key="top_week" js="0">Week</word>
+  <word key="top_month" js="0">Month</word>
+  <word key="top_year" js="0">Year</word>
+  <word key="top_alltime" js="0">All</word>
+  <word key="top_avg_rating" js="0">Average file rating</word>
+  <word key="top_submitters_empty__week" js="0">No top submitters this week.</word>
+  <word key="top_submitters_empty__month" js="0">No top submitters this month.</word>
+  <word key="top_submitters_empty__year" js="0">No top submitters this year.</word>
+  <word key="top_submitters_empty__all" js="0">No top submitters.</word>
+  <word key="bit_access_tracker" js="0">Can access tracker?</word>
+  <word key="bit_access_tracker_desc" js="0">If enabled user is banned from using the Tracker Application.</word>
+  <word key="err_access_blocked" js="0">You have been banned from accessing the tracker.</word>
+  <word key="bit_block_submissions" js="0">Allowed to submit torrents?</word>
+  <word key="bit_block_submissions_desc" js="0">If this is disabled, the user will not be able to submit any torrents. If enabled, per-category settings will be honored.</word>
+  <word key="bitracker_stats" js="0">View Torrent Statistics</word>
+  <word key="submissions" js="0">{# [1:submission][?:submissions]}</word>
+  <word key="deleted_file" js="0">Deleted File</word>
+  <word key="dmid" js="0">Member</word>
+  <word key="dfid" js="0">File</word>
+  <word key="dtime" js="0">Date/Time</word>
+  <word key="dsize" js="0">Filesize</word>
+  <word key="dua" js="0">Browser</word>
+  <word key="dip" js="0">IP Address</word>
+  <word key="member_bitracker_chart" js="0">%s's Torrents</word>
+  <word key="bandwidth_use" js="0">Bandwidth Use</word>
+  <word key="files_submitted" js="0">Files Submitted</word>
+  <word key="diskspace_used" js="0">Diskspace Used</word>
+  <word key="average_filesize_bitracker" js="0">Average Filesize</word>
+  <word key="number_of_bitracker" js="0">Number of Torrents *</word>
+  <word key="bitracker_bandwidth_used" js="0">Bandwidth Used *</word>
+  <word key="bitracker_stat_of_total" js="0">%s (%d%% of total)</word>
+  <word key="bitracker_stat_of_total_link" js="0">%s (%d%% of total) %s</word>
+  <word key="bitracker_stat_average" js="0">%s (average for all users: %s)</word>
+  <word key="bitracker_stat_average_of_total" js="0">%d% of total; average for all users: %d</word>
+  <word key="download_stats_disclaimer" js="0">* This statistic comes from the download log which may be disabled on a per-category basis or set to be pruned periodically.</word>
+  <word key="download_graph_disclaimer" js="0">This data comes from the download log which may be disabled on a per-category basis or set to be pruned periodically.</word>
+  <word key="menu__bitracker_stats_torrents" js="0">Torrents</word>
+  <word key="r__bitracker" js="0">Torrent Statistics</word>
+  <word key="r__torrents_manage" js="0">Can view torrent stats?</word>
+  <word key="r__peers_manage" js="0">Can view peers stats?</word>
+  <word key="r__network_manage" js="0">Can view network stats?</word>
+  <word key="r__member_manage" js="0">Can view member stats?</word>
+  <word key="r__submitters_manage" js="0">Can view submission stats?</word>
+  <word key="ipAddresses__bitracker_DownloadLog" js="0">Torrents</word>
+  <word key="block_fileFeed" js="0">Files Feed</word>
+  <word key="block_fileFeed_desc" js="0">Create a feed of files</word>
+  <word key="widget_feed_container_bitracker_file" js="0">Categories</word>
+  <word key="block_topSubmitters" js="0">Top Submitters</word>
+  <word key="block_topSubmitters_desc" js="0">Shows top submitters</word>
+  <word key="block_bitrackerStats" js="0">Tracker Statistics</word>
+  <word key="block_bitrackerStats_desc" js="0">Shows bitracker application statistics</word>
+  <word key="block_bitrackerPeers" js="0">Peers Statistics</word>
+  <word key="block_bitrackerPeers_desc" js="0">Shows bitracker peers statistics</word>
+  <word key="block_topTorrents" js="0">Top Torrents</word>
+  <word key="block_topTorrents_desc" js="0">Shows most popular downloaded files</word>
+  <word key="block_recentFiles" js="0">Recent Files</word>
+  <word key="block_recentFiles_desc" js="0">Shows recent files</word>
+  <word key="loc_bitracker_viewing_file" js="0">Viewing File: %s</word>
+  <word key="loc_bitracker_viewing_category" js="0">Viewing Category: %s</word>
+  <word key="loc_bitracker_browsing_categories" js="0">Browsing Torrents categories</word>
+  <word key="loc_bitracker_adding_file" js="0">Adding a file</word>
+  <word key="loc_bitracker_browsing" js="0">Viewing Torrents</word>
+  <word key="acp_search_title_bitracker_Torrents" js="0">Torrents Categories</word>
+  <word key="bitracker_categories_pagetitle" js="0">Torrents Categories</word>
+  <word key="task__bitlogCleanup" js="0">Prunes the download log.</word>
+  <word key="task__bitFileCleanup" js="0">Removes temporary file uploads.</word>
+  <word key="digest_area_bitracker_category" js="0">Files</word>
+  <word key="digest_area_bitracker_file" js="0">File</word>
+  <word key="x_created_file_in" js="0">%s uploaded a file to %s</word>
+  <word key="x_commented_file" js="0">%s commented on a file</word>
+  <word key="x_reviewed_file" js="0">%s reviewed a file</word>
+  <word key="paid_file_settings" js="0">Paid Files Settings</word>
+  <word key="bit_nexus_on" js="0">Enable Paid Files?</word>
+  <word key="bit_nexus_on_desc" js="0"><![CDATA[If enabled, users who have permission will be able to submit files which must be paid for in order to download.<br>You can control which groups can submit paid files from the <a href='{internal.app=core&module=members&controller=groups}'>Groups</a> page.<br>When someone purchases a paid file, the money will be added to the file submitter's account credit. You can control how users can withdraw account credit from the <a href='{internal.app=nexus&module=payments&controller=payouts&do=settings}'>Withdrawals</a> page.]]></word>
+  <word key="bit_nexus_tax" js="0">Tax Class for Paid Files</word>
+  <word key="bit_nexus_percent" js="0">Commission for Site</word>
+  <word key="bit_nexus_percent_desc" js="0">The percentage specified will be deducted from the amount given to the file submitter. For example, if you set this to 10% and someone buys a file for $10, the submitter will be given $9 and $1 will be kept for the site.</word>
+  <word key="bit_nexus_transfee" js="0">Transaction Fee for Site</word>
+  <word key="bit_nexus_transfee_desc" js="0">The amount specified will be deducted from the amount given to the file submitter. For example, if you set this to $1 and someone buys a file for $10, the submitter will be given $9 and $1 will be kept for the site.</word>
+  <word key="bit_nexus_gateways" js="0">Payment Methods</word>
+  <word key="bit_nexus_display" js="0">Statistics to Display</word>
+  <word key="bit_nexus_display_desc" js="0">Unpaid files will always show the number of downloads.</word>
+  <word key="bit_nexus_gateways_desc" js="0">Customers will only be able to pay for this product and renewals with the payment methods selected.</word>
+  <word key="bit_add_paid" js="0">Can charge for files?</word>
+  <word key="bit_add_paid_enable" js="0"><![CDATA[In order to allow users to charge for files you must <a href='{internal.app=bitracker&module=settings&controller=general}'>enable paid files</a>.]]></word>
+  <word key="bit_bypass_paid" js="0">Can download paid files without paying?</word>
+  <word key="file_cost_type" js="0">Type</word>
+  <word key="file_free" js="0">Free</word>
+  <word key="file_free_feed" js="0">Free</word>
+  <word key="file_paid" js="0">Paid</word>
+  <word key="file_associate_nexus" js="0">Associate with product(s)</word>
+  <word key="file_associate_nexus_desc" js="0">Users who have an active purchase of one of the selected products will be able to download this file.</word>
+  <word key="file_cost" js="0">Price</word>
+  <word key="file_renewals" js="0">Renewals</word>
+  <word key="file_renewals_off" js="0">No renewals - once a user has purchased this file they will be able to download all future versions.</word>
+  <word key="file_renewals_on" js="0">I will specify renewal terms. Users must have paid the renewal fee in order to download the current version.</word>
+  <word key="file_renewal_term" js="0">Renewal Term</word>
+  <word key="file_renewal_term_desc" js="0">Once the file is saved, renewal terms cannot be edited.</word>
+  <word key="file_nexus" js="0">Associated Products</word>
+  <word key="file_not_purchased" js="0">You have not purchased this file or your purchase has expired.</word>
+  <word key="buy_now" js="0">Buy Now</word>
+  <word key="file_cost_desc_both" js="0">%s%% commission, plus a %s transaction fee will be deducted.</word>
+  <word key="file_cost_desc_percent" js="0">%s%% commission will be deducted.</word>
+  <word key="file_cost_desc_fee" js="0">A %s transaction fee will be deducted.</word>
+  <word key="file_renewal_term_val" js="0">Renewal Term: %s</word>
+  <word key="choose_file_nexus_blurb" js="0">This file is available with one of the following packages. Please add one of the following packages to your cart to continue.</word>
+  <word key="choose_file_nexus_title" js="0">Choose A Package</word>
+  <word key="file_no_price_for_currency" js="0">This file is not currently available in your chosen currency.</word>
+  <word key="nexus_file_no_longer_available" js="0">This file is no longer available for download.</word>
+  <word key="notifications__bitracker_Files" js="0">Torrents</word>
+  <word key="notifications__new_torrent_version" js="0">A torrent I am following is updated with a new version</word>
+  <word key="email_new_torrent_version_plain" js="0">%s has uploaded a new version of %s,</word>
+  <word key="email_new_torrent_version" js="0"><![CDATA[<a href='%s'>%s</a> has uploaded a new version of %s,]]></word>
+  <word key="email_new_torrent_version_guest" js="0">%s (Guest) has uploaded a new version of %s,</word>
+  <word key="notification__new_torrent_version" js="0">%s uploaded a new version of %s</word>
+  <word key="emailtpl_notification_new_torrent_version" js="0">New file version notification</word>
+  <word key="block_bitrackerCommentFeed" js="0">Torrent Comments</word>
+  <word key="block_bitrackerCommentFeed_desc" js="0">Display a feed of comments</word>
+  <word key="block_bitrackerReviewFeed" js="0">Torrent Reviews</word>
+  <word key="block_bitrackerReviewFeed_desc" js="0">Display a feed of reviews</word>
+  <word key="__api_bitracker_torrents" js="0">Torrents</word>
+  <word key="__api_bitracker_comments" js="0">Comments</word>
+  <word key="__api_bitracker_reviews" js="0">Reviews</word>
+  <word key="__api_bitracker_categories" js="0">Categories</word>
+  <word key="bit_feeds_general" js="0">Torrent Feeds</word>
+  <word key="bit_portal_general" js="0">Portal View</word>
+  <word key="head_portal_layout" js="0">Portal Layout Options</word>
+  <word key="bit_view_portal_switch" js="0">Enable Classic View</word>
+  <word key="bit_view_portal_switch_desc" js="0">When disabled the portal view is the default IPS grid view similar to IPS downloads. When enabled the portal view is more reminiscent of a classic tracker view. IE: Rows in a responsive table which can be customized.</word>
+  <word key="bit_customize_general" js="0">Customize</word>
+  <word key="bit_landing_" js="0">Torrents Index</word>
+  <word key="bit_show_featured" js="0"><![CDATA[Show &quot;Featured Torrents&quot; box]]></word>
+  <word key="bit_featured_count" js="0">Number of features files to show</word>
+  <word key="bit_show_newest" js="0"><![CDATA[Show &quot;What's New&quot; box]]></word>
+  <word key="bit_newest_categories" js="0">Categories</word>
+  <word key="bit_show_highest_rated" js="0"><![CDATA[Show &quot;Highest Rated&quot; box]]></word>
+  <word key="bit_show_most_downloaded" js="0"><![CDATA[Show &quot;Most Downloaded&quot; box]]></word>
+  <word key="bit_highest_rated_categories" js="0">Categories</word>
+  <word key="bit_show_most_downloaded_categories" js="0">Categories</word>
+  <word key="siteapi_name_desc" js="0">Enter the name of API site. e.g. IMDB</word>
+  <word key="siteapi_host_desc" js="0">Enter the host url of API site. e.g. imdb.com</word>
+  <word key="siteapi_url_desc" js="0">Enter an example url for your users. e.g. https://www.imdb.com</word>
+  <word key="siteapi_oembed_desc" js="0">Enter the full API url. e.g. https://www.imdb.com/api</word>
+  <word key="torrent_rebuild_processing" js="0">Processing</word>
+  <word key="acp_public_error" js="0">Private Tracker is enabled, you cannot access these settings.</word>
+  <word key="acp_private_error" js="0">Public Tracker is enabled, you cannot access these settings.</word>
+  <word key="makePrimaryScreenshot" js="1">Make this the primary screenshot</word>
+  <word key="removeScreenshot" js="1">Remove this screenshot</word>
+  <word key="rebuild_bitracker" js="1">Rebuild Torrents</word>
+  <word key="siteapi_settings" js="1">API Settings</word>
+  <word key="siteapi_enabled" js="1">Enable?</word>
+  <word key="siteapi_name" js="1">Site Name</word>
+  <word key="siteapi_host" js="1">Host URL</word>
+  <word key="siteapi_url" js="1">Example URL</word>
+  <word key="siteapi_oembed" js="1">API URL</word>
+ </app>
+</language>

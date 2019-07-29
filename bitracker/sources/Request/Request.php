@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     19 JUN 2019
+ * @Updated     28 JUL 2019
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -186,7 +186,7 @@ class _Request extends \IPS\Patterns\Singleton
 			$url = $this->isSecure() ? 'https' : 'http';
 			$url .= '://';
 			
-			/* Nginx uses HTTP_X_FORWARDED_SERVER. @see <a href='https://plone.lucidsolutions.co.nz/web/reverseproxyandcache/setting-nginx-http-x-forward-headers-for-reverse-proxy'>Nginx Reverse Proxy</a> */
+			/* Nginx uses HTTP_X_FORWARDED_SERVER */
 			if ( !empty( $_SERVER['HTTP_X_FORWARDED_SERVER'] ) )
 			{
 				if ( isset( $_SERVER['HTTP_X_FORWARDED_HOST'] ) AND mb_strstr( $_SERVER['HTTP_X_FORWARDED_HOST'], ':' ) === FALSE )
