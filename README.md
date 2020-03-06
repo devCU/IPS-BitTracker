@@ -42,14 +42,10 @@
 
 ## ** Updated Notes **
 
-07/07/19
+03/05/20
 
-- 2.0.0 RC 3 in beta testing
-- 2.0.0 RC 4 dev build active
-- Release immediately after beta is complete for Patrons
-- Release August for Public
-- Will do a release of compiled source in IPS .tar file format for import installations
-- Looking for an older version? [IPS 4.2x/4.3x version](https://github.com/GaalexxC/IPS-4.3-BitTracker) in slow development
+- These files are devleopment files and are incomplete. Please do not use in a production environment
+- Final development beta in the works followed by a working release
 
 
 ## License
