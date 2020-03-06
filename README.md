@@ -45,7 +45,8 @@
 03/05/20
 
 - These files are devleopment files and are incomplete. Please do not use in a production environment
-- Final development beta in the works followed by a working release
+- Final development beta in the works followed by a working release.
+- IPS 4.4.10 Development environment - Ubuntu 18.04.4 Server | Nginx 1.17.9 | PHP 7.4.3 | Percona MySQL 8.18.9 | Redis Server 4.0.9
 
 
 ## License
