@@ -8,6 +8,9 @@
 [![Platform](https://img.shields.io/badge/Platform-IPS4.4+-blue.svg)](https://www.devcu.com/devcu-tracker/)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/GaalexxC/IPS-4.4-BitTracker/master.svg)](https://www.devcu.com/devcu-tracker/)
 
+```diff
+- THIS IS AN INCOMPLETE VERSION UNDER DEVELOPMENT AND SHOULD NOT BE USED IN ANY ENVIRONMENT!!!
+```
 
 ## ** Become a Patron/Supporter of devCU **
 	
