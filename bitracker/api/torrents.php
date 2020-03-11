@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.1 Beta Build
+ * @version     2.1.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 JUL 2019
+ * @Updated     10 MAR 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -122,7 +122,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * POST /bitracker/torrents
 	 * Upload a torrent
 	 *
-	 * @note	For requests using an OAuth Access Token for a particular member, any parameters the user doesn't have permission to use are ignored (for example, locked will only be honoured if the authentictaed user has permission to lock files).
+	 * @note	For requests using an OAuth Access Token for a particular member, any parameters the user doesn't have permission to use are ignored (for example, locked will only be honoured if the authenticated user has permission to lock files).
 	 * @reqapiparam	int					category		The ID number of the calendar the file should be created in
 	 * @reqapiparam	int					author			The ID number of the member creating the file (0 for guest). Required for requests made using an API Key or the Client Credentials Grant Type. For requests using an OAuth Access Token for a particular member, that member will always be the author
 	 * @reqapiparam	string				title			The file name
@@ -363,7 +363,6 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @apiparam	string				description		The description as HTML (e.g. "<p>This is an file.</p>"). Will be sanatized for requests using an OAuth Access Token for a particular member; will be saved unaltered for requests made using an API Key or the Client Credentials Grant Type.
 	 * @apiparam	string				prefix			Prefix tag
 	 * @apiparam	string				tags			Comma-separated list of tags (do not include prefix)
-	 * @apiparam	datetime			date			The date/time that should be used for the file post date. If not provided, will use the current date/time.  Ignored for requests using an OAuth Access Token for a particular member.
 	 * @apiparam	string				ip_address		The IP address that should be stored for the file. If not provided, will use the IP address from the API request.  Ignored for requests using an OAuth Access Token for a particular member.
 	 * @apiparam	int					locked			1/0 indicating if the file should be locked
 	 * @apiparam	int					hidden			0 = unhidden; 1 = hidden, pending moderator approval; -1 = hidden (as if hidden by a moderator)
@@ -455,7 +454,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 			$descriptionContents = \IPS\Request::i()->description;
 			if ( $this->member )
 			{
-				$descriptionContents = \IPS\Text\Parser::parseStatic( $descriptionContents, TRUE, NULL, $this->member, 'bitracker_Downloads' );
+				$descriptionContents = \IPS\Text\Parser::parseStatic( $descriptionContents, TRUE, NULL, $this->member, 'bitracker_Torrents' );
 			}
 			$item->desc = $descriptionContents;
 		}
@@ -674,7 +673,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 			{
 				foreach ( \IPS\Db::i()->select( 'record_location', 'bitracker_torrents_records', array( 'record_file_id=?', $file->id ) ) as $record )
 				{
-					if ( /in_array( $record['record_type'], array( 'upload', 'nfoupload', 'ssupload' ) ) )
+					if ( \in_array( $record['record_type'], array( 'upload', 'nfoupload', 'ssupload' ) ) )
 					{
 //						try
 //						{
