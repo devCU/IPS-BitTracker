@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.1 Beta Build
+ * @version     2.1.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 JUL 2019
+ * @Updated     10 MAR 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -50,7 +50,7 @@ class _categories extends \IPS\Node\Api\NodeController
 	protected $class = 'IPS\bitracker\Category';
 
 	/**
-	 * GET /bitracker/category
+	 * GET /bitracker/categories
 	 * Get list of categories
 	 *
 	 * @return		\IPS\Api\PaginatedResponse<IPS\bitracker\Category>
@@ -62,7 +62,7 @@ class _categories extends \IPS\Node\Api\NodeController
 	}
 
 	/**
-	 * GET /bitracker/category/{id}
+	 * GET /bitracker/categories/{id}
 	 * Get specific category
 	 *
 	 * @param		int		$id			ID Number
@@ -75,7 +75,7 @@ class _categories extends \IPS\Node\Api\NodeController
 	}
 
 	/**
-	 * POST /bitracker/category
+	 * POST /bitracker/categories
 	 * Create a category
 	 *
 	 * @apiparam	int|null	parent					The ID number of the parent the category should be created in. NULL for root.
@@ -105,7 +105,7 @@ class _categories extends \IPS\Node\Api\NodeController
 	}
 
 	/**
-	 * POST /bitracker/category/{id}
+	 * POST /bitracker/categories/{id}
 	 * Edit a category
 	 * 
 	 * @apiparam	int|null	parent					The ID number of the parent the category should be created in. NULL for root.
@@ -133,7 +133,7 @@ class _categories extends \IPS\Node\Api\NodeController
 	}
 
 	/**
-	 * DELETE /bitracker/category/{id}
+	 * DELETE /bitracker/categories/{id}
 	 * Delete a category
 	 *
 	 * @param		int			$id							ID Number
