@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.1 Beta Build
+ * @version     2.1.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 JUL 2019
+ * @Updated     11 MAR 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -57,7 +57,7 @@ class _File
 			{
 				return array(
 					'file_bitrack' => array(
-						'link' 	=> \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit&do=submit&_new=1&category=" . $theOnlyNode->_id, 'front', 'torrent_submit' ),
+						'link' 	=> \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit&do=submit&_new=1&category=" . $theOnlyNode->_id, 'front', 'torrents_submit' ),
 					)
 				);
 			}
@@ -65,7 +65,7 @@ class _File
 			{
 				return array(
 					'file_bitrack' => array(
-						'link' 		=> \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit&_new=1", 'front', 'torrent_submit' ),
+						'link' 		=> \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit&_new=1", 'front', 'torrents_submit' ),
 						'title' 	=> 'select_category',
 						'extraData'	=> array( 'data-ipsDialog' => true, 'data-ipsDialog-size' => "narrow" )
 					)
