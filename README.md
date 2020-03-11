@@ -45,11 +45,17 @@
 
 ## ** Updated Notes **
 
-03/05/20
+03/10/20
 
-- These files are devleopment files and are incomplete. Please do not use in a production environment
-- Final development beta in the works followed by a working release.
-- IPS 4.4.10 Development environment - Ubuntu 18.04.4 Server | Nginx 1.17.9 | PHP 7.4.3 | Percona MySQL 8.18.9 | Redis Server 4.0.9
+- Working on our first official fully working beta release slated for testing this upcoming weekend
+- Only devCU supporters will have access to the release betas for testing
+- Stable release expected sometime in April 2020
+- IPS 4.4.10 Development environment 
+   - Ubuntu 18.04.4 Server
+   - Nginx 1.17.9
+   - PHP 7.4.3
+   - Percona MySQL 8.18.9
+   - Redis Server 4.0.9
 
 
 ## License
