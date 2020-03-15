@@ -17,28 +17,14 @@ class bitracker_hook_Forums extends _HOOK_CLASS_
 	 */
 	public function getButtons( $url, $subnode=FALSE )
 	{
-		try
+		$buttons = parent::getButtons( $url, $subnode );
+
+		if ( isset( $buttons['delete'] ) AND $this->isUsedByABitrackerCategory() )
 		{
-			$buttons = parent::getButtons( $url, $subnode );
-	
-			if ( isset( $buttons['delete'] ) AND $this->isUsedByABitrackerCategory() )
-			{
-				unset( $buttons['delete']['data'] );
-			}
-	
-			return $buttons;
+			unset( $buttons['delete']['data'] );
 		}
-		catch ( \RuntimeException $e )
-		{
-			if ( method_exists( get_parent_class(), __FUNCTION__ ) )
-			{
-				return \call_user_func_array( 'parent::' . __FUNCTION__, \func_get_args() );
-			}
-			else
-			{
-				throw $e;
-			}
-		}
+
+		return $buttons;
 	}
 
 	/**
@@ -48,28 +34,14 @@ class bitracker_hook_Forums extends _HOOK_CLASS_
 	 */
 	public function isUsedByABitrackerCategory()
 	{
-		try
+		foreach( new \IPS\Patterns\ActiveRecordIterator( \IPS\Db::i()->select( '*', 'bitracker_categories' ), 'IPS\bitracker\Category' ) AS $category )
 		{
-			foreach( new \IPS\Patterns\ActiveRecordIterator( \IPS\Db::i()->select( '*', 'bitracker_categories' ), 'IPS\bitracker\Category' ) AS $category )
+			if ( $category->forum_id and $category->forum_id == $this->id )
 			{
-				if ( $category->forum_id and $category->forum_id == $this->id )
-				{
-					return $category;
-				}
-			}
-			return FALSE;
-		}
-		catch ( \RuntimeException $e )
-		{
-			if ( method_exists( get_parent_class(), __FUNCTION__ ) )
-			{
-				return \call_user_func_array( 'parent::' . __FUNCTION__, \func_get_args() );
-			}
-			else
-			{
-				throw $e;
+				return $category;
 			}
 		}
+		return FALSE;
 	}
 
 }
