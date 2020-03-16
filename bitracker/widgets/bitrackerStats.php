@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.1 Beta Build
+ * @version     2.1.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 JUL 2019
+ * @Updated     16 MAR 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -29,7 +29,6 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see http://www.gnu.org/licenses/
  */
- 
 
 namespace IPS\bitracker\widgets;
 
