@@ -31,7 +31,7 @@
  \  | \  . \ ;  |   Open Source Projects   || ; / .  / |  /
   '\_\ \\ \ \ \ |                          ||/ / / // /_/'
         \\ \ \ \|        DCU Tracker       |/ / / //
-         `'-\_\_\         v 2.0.0          /_/_/-'`
+         `'-\_\_\         v 2.1.0          /_/_/-'`
                 '--------------------------'
 </pre>
 
@@ -45,9 +45,9 @@
 
 ## ** Updated Notes **
 
-03/10/20
+03/16/20
 
-- Working on our first official fully working beta release slated for testing this upcoming weekend
+- NEW version 2.1.0 RC1 in testing, more files will be pushed today and tomorrow
 - Only devCU supporters will have access to the release betas for testing
 - Stable release expected sometime in April 2020
 - IPS 4.4.10 Development environment 
