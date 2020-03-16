@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     10 MAR 2020
+ * @Updated     15 MAR 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -122,7 +122,7 @@ class _Application extends \IPS\Application
 
 		if ( isset( \IPS\Request::i()->module ) AND \IPS\Request::i()->module == 'post' AND isset( \IPS\Request::i()->controller ) AND \IPS\Request::i()->controller == 'submit' )
 		{
-			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit", "front", "torrent_submit" ) );
+			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( "app=bitracker&module=submit&controller=submit", "front", "torrents_submit" ) );
 		}
 	}
 	
