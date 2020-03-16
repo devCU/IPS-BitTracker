@@ -1,7 +1,7 @@
 {
 	"topLevel": "tracker",
 	"pages": {
-		"torrent_submit": {
+		"torrents_submit": {
 			"friendly": "submit",
 			"real": "app=bitracker&module=submit&controller=submit"
 		},
