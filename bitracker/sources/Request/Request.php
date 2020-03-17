@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.0 RC 3
+ * @version     2.1.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 JUL 2019
+ * @Updated     16 MAR 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -124,6 +124,79 @@ class _Request extends \IPS\Patterns\Singleton
 	}
 	
 	/**
+	 * Clean Value
+	 *
+	 * @param	mixed	$v	Value
+	 * @param	mixed	$k	Key
+	 * @return	void
+	 */
+	protected function clean( &$v, $k )
+	{
+		/* Remove NULL bytes and the RTL control byte */
+		$v = str_replace( array( "\0", "\u202E" ), '', $v );
+	}
+	
+	/**
+	 * Get value from array
+	 *
+	 * @param	string	$key	Key with square brackets (e.g. "foo[bar]")
+	 * @return	mixed	Value
+	 */
+	public function valueFromArray( $key )
+	{
+		$array = $this->data;
+		
+		while ( $pos = mb_strpos( $key, '[' ) )
+		{
+			preg_match( '/^(.+?)\[([^\]]+?)?\](.*)?$/', $key, $matches );
+			
+			if ( !array_key_exists( $matches[1], $array ) )
+			{
+				return NULL;
+			}
+				
+			$array = $array[ $matches[1] ];
+			$key = $matches[2] . $matches[3];
+		}
+		
+		if ( !isset( $array[ $key ] ) )
+		{
+			return NULL;
+		}
+				
+		return $array[ $key ];
+	}
+	
+	/**
+	 * Get an object that can be cast to a string to get the value for a given input
+	 *
+	 * This can be used in place of passing strings as arguments to functions where it is
+	 * desirable to avoid the value being included in a backtrace if an error occurs.
+	 *
+	 * @return	object
+	 */
+	public function protect( $k )
+	{
+		return eval('return new class
+		{
+			public function __toString()
+			{
+				return \IPS\Request::i()->' . $k . ';
+			}
+		};' );
+	}
+	
+	/**
+	 * Is this an AJAX request?
+	 *
+	 * @return	bool
+	 */
+	public function isAjax()
+	{
+		return ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) and $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' );
+	}
+
+	/**
 	 * Is this an SSL/Secure request?
 	 *
 	 * @return	bool
@@ -131,11 +204,15 @@ class _Request extends \IPS\Patterns\Singleton
 	 */
 	public function isSecure()
 	{
-		if( !empty( $_SERVER['HTTPS'] ) AND mb_strtolower( $_SERVER['HTTPS'] ) == 'on' )
+		if( !empty( $_SERVER['HTTPS'] ) AND ( mb_strtolower( $_SERVER['HTTPS'] ) == 'on' or $_SERVER['HTTPS'] === '1' ) )
 		{
 			return TRUE;
 		}
 		else if( !empty( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) AND mb_strtolower( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) == 'https' )
+		{
+			return TRUE;
+		}
+		else if( !empty( $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] ) AND mb_strtolower( $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] ) == 'https' )
 		{
 			return TRUE;
 		}
@@ -154,25 +231,11 @@ class _Request extends \IPS\Patterns\Singleton
 
 		return FALSE;
 	}
-
+	
 	/**
-	 * Clean Value
-	 *
-	 * @param	mixed	$v	Value
-	 * @param	mixed	$k	Key
-	 * @return	void
+	 * @brief	Cached URL
 	 */
-	protected function clean( &$v, $k )
-	{
-		/* Remove NULL bytes and the RTL control byte */
-		$v = str_replace( array( "\0", "\u202E" ), '', $v );
-		
-		/* Undo magic quote madness */
-		if ( get_magic_quotes_gpc() === 1 )
-		{
-			$v = stripslashes( $v );
-		}
-	}
+	protected $_url	= NULL;
 
 	/**
 	 * Get current URL
@@ -186,7 +249,7 @@ class _Request extends \IPS\Patterns\Singleton
 			$url = $this->isSecure() ? 'https' : 'http';
 			$url .= '://';
 			
-			/* Nginx uses HTTP_X_FORWARDED_SERVER */
+			/* Nginx uses HTTP_X_FORWARDED_SERVER. @see <a href='https://plone.lucidsolutions.co.nz/web/reverseproxyandcache/setting-nginx-http-x-forward-headers-for-reverse-proxy'>Nginx Reverse Proxy</a> */
 			if ( !empty( $_SERVER['HTTP_X_FORWARDED_SERVER'] ) )
 			{
 				if ( isset( $_SERVER['HTTP_X_FORWARDED_HOST'] ) AND mb_strstr( $_SERVER['HTTP_X_FORWARDED_HOST'], ':' ) === FALSE )
@@ -210,8 +273,18 @@ class _Request extends \IPS\Patterns\Singleton
 			{
 				$url .= $_SERVER['SERVER_NAME'];
 			}
+			
+			if ( $_SERVER['QUERY_STRING'] AND mb_strpos( $_SERVER['REQUEST_URI'], $_SERVER['QUERY_STRING'] ) !== FALSE )
+			{
+				$url .= mb_substr( $_SERVER['REQUEST_URI'], 0, -mb_strlen( $_SERVER['QUERY_STRING'] ) );
+			}
+			else
+			{
+				$url .= $_SERVER['REQUEST_URI'];
+			}
+			$url .= $_SERVER['QUERY_STRING'];
 
-			return $this->_url = \IPS\Http\Url::createFromString( $url, TRUE, TRUE )  . "/announce";
+			return $this->_url = \IPS\Http\Url::createFromString( $url, TRUE, TRUE );
 		}
 
 		return $this->_url;
@@ -484,11 +557,11 @@ class _Request extends \IPS\Patterns\Singleton
 			
 			if ( \IPS\Request::i()->isAjax() )
 			{
-				\IPS\Output::i()->sendOutput( \IPS\Theme::i()->getTemplate( 'global', 'core', 'front' )->genericBlock( $form, \IPS\Output::i()->title ), 200, 'text/html', \IPS\Output::i()->httpHeaders );
+				\IPS\Output::i()->sendOutput( \IPS\Theme::i()->getTemplate( 'global', 'core', 'front' )->genericBlock( $form, \IPS\Output::i()->title ), 200, 'text/html' );
 			}
 			else
 			{
-				\IPS\Output::i()->sendOutput( \IPS\Theme::i()->getTemplate( 'global', 'core' )->globalTemplate( \IPS\Output::i()->title, \IPS\Output::i()->output, array( 'app' => \IPS\Dispatcher::i()->application->directory, 'module' => \IPS\Dispatcher::i()->module->key, 'controller' => \IPS\Dispatcher::i()->controller ) ), 200, 'text/html', \IPS\Output::i()->httpHeaders );
+				\IPS\Output::i()->sendOutput( \IPS\Theme::i()->getTemplate( 'global', 'core' )->globalTemplate( \IPS\Output::i()->title, \IPS\Output::i()->output, array( 'app' => \IPS\Dispatcher::i()->application->directory, 'module' => \IPS\Dispatcher::i()->module->key, 'controller' => \IPS\Dispatcher::i()->controller ) ), 200, 'text/html' );
 			}
 		}
 
