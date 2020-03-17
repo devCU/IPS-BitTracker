@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.1 Beta Build
+ * @version     2.1.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 JUL 2019
+ * @Updated     17 MAR 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -66,11 +66,12 @@ class _submit extends \IPS\Dispatcher\Controller
 		$form = new \IPS\Helpers\Form( 'select_category', 'continue' );
 		$form->class = 'ipsForm_vertical ipsForm_noLabels';
 		$form->add( new \IPS\Helpers\Form\Node( 'select_category', isset( \IPS\Request::i()->category ) ? \IPS\Request::i()->category : NULL, TRUE, array(
-			'url'					=> \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'torrent_submit' ),
+			'url'					=> \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'torrents_submit' ),
 			'class'					=> 'IPS\bitracker\Category',
 			'permissionCheck'		=> 'add',
 			'clubs'					=> \IPS\Settings::i()->club_nodes_in_apps
 		) ) );
+
 		if ( \IPS\Member::loggedIn()->group['bit_bulk_submit'] )
 		{
 			$form->add( new \IPS\Helpers\Form\YesNo( 'bulk', NULL, FALSE, array( 'label' => "bulk_upload_button" ) ) );
@@ -78,7 +79,7 @@ class _submit extends \IPS\Dispatcher\Controller
 
 		if ( $values = $form->values() )
 		{
-			$url = \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&do=submit', 'front', 'torrent_submit' )->setQueryString( 'category', $values['select_category']->_id );
+			$url = \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&do=submit', 'front', 'torrents_submit' )->setQueryString( 'category', $values['select_category']->_id );
 			if ( isset( $values['bulk'] ) AND $values['bulk'] )
 			{
 				$url = $url->setQueryString( 'bulk', '1' );
@@ -117,7 +118,7 @@ class _submit extends \IPS\Dispatcher\Controller
 			}
 			catch ( \OutOfRangeException $e )
 			{
-				\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&_step=select_category', 'front', 'torrent_submit' ) );
+				\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&_step=select_category', 'front', 'torrents_submit' ) );
 			}
 
 			if( !$category->can('add') )
@@ -291,6 +292,7 @@ class _submit extends \IPS\Dispatcher\Controller
 				if ( isset( $values['import_files'] ) )
 				{
 					\IPS\File::$copyFiles = TRUE;
+
 					foreach ( $values['import_files'] as $path )
 					{
 						$file = \IPS\File::create( 'bitracker_Torrents', mb_substr( $path, mb_strrpos( $path, DIRECTORY_SEPARATOR ) + 1 ), NULL, NULL, FALSE, $path );
@@ -481,7 +483,7 @@ class _submit extends \IPS\Dispatcher\Controller
 					$file = \IPS\bitracker\File::createFromForm( array_merge( $data, $values, array( 'postKey' => \IPS\Request::i()->postKey ) ), $category );
 
 					/* Redirect */
-					if( $file->author()->member_id OR $file->canView() )
+					if ( isset( $values['guest_email'] ) )
 					{
 						$url = \IPS\Http\Url::internal( 'app=core&module=system&controller=register', 'front', 'register' );
 						$message = NULL;
@@ -539,7 +541,7 @@ class _submit extends \IPS\Dispatcher\Controller
 			}
 			catch ( \OutOfRangeException $e )
 			{
-				\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'torrent_submit' ) );
+				\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'torrents_submit' ) );
 			}
 			/* Init Form */
 			$form = new \IPS\Helpers\Form( 'file_information', 'continue' );
@@ -569,7 +571,7 @@ class _submit extends \IPS\Dispatcher\Controller
 					
 					if ( !$input->value and \in_array( $input->name, array( 'file_title', 'file_desc' ) ) )
 					{
-						$input->value = $file->originalFilename;
+						$input->value = $displayName;
 					}
 											
 					$input->name = "filedata_{$key}_{$input->name}";
@@ -731,7 +733,7 @@ class _submit extends \IPS\Dispatcher\Controller
 
 
 		/* Build Wizard */
-		$url = \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&do=submit', 'front', 'torrent_submit' );
+		$url = \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit&do=submit', 'front', 'torrents_submit' );
 		if ( isset( \IPS\Request::i()->category ) and \IPS\Request::i()->category )
 		{
 			$url = $url->setQueryString( 'category', \IPS\Request::i()->category );
@@ -744,7 +746,7 @@ class _submit extends \IPS\Dispatcher\Controller
 		$wizard->template = array( \IPS\Theme::i()->getTemplate( 'submit' ), 'wizardForm' );
 		
 		/* Online User Location */
-		\IPS\Session::i()->setLocation( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'torrent_submit' ), array(), 'loc_bitracker_adding_file' );
+		\IPS\Session::i()->setLocation( \IPS\Http\Url::internal( 'app=bitracker&module=submit&controller=submit', 'front', 'torrents_submit' ), array(), 'loc_bitracker_adding_file' );
 		
 		/* Display */
 		\IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack( isset( \IPS\Request::i()->bulk ) ? 'submit_multiple_files' : 'submit_a_file' );
@@ -757,8 +759,8 @@ class _submit extends \IPS\Dispatcher\Controller
 		{
 			\IPS\Output::i()->jsFiles = array_merge( \IPS\Output::i()->jsFiles, \IPS\Output::i()->js( 'plupload/plupload.full.min.js', 'core', 'interface' ) );
 		}
-		$category = NULL;
 		
+		$category = NULL;
 		if ( isset( \IPS\Request::i()->category ) )
 		{
 			try
