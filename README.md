@@ -45,9 +45,10 @@
 
 ## ** Updated Notes **
 
-03/16/20
+03/17/20
 
 - NEW version 2.1.0 RC1 in testing, more files will be pushed today and tomorrow
+- PHP 7.4 compatibility check
 - Only devCU supporters will have access to the release betas for testing
 - Stable release expected sometime in April 2020
 - IPS 4.4.10 Development environment 
