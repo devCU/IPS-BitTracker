@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.1 Beta Build
+ * @version     2.1.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 JUL 2019
+ * @Updated     16 MAR 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -304,7 +304,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		$form->add( new \IPS\Helpers\Form\Select( 'csortorder', $this->sortorder ?: 'updated', FALSE, array( 'options' => array( 'updated' => 'sort_updated', 'last_comment' => 'last_reply', 'title' => 'file_title', 'rating' => 'sort_rating', 'date' => 'sort_date', 'num_comments' => 'sort_num_comments', 'num_reviews' => 'sort_num_reviews', 'views' => 'sort_num_views' ) ), NULL, NULL, NULL, 'csortorder' ) );
 		$form->add( new \IPS\Helpers\Form\Translatable( 'cdisclaimer', NULL, FALSE, array( 'app' => 'bitracker', 'key' => ( $this->id ? "bitracker_category_{$this->id}_disclaimer" : NULL ), 'editor' => array( 'app' => 'bitracker', 'key' => 'Categories', 'autoSaveKey' => ( $this->id ? "bitracker-cat-{$this->id}-disc" : "bitracker-new-cat-disc" ), 'attachIds' => $this->id ? array( $this->id, NULL, 'disclaimer' ) : NULL, 'minimize' => 'cdisclaimer_placeholder' ) ), NULL, NULL, NULL, 'cdisclaimer-editor' ) );
 		$form->addHeader( 'category_logs' );
-		$form->add( new \IPS\Helpers\Form\YesNo( 'clog_on', $this->log !== 0, FALSE, array( 'togglesOn' => array( 'clog', 'submitter_log' ) ) ) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'clog_on', $this->log !== 0, FALSE, array( 'disableCopy' => TRUE, 'togglesOn' => array( 'clog', 'submitter_log' ) ) ) );
 		$form->add( new \IPS\Helpers\Form\Interval( 'clog', $this->log === NULL ? -1 : $this->log, FALSE, array(
 			'valueAs' => \IPS\Helpers\Form\Interval::DAYS, 'unlimited' => -1
 		), NULL, NULL, ( $this->id and \IPS\Member::loggedIn()->hasAcpRestriction( 'bitracker', 'configure', 'categories_recount_bitracker' ) ) ? '<a data-confirm data-confirmSubMessage="' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount_desc') . '" href="' . \IPS\Http\Url::internal( "app=bitracker&module=configure&controller=categories&do=recountTorrents&id={$this->id}") . '">' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount') . '</a>' : '', 'clog' ) );
