@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.1 Beta Build
+ * @version     2.1.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 JUL 2019
+ * @Updated     16 MAR 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -704,7 +704,6 @@ class _File extends \IPS\Content\Item implements
 	 */
 	protected $_primaryScreenshot	= FALSE;
 
-
 	/**
 	 * Get primary screenshot
 	 *
@@ -1281,6 +1280,7 @@ class _File extends \IPS\Content\Item implements
 			}
 		}
 
+
 		/* Minimum posts */
 		if ( $member->member_id and $restrictions['min_posts'] and $restrictions['min_posts'] > $member->member_posts )
 		{
@@ -1670,7 +1670,7 @@ class _File extends \IPS\Content\Item implements
 	/**
 	 * Log for deletion later
 	 *
-	 * @param	\IPS\Member|NULL 	$member	The member or NULL for currently logged in
+	 * @param	\IPS\Member|NULL 	$member	The member, NULL for currently logged in, or FALSE for no member
 	 * @return	void
 	 */
 	public function logDelete( $member = NULL )
@@ -1759,7 +1759,7 @@ class _File extends \IPS\Content\Item implements
 	{
 		if ( \is_array( $val ) )
 		{
-			foreach ( explode( ',', '\IPS\Settings::i()->bit_link_blacklist' ) as $blackListedDomain )
+			foreach ( explode( ',', \IPS\Settings::i()->bit_link_blacklist ) as $blackListedDomain )
 			{
 				foreach ( array_filter( $val ) as $url )
 				{
