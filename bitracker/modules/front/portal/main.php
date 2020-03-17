@@ -9,11 +9,11 @@
  * @license     GNU General Public License v3.0
  * @package     Invision Community Suite 4.4x
  * @subpackage	BitTracker
- * @version     2.0.1 Beta Build
+ * @version     2.1.0 RC 1
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 JUL 2019
+ * @Updated     17 MAR 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -214,19 +214,10 @@ class _main extends \IPS\Dispatcher\Controller
 
 		if( !$_count )
 		{
-			/* Set breadcrumb */
+			/* If we're viewing a club, set the breadcrumbs appropriately */
 			if ( $club = $category->club() )
 			{
-				\IPS\core\FrontNavigation::$clubTabActive = TRUE;
-				\IPS\Output::i()->breadcrumb = array();
-				\IPS\Output::i()->breadcrumb[] = array( \IPS\Http\Url::internal( 'app=core&module=clubs&controller=directory', 'front', 'clubs_list' ), \IPS\Member::loggedIn()->language()->addToStack('module__core_clubs') );
-				\IPS\Output::i()->breadcrumb[] = array( $club->url(), $club->name );
-				\IPS\Output::i()->breadcrumb[] = array( $category->url(), $category->_title );
-				
-				if ( \IPS\Settings::i()->clubs_header == 'sidebar' )
-				{
-					\IPS\Output::i()->sidebar['contextual'] = \IPS\Theme::i()->getTemplate( 'clubs', 'core' )->header( $club, $category, 'sidebar' );
-				}
+				$club->setBreadcrumbs( $category );
 			}
 			else
 			{
@@ -279,7 +270,6 @@ class _main extends \IPS\Dispatcher\Controller
 				
 		/* Output */
 		\IPS\Output::i()->title		= $category->_title;
-
 		\IPS\Output::i()->contextualSearchOptions[ \IPS\Member::loggedIn()->language()->addToStack( 'search_contextual_item_bitracker_categories' ) ] = array( 'type' => 'bitracker_torrent', 'nodes' => $category->_id );
 		\IPS\Output::i()->sidebar['contextual'] .= \IPS\Theme::i()->getTemplate( 'browse' )->indexSidebar( \IPS\bitracker\Category::canOnAny('add'), $category );
 		\IPS\Output::i()->output	= \IPS\Theme::i()->getTemplate( 'browse' )->category( $category, (string) $table );
