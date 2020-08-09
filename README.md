@@ -48,8 +48,7 @@
 08/09/20
 
 - NEW version 2.2.0 Stable final release for IPS 4.4.10, a 4.5 port will be created when ready to, there shouldnt be many if any chnages for 4.5
-- PHP 7.4 compatibility check
-- Only devCU supporters will have access to the release betas for testing
+- Only devCU supporters will have access to the release betas for testing this upcoming week
 - Stable release expected sometime in August 2020
 - IPS 4.4.10 Development environment 
    - Ubuntu 20.04.4 Server
