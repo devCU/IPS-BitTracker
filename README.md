@@ -1,8 +1,8 @@
 ![devCUHead](https://www.devcu.com/mediasrc/github-banner.png?V=1.0)
 
 [![License](https://img.shields.io/badge/License-GNUv3-blue.svg)](https://github.com/devCU/IPS-4.4-BitTracker/blob/master/LICENSE) 
-[![Version](https://img.shields.io/badge/Version-2.1.0-ff69b4.svg)](https://www.devcu.com/devcu-tracker/)
-[![Build](https://img.shields.io/badge/Build-RC1-yellow.svg)](https://www.devcu.com/devcu-tracker/)
+[![Version](https://img.shields.io/badge/Version-2.2.0-ff69b4.svg)](https://www.devcu.com/devcu-tracker/)
+[![Build](https://img.shields.io/badge/Build-Stable-yellow.svg)](https://www.devcu.com/devcu-tracker/)
 [![Status](https://img.shields.io/badge/Status-Release-inactive.svg)](https://www.devcu.com/devcu-tracker/)
 [![Development](https://img.shields.io/badge/Development-Active-success.svg)](https://www.devcu.com/devcu-tracker/)
 [![Platform](https://img.shields.io/badge/Platform-IPS4.4+-blue.svg)](https://www.devcu.com/devcu-tracker/)
@@ -12,13 +12,13 @@
 - THIS IS AN INCOMPLETE VERSION UNDER DEVELOPMENT AND SHOULD NOT BE USED IN ANY ENVIRONMENT!!!
 ```
 
-## ** Become a Patron/Supporter of devCU **
+## ** Become a Supporter of devCU **
 	
 **Please support our Open Source Projects and keep this software free**
 
-- Patrons and Donators have access to Beta and Release version up to 2 weeks before the public
+- Donators have access to Beta and Release version up to 2 weeks before the public
 
-[![donate](https://www.devcu.com/mediasrc/patronize_devcu.png)](https://www.patreon.com/devcu/) [![donate](https://www.devcu.com/mediasrc/support_devcu.png?v=1)](https://www.devcu.com/clients/donations/)
+[![donate](https://www.devcu.com/mediasrc/support_devcu.png?v=1)](https://www.devcu.com/clients/donations/)
 
     
 <pre>
@@ -45,18 +45,18 @@
 
 ## ** Updated Notes **
 
-03/17/20
+08/09/20
 
-- NEW version 2.1.0 RC1 in testing, more files will be pushed today and tomorrow
+- NEW version 2.2.0 Stable final release for IPS 4.4.10, a 4.5 port will be created when ready to, there shouldnt be many if any chnages for 4.5
 - PHP 7.4 compatibility check
 - Only devCU supporters will have access to the release betas for testing
-- Stable release expected sometime in April 2020
+- Stable release expected sometime in August 2020
 - IPS 4.4.10 Development environment 
-   - Ubuntu 18.04.4 Server
-   - Nginx 1.17.9
-   - PHP 7.4.3
-   - Percona MySQL 8.18.9
-   - Redis Server 4.0.9
+   - Ubuntu 20.04.4 Server
+   - Nginx 1.19.1
+   - PHP 7.4.8
+   - Percona MySQL 8.0.20-11
+   - Redis Server 5.0.7
 
 
 ## License
