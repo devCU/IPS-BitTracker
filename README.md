@@ -53,7 +53,7 @@
 - IPS 4.4.10 Development environment 
    - Ubuntu 20.04.1 Server
    - Nginx 1.19.1
-   - PHP 7.4.8
+   - PHP 7.4.9
    - Percona MySQL 8.0.20-11
    - Redis Server 5.0.7
 
