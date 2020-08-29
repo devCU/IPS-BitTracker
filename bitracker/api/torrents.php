@@ -1,19 +1,19 @@
 <?php
 /**
  *     Support this Project... Keep it free! Become an Open Source Patron
- *                       https://www.patreon.com/devcu
+ *                      https://www.devcu.com/donate/
  *
  * @brief       BitTracker Torrents API
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4x
+ * @package     Invision Community Suite 4.4.10
  * @subpackage	BitTracker
- * @version     2.1.0 RC 1
+ * @version     2.2.0 Final
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     10 MAR 2020
+ * @Updated     29 AUG 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -129,7 +129,6 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @reqapiparam	string				description		The description as HTML (e.g. "<p>This is an file.</p>"). Will be sanatized for requests using an OAuth Access Token for a particular member; will be saved unaltered for requests made using an API Key or the Client Credentials Grant Type.
 	 * @apiparam	string				version			The version number
 	 * @reqapiparam	object				files			Files. Keys should be filename (e.g. 'file.txt') and values should be file content
-	 * @apiparam	object				NFO		        NFO. Keys should be filename (e.g. 'filename.nfo') and values should be file content.
 	 * @apiparam	object				screenshots		Screenshots. Keys should be filename (e.g. 'screenshot1.png') and values should be file content.
 	 * @apiparam	string				prefix			Prefix tag
 	 * @apiparam	string				tags			Comma-separated list of tags (do not include prefix)
@@ -227,20 +226,6 @@ class _torrents extends \IPS\Content\Api\ItemController
 				'record_time'		=> time(),
 			) );
 		}
-		if ( $category->bitoptions['allownfo'] and isset( \IPS\Request::i()->nfo ) )
-		{
-			foreach ( array_keys( \IPS\Request::i()->nfo ) as $name )
-			{
-				$fileObject = \IPS\File::create( 'bitracker_Nfo', $name, $_POST['nfo'][ $name ] );
-				
-				\IPS\Db::i()->insert( 'bitracker_torrents_records', array(
-				'record_file_id'		=> $file->id,
-				'record_type'			=> 'nfoupload',
-				'record_location'	=> (string) $fileObject,
-				'record_realname'	=> $fileObject->originalFilename,
-				'record_size'		=> $fileObject->filesize(),
-				'record_time'		=> time(),
-				) );
 			
 		if ( $category->bitoptions['allowss'] and isset( \IPS\Request::i()->screenshots ) )
 		{
@@ -295,24 +280,6 @@ class _torrents extends \IPS\Content\Api\ItemController
 			if ( $category->maxfile and \strlen( $content ) > ( $category->maxfile * 1024 ) )
 			{
 				throw new \IPS\Api\Exception( 'BAD_FILE_SIZE', '1S303/J', 400 );
-			}
-		}
-
-		if ( $category->bitoptions['allownfo'] )
-		{
-			if ( isset( \IPS\Request::i()->nfo ) and \IPS\Request::i()->nfo )
-			{
-				foreach ( \IPS\Request::i()->nfo as $name => $content )
-				{
-					if ( $category->maxnfo and \strlen( $content ) > ( $category->maxnfo * 1024 ) )
-					{
-						throw new \IPS\Api\Exception( 'BAD_NFO_SIZE', '1S303/L', 400 );
-					}
-				}
-			}
-			elseif ( $category->bitoptions['reqnfo'] )
-			{
-				throw new \IPS\Api\Exception( 'NO_NFO', '1S303/N', 400 );
 			}
 		}
 		
@@ -492,13 +459,6 @@ class _torrents extends \IPS\Content\Api\ItemController
 		/* File size */
 		$file->size = \floatval( \IPS\Db::i()->select( 'SUM(record_size)', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0', $file->id, 'upload' ) )->first() );
 		
-		/* Work out nfo*/
-		try
-		{
-		$file->size = \floatval( \IPS\Db::i()->select( 'SUM(record_size)', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0', $file->id, 'nfoupload' ) )->first() );
-		}
-		catch ( \UnderflowException $e ) { }
-		
 		/* Work out the new primary screenshot */
 		try
 		{
@@ -612,11 +572,10 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @apiparam	string				changelog		What changed in this version
 	 * @apiparam	int					save			If 1 this will be saved as a new version and the previous version available in the history. If 0, will simply replace the existing files/screenshots. Defaults to 1. Ignored if category does not have versioning enabled or authorized user does not have permission to disable.
 	 * @reqapiparam	object				files			Files. Keys should be filename (e.g. 'file.txt') and values should be file content - will replace all current files
-	 * @apiparam	object				NFO		        NFO. Keys should be filename (e.g. 'filename.nfo') and values should be file content.
 	 * @apiparam	object				screenshots		Screenshots. Keys should be filename (e.g. 'screenshot1.png') and values should be file content - will replace all current screenshots
 	 * @param		int		$id			ID Number
 	 * @throws		2S303/F				INVALID_ID		The file ID is invalid or the authorized user does not have permission to view it
-	 * @throws		1S303/G				NO_TORRENTS	No torrent files were supplied
+	 * @throws		1S303/G				NO_TORRENTS	    No torrents were supplied
 	 * @throws		2S303/Q				NO_PERMISSION	The authorized user does not have permission to edit the file
 	 * @throws		1S303/I				BAD_FILE_EXT	One of the files has a file type that is not allowed
 	 * @throws		1S303/J				BAD_FILE_SIZE	One of the files is too big
@@ -673,29 +632,11 @@ class _torrents extends \IPS\Content\Api\ItemController
 			{
 				foreach ( \IPS\Db::i()->select( 'record_location', 'bitracker_torrents_records', array( 'record_file_id=?', $file->id ) ) as $record )
 				{
-					if ( \in_array( $record['record_type'], array( 'upload', 'nfoupload', 'ssupload' ) ) )
+					if ( \in_array( $record['record_type'], array( 'upload', 'ssupload' ) ) )
 					{
-//						try
-//						{
-//							\IPS\File::get( $record['record_type'] == 'upload' ? 'bitracker_Torrents' : 'bitracker_Screenshots', $record['record_location'] )->delete();
-//						}
-//						catch ( \Exception $e ) { }
-//					}
-//				}
-
 						try
 						{
-                            if ( $record['record_type'] == 'upload' ) 
-                               {
-                                   $record['record_type'] = \IPS\File::get( 'bitracker_Torrents', $record['record_location'] )->delete();
-                               }
-                                 elseif ( $record['record_type'] == 'nfoupload' ) 
-                               {
-                                   $record['record_type'] = \IPS\File::get( 'bitracker_Nfo', $record['record_location'] )->delete();
-                               }
-                                 elseif ( $record['record_type'] == 'ssupload' ) 
-                               {
-                                   $record['record_type'] = \IPS\File::get( 'bitracker_Screenshots', $record['record_location'] )->delete();
+							\IPS\File::get( $record['record_type'] == 'upload' ? 'bitracker_Torrents' : ''bitracker_Screenshots', $record['record_location'] )->delete();
 						}
 						catch ( \Exception $e ) { }
 					}
@@ -717,22 +658,6 @@ class _torrents extends \IPS\Content\Api\ItemController
 					'record_time'		=> time(),
 				) );
 			}
-			if ( isset( \IPS\Request::i()->nfo ) )
-			{
-				foreach ( array_keys( \IPS\Request::i()->nfo ) as $name )
-				{
-					$fileObject = \IPS\File::create( 'bitracker_Nfo', $name, $_POST['nfo'][ $name ] );
-					
-					\IPS\Db::i()->insert( 'bitracker_torrents_records', array(
-					'record_file_id'	=> $file->id,
-					'record_type'	=> 'nfoupload',
-					'record_location'	=> (string) $fileObject,
-					'record_realname'	=> $fileObject->originalFilename,
-					'record_size'		=> $fileObject->filesize(),
-					'record_time'		=> time(),
-					) );
-				}
-			} 
 			if ( isset( \IPS\Request::i()->screenshots ) )
 			{
 				$primary = 1;
