@@ -31,7 +31,7 @@
  \  | \  . \ ;  |   Open Source Projects   || ; / .  / |  /
   '\_\ \\ \ \ \ |                          ||/ / / // /_/'
         \\ \ \ \|        DCU Tracker       |/ / / //
-         `'-\_\_\         v 2.1.0          /_/_/-'`
+         `'-\_\_\         v 2.2.0          /_/_/-'`
                 '--------------------------'
 </pre>
 
@@ -45,7 +45,7 @@
 
 ## ** Updated Notes **
 
-08/09/20
+08/29/20
 
 - NEW version 2.2.0 Stable final release for IPS 4.4.10, a 4.5 port will be created when ready to, there shouldnt be many if any chnages for 4.5
 - Only devCU supporters will have access to the release betas for testing this upcoming week
