@@ -1,19 +1,19 @@
 <?php
 /**
  *     Support this Project... Keep it free! Become an Open Source Patron
- *                       https://www.patreon.com/devcu
+ *                      https://www.devcu.com/donate/
  *
  * @brief       BitTracker Category API
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4x
+ * @package     Invision Community Suite 4.4.10
  * @subpackage	BitTracker
- * @version     2.1.0 RC 1
+ * @version     2.2.0 Final
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     10 MAR 2020
+ * @Updated     29 AUG 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -81,8 +81,6 @@ class _categories extends \IPS\Node\Api\NodeController
 	 * @apiparam	int|null	parent					The ID number of the parent the category should be created in. NULL for root.
 	 * @apiparam	int			moderation				Files must be approved?
 	 * @apiparam	int			moderation_edits		New versions must be re-approved?
-	 * @apiparam	int			allownfo				Allow NFO?
-	 * @apiparam	int			reqnfo					Require NFO?
 	 * @apiparam	int			allowss					Allow screenshots?
 	 * @apiparam	int			reqss					Require screenshots?
 	 * @apiparam	int			comments				Allow comments?
@@ -111,8 +109,6 @@ class _categories extends \IPS\Node\Api\NodeController
 	 * @apiparam	int|null	parent					The ID number of the parent the category should be created in. NULL for root.
 	 * @apiparam	int			moderation				Files must be approved?
 	 * @apiparam	int			moderation_edits		New versions must be re-approved?
-	 * @apiparam	int			allownfo				Allow NFO?
-	 * @apiparam	int			reqnfo					Require NFO?
 	 * @apiparam	int			allowss					Allow screenshots?
 	 * @apiparam	int			reqss					Require screenshots?
 	 * @apiparam	int			comments				Allow comments?
@@ -171,7 +167,7 @@ class _categories extends \IPS\Node\Api\NodeController
 
 		$category->parent = (int) \IPS\Request::i()->parent?: 0;
 
-		foreach ( array( 'moderation', 'moderation_edits', 'allownfo', 'reqnfo', 'allowss', 'reqss', 'comments', 'comment_moderation', 'reviews', 'reviews_mod', 'reviews_bitracker' ) as $k )
+		foreach ( array( 'moderation', 'moderation_edits', 'allowss', 'reqss', 'comments', 'comment_moderation', 'reviews', 'reviews_mod', 'reviews_bitracker' ) as $k )
 		{
 			if ( isset( \IPS\Request::i()->$k ) )
 			{
