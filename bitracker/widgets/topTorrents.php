@@ -1,19 +1,19 @@
 <?php
 /**
  *     Support this Project... Keep it free! Become an Open Source Patron
- *                       https://www.patreon.com/devcu
+ *                      https://www.devcu.com/donate/
  *
  * @brief       BitTracker topTorrents Widget
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4x
+ * @package     Invision Community Suite 4.4.10
  * @subpackage	BitTracker
- * @version     2.1.0 RC 1
+ * @version     2.2.0 Final
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     16 MAR 2020
+ * @Updated     29 AUG 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -29,6 +29,7 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see http://www.gnu.org/licenses/
  */
+ 
 namespace IPS\bitracker\widgets;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
@@ -120,7 +121,7 @@ class _topTorrents extends \IPS\Widget\PermissionCache
 			$ids	= array();
 			$cases	= array();
 
-			foreach( \IPS\Db::i()->select( 'dfid, COUNT(*) AS bitracker', 'bitracker_downloads', $where, 'bitracker DESC', isset( $this->configuration['number_to_show'] ) ? $this->configuration['number_to_show'] : 5, array( 'dfid' ) )->join( 'bitracker_torrents', 'dfid=file_id' ) as $tracker )
+			foreach( \IPS\Db::i()->select( 'dfid, count(*) AS bitracker', 'bitracker_downloads', $where, 'bitracker DESC', isset( $this->configuration['number_to_show'] ) ? $this->configuration['number_to_show'] : 5, array( 'dfid' ) )->join( 'bitracker_torrents', 'dfid=file_id' ) as $tracker )
 			{
 				$ids[]		= $tracker['dfid'];
 				$cases[]	= "WHEN file_id={$tracker['dfid']} THEN {$tracker['bitracker']}";
