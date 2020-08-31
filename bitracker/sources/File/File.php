@@ -1,19 +1,19 @@
 <?php
 /**
  *     Support this Project... Keep it free! Become an Open Source Patron
- *                       https://www.patreon.com/devcu
+ *                      https://www.devcu.com/donate/
  *
  * @brief       BitTracker File Model
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4x
+ * @package     Invision Community Suite 4.4.10
  * @subpackage	BitTracker
- * @version     2.1.0 RC 1
+ * @version     2.2.0 Final
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     16 MAR 2020
+ * @Updated     31 AUG 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -158,7 +158,6 @@ class _File extends \IPS\Content\Item implements
 	{
 		$return = parent::basicDataColumns();
 		$return[] = 'file_primary_screenshot';
-		$return[] = 'file_nfo';
 		$return[] = 'file_version';
 		$return[] = 'file_torrents';
 		$return[] = 'file_cost';
@@ -1869,33 +1868,15 @@ class _File extends \IPS\Content\Item implements
 			{
 				foreach ( \IPS\Db::i()->select( '*', 'bitracker_filebackup', array( 'b_fileid=?', $this->id ), 'b_backup ASC', $count - $category->versioning + 1 ) as $backUp )
 				{
-					foreach ( \IPS\Db::i()->select( '*', 'bitracker_torrents_records', \IPS\Db::i()->in( 'record_id', explode( ',', $backUp['b_records'] ) ) ) as $k => $file )
+					foreach ( \IPS\Db::i()->select( '*', 'bitracker_files_records', \IPS\Db::i()->in( 'record_id', explode( ',', $backUp['b_records'] ) ) ) as $k => $file )
 					{
-//						try
-//						{
-//							if ( !\in_array( $file['record_location'], $locations ) )
-//							{
-//								$file = \IPS\File::get( $file['record_type'] == 'upload' ? 'bitracker_Torrents' : 'bitracker_Screenshots', $file['record_location'] )->delete();
-//							}
-//						}
 						try
 						{
 							if ( !\in_array( $file['record_location'], $locations ) )
 							{
-                             if ( $record['record_type'] == 'upload' ) 
-                               {
-                                   $file['record_type'] = \IPS\File::get( 'bitracker_Torrents', $file['record_location'] )->delete();
-                               }
-                                 elseif ( $file['record_type'] == 'nfoupload' ) 
-                               {
-                                   $file['record_type'] = \IPS\File::get( 'bitracker_Nfo', $file['record_location'] )->delete();
-                               }
-                                 elseif ( $file['record_type'] == 'ssupload' ) 
-                               {
-                                   $file['record_type'] = \IPS\File::get( 'bitracker_Screenshots', $file['record_location'] )->delete();
-                               }
-						 }
-					}
+								$file = \IPS\File::get( $file['record_type'] == 'upload' ? 'bitracker_Torrents' : 'bitracker_Screenshots', $file['record_location'] )->delete();
+							}
+						}
 						catch ( \Exception $e ) { }
 
 						if( $file['record_type'] == 'ssupload' )
@@ -2360,7 +2341,6 @@ class _File extends \IPS\Content\Item implements
 	 * @apiresponse	string							version				Current version number
 	 * @apiresponse	string							changelog			Description of what changed between this version and the previous one
 	 * @apiresponse	[\IPS\File]						files				The files
-	 * @apiresponse	[\IPS\File]						nfo				The nfo
 	 * @apiresponse	[\IPS\File]						screenshots			Screenshots
 	 * @apiresponse	\IPS\File						primaryScreenshot	The primary screenshot
 	 * @apiresponse	int								bitracker			Number of downloads
@@ -2390,9 +2370,6 @@ class _File extends \IPS\Content\Item implements
 			'files'				=> array_values( array_map( function( $file ) use ( $authorizedMember ) {
 				return $file->apiOutput( $authorizedMember );
 			}, iterator_to_array( $this->files( $backup ? $backup['b_id'] : NULL ) ) ) ),
-			'nfo'		=> array_values( array_map( function( $file ) use ( $authorizedMember ) {
-				return $file->apiOutput( $authorizedMember );
-			}, iterator_to_array( $this->nfo( 0, TRUE, $backup ? $backup['b_id'] : NULL ) ) ) ),
 			'screenshots'		=> array_values( array_map( function( $file ) use ( $authorizedMember ) {
 				return $file->apiOutput( $authorizedMember );
 			}, iterator_to_array( $this->screenshots( 0, TRUE, $backup ? $backup['b_id'] : NULL ) ) ) ),
