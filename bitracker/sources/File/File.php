@@ -1868,7 +1868,7 @@ class _File extends \IPS\Content\Item implements
 			{
 				foreach ( \IPS\Db::i()->select( '*', 'bitracker_filebackup', array( 'b_fileid=?', $this->id ), 'b_backup ASC', $count - $category->versioning + 1 ) as $backUp )
 				{
-					foreach ( \IPS\Db::i()->select( '*', 'bitracker_files_records', \IPS\Db::i()->in( 'record_id', explode( ',', $backUp['b_records'] ) ) ) as $k => $file )
+					foreach ( \IPS\Db::i()->select( '*', 'bitracker_torrents_records', \IPS\Db::i()->in( 'record_id', explode( ',', $backUp['b_records'] ) ) ) as $k => $file )
 					{
 						try
 						{
