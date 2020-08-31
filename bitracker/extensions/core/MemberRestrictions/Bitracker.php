@@ -70,10 +70,10 @@ class _Bitracker extends \IPS\core\MemberACPProfile\Restriction
 			$return['bit_block_submissions'] = array( 'old' => $this->member->members_bitoptions['bit_block_submissions'], 'new' => !$values['bit_block_submissions'] );
 			$this->member->bit_block_submissions = !$values['bit_block_submissions'];	
 		}
-		
+
 		return $return;
 	}
-	
+
 	/**
 	 * What restrictions are active on the account?
 	 *

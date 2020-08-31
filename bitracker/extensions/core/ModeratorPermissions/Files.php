@@ -78,7 +78,7 @@ class _Files
 	 */
 	public function onChange( $moderator, $changed )
 	{
-		
+
 	}
 	
 	/**
@@ -89,6 +89,6 @@ class _Files
 	 */
 	public function onDelete( $moderator )
 	{
-		
+
 	}
 }

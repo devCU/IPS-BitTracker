@@ -57,7 +57,7 @@ class _Bitracker
 		\IPS\Db::i()->update( 'bitracker_torrents', array( 'file_approver' => $member->member_id ), array( 'file_approver=?', $member2->member_id ) );
 		\IPS\Db::i()->delete( 'bitracker_sessions', array( 'dsess_mid=?', $member2->member_id ) );
 	}
-	
+
 	/**
 	 * Member is deleted
 	 *
