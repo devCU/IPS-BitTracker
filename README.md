@@ -5,7 +5,7 @@
 [![Build](https://img.shields.io/badge/Build-Stable-yellow.svg)](https://www.devcu.com/devcu-tracker/)
 [![Status](https://img.shields.io/badge/Status-FINAL-inactive.svg)](https://www.devcu.com/devcu-tracker/)
 [![Development](https://img.shields.io/badge/Development-Active-success.svg)](https://www.devcu.com/devcu-tracker/)
-[![Platform](https://img.shields.io/badge/Platform-IPS4.4+-blue.svg)](https://www.devcu.com/devcu-tracker/)
+[![Platform](https://img.shields.io/badge/Platform-IPS4.4x-blue.svg)](https://www.devcu.com/devcu-tracker/)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/GaalexxC/IPS-4.4-BitTracker/master.svg)](https://www.devcu.com/devcu-tracker/)
 
 ```diff
@@ -45,11 +45,11 @@
 
 ## ** Updated Notes **
 
-08/29/20
+08/31/20
 
 - NEW version 2.2.0 Stable final release for IPS 4.4.10, a 4.5 port will be created when ready to, there shouldnt be many if any chnages for 4.5
 - Only devCU supporters will have access to the release betas for testing this upcoming week
-- Stable release expected sometime in August 2020
+- Stable release expected mid September 2020
 - IPS 4.4.10 Development environment 
    - Ubuntu 20.04.1 Server
    - Nginx 1.19.1
