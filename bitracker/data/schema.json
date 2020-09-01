@@ -445,20 +445,6 @@
                 "values": [],
                 "zerofill": false
             },
-            "ctypesnfo": {
-                "allow_null": true,
-                "auto_increment": false,
-                "binary": false,
-                "comment": "JSON array of allowed file extensions or NULL for no restriction.",
-                "decimals": null,
-                "default": null,
-                "length": 0,
-                "name": "ctypesnfo",
-                "type": "TEXT",
-                "unsigned": false,
-                "values": [],
-                "zerofill": false
-            },
             "csortorder": {
                 "allow_null": false,
                 "auto_increment": false,
@@ -479,23 +465,9 @@
                 "binary": false,
                 "comment": "Maximum file size",
                 "decimals": null,
-                "default": "512",
+                "default": "2048",
                 "length": 10,
                 "name": "cmaxfile",
-                "type": "INT",
-                "unsigned": true,
-                "values": [],
-                "zerofill": false
-            },
-            "cmaxnfo": {
-                "allow_null": true,
-                "auto_increment": false,
-                "binary": false,
-                "comment": "Maximum nfo size",
-                "decimals": null,
-                "default": "512000",
-                "length": 10,
-                "name": "cmaxnfo",
                 "type": "INT",
                 "unsigned": true,
                 "values": [],
@@ -507,7 +479,7 @@
                 "binary": false,
                 "comment": "Maximum screenshot size",
                 "decimals": null,
-                "default": "512000",
+                "default": "2048",
                 "length": 10,
                 "name": "cmaxss",
                 "type": "INT",
@@ -703,11 +675,9 @@
                 "ctags_noprefixes": "0",
                 "ctags_predefined": null,
                 "cbitoptions": "1",
-                "ctypes": "\"torrent\"",
-                "ctypesnfo": "\"nfo\"",
+                "ctypes": "torrent",
                 "csortorder": "updated",
                 "cmaxfile": "2048",
-                "cmaxnfo": "2048",
                 "cmaxss": "4096",
                 "cmaxdims": "",
                 "cversioning": null,
@@ -1579,20 +1549,6 @@
                 "allow_null": false,
                 "default": "1",
                 "comment": "",
-                "unsigned": false,
-                "zerofill": false,
-                "auto_increment": false,
-                "binary": false
-            },
-            "file_nfo": {
-                "name": "file_nfo",
-                "type": "INT",
-                "length": 11,
-                "decimals": null,
-                "values": null,
-                "allow_null": true,
-                "default": null,
-                "comment": "The record_id of the nfo",
                 "unsigned": false,
                 "zerofill": false,
                 "auto_increment": false,
@@ -2889,14 +2845,13 @@
                 "type": "key",
                 "name": "field_14",
                 "length": [
-                    191
+                    null
                 ],
                 "columns": [
                     "field_14"
                 ]
             }
-        },
-        "collation": "utf8mb4_unicode_ci"
+        }
     },
     "bitracker_sessions": {
         "name": "bitracker_sessions",
