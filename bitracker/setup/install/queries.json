@@ -120,36 +120,6 @@
 	"9": {
 		"method": "addColumn",
 		"params": [
-			"core_groups",
-			{
-				"name": "bit_linked_nfo",
-				"type": "TINYINT",
-				"length": 1,
-				"null": false,
-				"default": 0,
-				"comment": "Can submit NFO Links?",
-				"unsigned": true
-			}
-		]
-	},
-	"10": {
-		"method": "addColumn",
-		"params": [
-			"core_groups",
-			{
-				"name": "bit_import_nfo",
-				"type": "TINYINT",
-				"length": 1,
-				"null": false,
-				"default": 0,
-				"comment": "Can import NFO from a path?",
-				"unsigned": true
-			}
-		]
-	},
-	"11": {
-		"method": "addColumn",
-		"params": [
 			"core_members",
 			{
 				"name": "bit_block_submissions",
@@ -162,7 +132,7 @@
 			}
 		]
 	},
-	"12": {
+	"10": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -177,7 +147,7 @@
 			}
 		]
 	},
-	"13": {
+	"11": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -192,7 +162,7 @@
 			}
 		]
 	},
-	"14": {
+	"12": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -207,7 +177,7 @@
 			}
 		]
 	},
-	"15": {
+	"13": {
 		"method": "insert",
 		"params": [
 			"core_permission_index",
@@ -224,7 +194,7 @@
 			}
 		]
 	},
-	"16": {
+	"14": {
 		"method": "insert",
 		"params": [
 			"core_permission_index",
@@ -241,7 +211,7 @@
 			}
 		]
 	},
-	"17": {
+	"15": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -255,7 +225,7 @@
 			}
 		]
 	},
-	"18": {
+	"16": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -269,7 +239,7 @@
 			}
 		]
 	},
-	"19": {
+	"17": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -283,7 +253,7 @@
 			}
 		]
 	},
-	"20": {
+	"18": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -297,7 +267,7 @@
 			}
 		]
 	},
-	"21": {
+	"19": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -311,7 +281,7 @@
 			}
 		]
 	},
-	"22": {
+	"20": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -325,7 +295,7 @@
 			}
 		]
 	},
-	"23": {
+	"21": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -339,7 +309,7 @@
 			}
 		]
 	},
-	"24": {
+	"22": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -353,7 +323,7 @@
 			}
 		]
 	},
-	"25": {
+	"23": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -367,7 +337,7 @@
 			}
 		]
 	},
-	"26": {
+	"24": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -381,7 +351,7 @@
 			}
 		]
 	},
-	"27": {
+	"25": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -395,7 +365,7 @@
 			}
 		]
 	},
-	"28": {
+	"26": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
@@ -409,7 +379,7 @@
 			}
 		]
 	},
-	"29": {
+	"27": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -424,7 +394,7 @@
 			}
 		]
 	},
-	"30": {
+	"28": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -438,7 +408,7 @@
 			}
 		]
 	},
-	"31": {
+	"29": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -452,7 +422,7 @@
 			}
 		]
 	},
-	"32": {
+	"30": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -466,7 +436,7 @@
 			}
 		]
 	},
-	"33": {
+	"31": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -480,7 +450,7 @@
 			}
 		]
 	},
-	"34": {
+	"32": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -494,7 +464,7 @@
 			}
 		]
 	},
-	"35": {
+	"33": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -508,7 +478,7 @@
 			}
 		]
 	},
-	"36": {
+	"34": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -522,7 +492,7 @@
 			}
 		]
 	},
-	"37": {
+	"35": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -536,7 +506,7 @@
 			}
 		]
 	},
-	"38": {
+	"36": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -550,7 +520,7 @@
 			}
 		]
 	},
-	"39": {
+	"37": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -564,7 +534,7 @@
 			}
 		]
 	},
-	"40": {
+	"38": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -578,7 +548,7 @@
 			}
 		]
 	},
-	"41": {
+	"39": {
 		"method": "addColumn",
 		"params": [
 			"core_members",
@@ -592,7 +562,7 @@
 			}
 		]
 	},
-	"42": {
+	"40": {
 		"method": "addColumn",
 		"params": [
 			"core_groups",
