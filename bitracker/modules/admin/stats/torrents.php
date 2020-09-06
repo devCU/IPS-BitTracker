@@ -1,16 +1,19 @@
 <?php
 /**
+ *     Support this Project... Keep it free! Become an Open Source Patron
+ *                      https://www.devcu.com/donate/
+ *
  * @brief       BitTracker Application Class
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.2x
+ * @package     Invision Community Suite 4.4.10
  * @subpackage	BitTracker
- * @version     1.0.0 Beta 1
- * @source      https://github.com/GaalexxC/IPS-4.2-BitTracker
- * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/ips4bt/
+ * @version     2.2.0 Final
+ * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     19 FEB 2018
+ * @Updated     06 SEP 2020
  *
  *                    GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -30,7 +33,7 @@
 namespace IPS\bitracker\modules\admin\stats;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
-if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
+if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
 {
 	header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden' );
 	exit;
@@ -59,7 +62,7 @@ class _torrents extends \IPS\Dispatcher\Controller
 	 */
 	protected function manage()
 	{
-		$chart = new \IPS\Helpers\Chart\Database( \IPS\Http\Url::internal( "app=bitracker&module=stats&controller=bitracker" ), 'bitracker_downloads', 'dtime', '', array(
+		$chart = new \IPS\Helpers\Chart\Database( \IPS\Http\Url::internal( "app=bitracker&module=stats&controller=torrents" ), 'bitracker_downloads', 'dtime', '', array(
 			'backgroundColor' 	=> '#ffffff',
 			'colors'			=> array( '#10967e', '#ea7963', '#de6470', '#6b9dde', '#b09be4', '#eec766', '#9fc973', '#e291bf', '#55c1a6', '#5fb9da' ),
 			'hAxis'				=> array( 'gridlines' => array( 'color' => '#f5f5f5' ) ),
@@ -73,12 +76,13 @@ class _torrents extends \IPS\Dispatcher\Controller
 		$chart->tableParsers = array(
 			'dmid'	=> function( $val )
 			{
-				try
+				$member = \IPS\Member::load( $val );
+
+				if( $member->member_id )
 				{
-					$member = \IPS\Member::load( $val );
-					return "<a href='" . \IPS\Http\Url::internal( "app=bitracker&module=stats&controller=member&do=bitracker&id={$member->member_id}" ) . "'>{$member->name}</a>";
+					return \IPS\Theme::i()->getTemplate( 'global', 'core', 'global' )->basicUrl( $member->url(), TRUE, $member->name );
 				}
-				catch ( \OutOfRangeException $e )
+				else
 				{
 					return \IPS\Member::loggedIn()->language()->addToStack('deleted_member');
 				}
@@ -88,7 +92,7 @@ class _torrents extends \IPS\Dispatcher\Controller
 				try
 				{
 					$file = \IPS\bitracker\File::load( $val );
-					return "<a href='{$file->url()}' target='_blank'>{$file->name}</a>";
+					return \IPS\Theme::i()->getTemplate( 'global', 'core', 'global' )->basicUrl( $file->url(), TRUE, $file->name );
 				}
 				catch ( \OutOfRangeException $e )
 				{
@@ -109,8 +113,7 @@ class _torrents extends \IPS\Dispatcher\Controller
 			},
 			'dip'	=> function( $val )
 			{
-				$url = \IPS\Http\Url::internal( "app=core&module=members&controller=ip&ip={$val}&tab=bitracker_BitrackerLog" );
-				return "<a href='{$url}'>{$val}</a>";
+				return \IPS\Theme::i()->getTemplate( 'global', 'core', 'global' )->basicUrl( \IPS\Http\Url::internal( "app=core&module=members&controller=ip&ip={$val}&tab=bitracker_BitrackerLog" ), FALSE, $val );
 			}
 		);
 		
