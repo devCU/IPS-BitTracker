@@ -45,8 +45,9 @@
 
 ## ** Updated Notes **
 
-08/31/20
+09/05/20
 
+- Beta testing begins this week if want to be part of it email me gary@devcu.com
 - NEW version 2.2.0 Stable final release for IPS 4.4.10, a 4.5 port will be created when ready to, there shouldnt be many if any chnages for 4.5
 - Only devCU supporters will have access to the release betas for testing this upcoming week
 - Stable release expected mid September 2020
