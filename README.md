@@ -45,7 +45,7 @@
 
 ## ** Updated Notes **
 
-09/05/20
+09/06/20
 ```diff
 - Beta testing begins this week if you want to be part of it email me gary@devcu.com
 - The base files for the tracker IE announce, scrape, bencode, schema.json etc. are not available yet in the repo. They are the cornerstone of beta testing and when I am confident they are doing what they are supposed to do they will be added along with the complete list of data directory files for public use.
