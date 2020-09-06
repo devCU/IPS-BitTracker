@@ -1,16 +1,19 @@
 <?php
 /**
- * @brief       BitTracker Application Class
+ *     Support this Project... Keep it free! Become an Open Source Patron
+ *                      https://www.devcu.com/donate/
+ *
+ * @brief       BitTracker Categories Application Class
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.2x
+ * @package     Invision Community Suite 4.4.10
  * @subpackage	BitTracker
- * @version     1.0.0 Beta 1
- * @source      https://github.com/GaalexxC/IPS-4.2-BitTracker
- * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/ips4bt/
+ * @version     2.2.0 Final
+ * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     08 MAR 2018
+ * @Updated     05 SEP 2020
  *
  *                    GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -30,7 +33,7 @@
 namespace IPS\bitracker\modules\admin\configure;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
-if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
+if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
 {
 	header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden' );
 	exit;
@@ -81,6 +84,11 @@ class _categories extends \IPS\Node\Controller
 		}
 	}
 
+	/**
+	 * Show the add/edit form
+	 *
+	 * @return void
+	 */
 	protected function form()
 	{
 		parent::form();
@@ -93,5 +101,17 @@ class _categories extends \IPS\Node\Controller
 		{
 			\IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('add_category');
 		}
+	}
+
+	/**
+	 * Rebuild the Downloads Files Topics
+	 *
+	 * @return void
+	 */
+	public function rebuildTopicContent()
+	{
+		$class = $this->nodeClass;
+		\IPS\Task::queue( 'core', 'ResyncTopicContent', array( 'class' => $class, 'categoryId' => \IPS\Request::i()->id ), 3, array( 'categoryId' ) );
+		\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=configure&controller=categories&do=form&id=' . \IPS\Request::i()->id ), \IPS\Member::loggedIn()->language()->addToStack('rebuilding_stuff', FALSE, array( 'sprintf' => array( \IPS\Member::loggedIn()->language()->addToStack( 'category_forums_integration' ) ) ) ) );
 	}
 }
