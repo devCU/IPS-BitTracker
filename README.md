@@ -59,7 +59,7 @@
    - PHP 7.4.9
    - Percona MySQL 8.0.20-11
    - Redis Server 5.0.7
-- [![Requirements and Recommendations](https://github.com/devCU/IPS-4.4-BitTracker/issues/7)
+- [Requirements and Recommendations](https://github.com/devCU/IPS-4.4-BitTracker/issues/7)
 
 
 ## License
