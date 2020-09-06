@@ -47,7 +47,7 @@
 
 09/05/20
 ```diff
-- Beta testing begins this week if want to be part of it email me gary@devcu.com
+- Beta testing begins this week if you want to be part of it email me gary@devcu.com
 - The base files for the tracker IE announce, scrape, bencode, schema.json etc. are not available yet in the repo. They are the cornerstone of beta testing and when I am confident they are doing what they are supposed to do they will be added along with the complete list of data directory files for public use.
 ```
 - NEW version 2.2.0 Stable final release for IPS 4.4.10, a 4.5 port will be created when ready to, there shouldnt be many if any chnages for 4.5
