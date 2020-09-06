@@ -1,19 +1,19 @@
 <?php
 /**
  *     Support this Project... Keep it free! Become an Open Source Patron
- *                       https://www.patreon.com/devcu
+ *                      https://www.devcu.com/donate/
  *
  * @brief       BitTracker Overview Controller
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4x
+ * @package     Invision Community Suite 4.4.10
  * @subpackage	BitTracker
- * @version     2.0.1 Beta Build
+ * @version     2.2.0 Final
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     28 JUL 2019
+ * @Updated     05 SEP 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -85,12 +85,13 @@ class _overview extends \IPS\Dispatcher\Controller
 		$chart->tableParsers = array(
 			'dmid'	=> function( $val )
 			{
-				try
+				$member = \IPS\Member::load( $val );
+
+				if( $member->member_id )
 				{
-					$member = \IPS\Member::load( $val );
-					return "<a href='" . \IPS\Http\Url::internal( "app=bitracker&module=stats&controller=member&do=bitracker&id={$member->member_id}" ) . "'>{$member->name}</a>";
+					return \IPS\Theme::i()->getTemplate( 'global', 'core', 'global' )->basicUrl( $member->url(), TRUE, $member->name );
 				}
-				catch ( \OutOfRangeException $e )
+				else
 				{
 					return \IPS\Member::loggedIn()->language()->addToStack('deleted_member');
 				}
@@ -100,7 +101,7 @@ class _overview extends \IPS\Dispatcher\Controller
 				try
 				{
 					$file = \IPS\bitracker\File::load( $val );
-					return "<a href='{$file->url()}' target='_blank'>{$file->name}</a>";
+					return \IPS\Theme::i()->getTemplate( 'global', 'core', 'global' )->basicUrl( $file->url(), TRUE, $file->name );
 				}
 				catch ( \OutOfRangeException $e )
 				{
@@ -121,8 +122,7 @@ class _overview extends \IPS\Dispatcher\Controller
 			},
 			'dip'	=> function( $val )
 			{
-				$url = \IPS\Http\Url::internal( "app=core&module=members&controller=ip&ip={$val}&tab=bitracker_BitrackerLog" );
-				return "<a href='{$url}'>{$val}</a>";
+				return \IPS\Theme::i()->getTemplate( 'global', 'core', 'global' )->basicUrl( \IPS\Http\Url::internal( "app=core&module=members&controller=ip&ip={$val}&tab=bitracker_BitrackerLog" ), FALSE, $val );
 			}
 		);
 		
@@ -133,8 +133,8 @@ class _overview extends \IPS\Dispatcher\Controller
 		
 		/* Basic stats */
 		$data = array(
-			'total_disk_transfer'			=> (int) \IPS\Db::i()->select( 'SUM(record_size)', 'bitracker_torrents_records' )->first(),
-			'total_torrents'				=> (int) \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_torrents' )->first(),
+			'total_disk_transfer'		=> (int) \IPS\Db::i()->select( 'SUM(record_size)', 'bitracker_torrents_records' )->first(),
+			'total_torrents'			=> (int) \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_torrents' )->first(),
 			'total_peers'				=> (int) \IPS\Db::i()->select( 'COUNT(*)', 'bitracker_torrent_peers' )->first(),
 			'total_views'				=> (int) \IPS\Db::i()->select( 'SUM(file_views)', 'bitracker_torrents' )->first(),
 			'total_downloads'			=> (int) \IPS\Db::i()->select( 'SUM(file_torrents)', 'bitracker_torrents' )->first(),
@@ -145,9 +145,9 @@ class _overview extends \IPS\Dispatcher\Controller
 		/* Specific files (will fail if no files yet) */
 		try
 		{
-			$data['largest_file'] = \IPS\bitracker\File::constructFromData( \IPS\Db::i()->select( '*', 'bitracker_torrents', NULL, 'file_size DESC', 2 )->first() );
-			$data['most_viewed_file'] = \IPS\bitracker\File::constructFromData( \IPS\Db::i()->select( '*', 'bitracker_torrents', NULL, 'file_views DESC', 2 )->first() );
-			$data['most_downloaded_file'] = \IPS\bitracker\File::constructFromData( \IPS\Db::i()->select( '*', 'bitracker_torrents', NULL, 'file_torrents DESC', 2 )->first() );
+			$data['largest_file'] = \IPS\bitracker\File::constructFromData( \IPS\Db::i()->select( '*', 'bitracker_torrents', NULL, 'file_size DESC', 1 )->first() );
+			$data['most_viewed_file'] = \IPS\bitracker\File::constructFromData( \IPS\Db::i()->select( '*', 'bitracker_torrents', NULL, 'file_views DESC', 1 )->first() );
+			$data['most_downloaded_file'] = \IPS\bitracker\File::constructFromData( \IPS\Db::i()->select( '*', 'bitracker_torrents', NULL, 'file_torrents DESC', 1 )->first() );
 		}
 		catch ( \Exception $e ) { }
 		
