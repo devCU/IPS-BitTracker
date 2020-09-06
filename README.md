@@ -40,7 +40,7 @@
 
 #### Full featured bit torrent tracker application for IPS 4.4x Community Suite focusing on privacy and security
 
-<img src="https://www.devcu.com/mediasrc/userSettings.PNG?V=1.8" width="30%"></img>
+<img src="https://www.devcu.com/mediasrc/userSettings.PNG?V=1.8" width="40%"></img>
 <img src="https://www.devcu.com/mediasrc/ACPoverview.PNG?V=1.7" width="40%"></img>
 
 ## ** Updated Notes **
