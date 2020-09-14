@@ -425,7 +425,7 @@ class _submit extends \IPS\Dispatcher\Controller
 				else
 				{
 					/* This is a bulk file, so we want to go on to the next step */
-					return array( 'category' => $category->_id, 'postKey' => \IPS\Request::i()->postKey, 'files' => $files, 'url_files' => $linkedFiles, 'nfo' => $nfo, 'url_nfo' => $linkedNfo, 'screenshots' => $screenshots, 'url_screenshots' => $linkedScreenshots );
+					return array( 'category' => $category->_id, 'postKey' => \IPS\Request::i()->postKey, 'files' => $files, 'url_files' => $linkedFiles, 'screenshots' => $screenshots, 'url_screenshots' => $linkedScreenshots );
 				}
 			}
 			
