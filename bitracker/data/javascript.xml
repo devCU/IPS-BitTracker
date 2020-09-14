@@ -693,11 +693,10 @@ clipboard.on('success', function(e) {
 		
 	});
 }(jQuery, _));]]></file>
- <file javascript_app="downloads" javascript_location="front" javascript_path="controllers/view" javascript_name="ips.view.download.js" javascript_type="controller" javascript_version="104063" javascript_position="1000150">/**
-;( function($, _, undefined){
+ <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/view" javascript_name="ips.view.bitracker.js" javascript_type="controller" javascript_version="20200" javascript_position="1000050">;( function($, _, undefined){
 	&quot;use strict&quot;;
 
-	ips.controller.register('downloads.front.view.download', {
+	ips.controller.register('bitracker.front.portal.view.download', {
 
 		initialize: function () {
 			this.on( 'click', '[data-action=&quot;dialogClose&quot;]', this.closeDialog );
