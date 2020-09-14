@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     29 AUG 2020
+ * @Updated     14 SEP 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -87,7 +87,7 @@ class _categories extends \IPS\Node\Api\NodeController
 	 * @apiparam	int			comments_moderation		Comments must be approved?
 	 * @apiparam	int			reviews					Allow reviews?
 	 * @apiparam	int			reviews_mod				Reviews must be approved?
-	 * @apiparam	int			reviews_bitracker		Files must be downloaded before a review can be left?
+	 * @apiparam	int			reviews_bitrack 		Files must be downloaded before a review can be left?
 	 * @apiparam	object		permissions			An object with the keys as permission options (view, read, add, download, reply, review) and values as permissions to use (which may be * to grant access to all groups, or an array of group IDs to permit access to)
 	 * @return		\IPS\bitracker\Category
 	 * @throws		1D365/2	NO_TITLE	A title for the category must be supplied
@@ -115,8 +115,8 @@ class _categories extends \IPS\Node\Api\NodeController
 	 * @apiparam	int			comments_moderation		Comments must be approved?
 	 * @apiparam	int			reviews					Allow reviews?
 	 * @apiparam	int			reviews_mod				Reviews must be approved?
-	 * @apiparam	int			reviews_bitracker	Files must be downloaded before a review can be left?
-	 * @apiparam	object		permissions			An object with the keys as permission options (view, read, add, download, reply, review) and values as permissions to use (which may be * to grant access to all groups, or an array of group IDs to permit access to)
+	 * @apiparam	int			reviews_bitrack     	Files must be downloaded before a review can be left?
+	 * @apiparam	object		permissions			    An object with the keys as permission options (view, read, add, download, reply, review) and values as permissions to use (which may be * to grant access to all groups, or an array of group IDs to permit access to)
 	 * @param		int		$id			ID Number
 	 * @return		\IPS\bitracker\Category
 	 */
@@ -167,7 +167,7 @@ class _categories extends \IPS\Node\Api\NodeController
 
 		$category->parent = (int) \IPS\Request::i()->parent?: 0;
 
-		foreach ( array( 'moderation', 'moderation_edits', 'allowss', 'reqss', 'comments', 'comment_moderation', 'reviews', 'reviews_mod', 'reviews_bitracker' ) as $k )
+		foreach ( array( 'moderation', 'moderation_edits', 'allowss', 'reqss', 'comments', 'comment_moderation', 'reviews', 'reviews_mod', 'reviews_bitrack' ) as $k )
 		{
 			if ( isset( \IPS\Request::i()->$k ) )
 			{

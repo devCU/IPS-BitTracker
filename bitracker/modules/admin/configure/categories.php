@@ -61,7 +61,7 @@ class _categories extends \IPS\Node\Controller
 	}
 	
 	/**
-	 * RecalculateTorrent Downloads
+	 * Recalculate Torrent Downloads
 	 *
 	 * @return	void
 	 */
