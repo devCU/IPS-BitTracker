@@ -1,11 +1,11 @@
 {
-    "Forums": {
-        "type": "C",
-        "class": "\\IPS\\forums\\Forum"
-    },
     "nexusPackage": {
         "type": "C",
         "class": "\\IPS\\nexus\\Package\\Item"
+    },
+    "Forums": {
+        "type": "C",
+        "class": "\\IPS\\forums\\Forum"
     },
     "Forum": {
         "type": "C",
