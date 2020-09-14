@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     31 AUG 2020
+ * @Updated     14 SEP 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -136,7 +136,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 				'submitter_log'			=> 128,	// File submitter can view downloads logs?
 				'reviews'				=> 256,	// Enable reviews?
 				'reviews_mod'			=> 512,	// Reviews must be approved?
-				'reviews_download'		=> 1024,// Users must have downloaded before they can review?
+				'reviews_bitrack'		=> 1024,// Users must have downloaded before they can review?
 				'topic_delete'			=> 2048,// Delete created topics when file is deleted?
 				'topic_screenshot'		=> 4096,// Include screenshot with topics?
 			)
