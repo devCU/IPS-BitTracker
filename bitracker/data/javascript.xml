@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <javascript app="bitracker">
- <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/bitracker" javascript_name="ips.bitracker.main.js" javascript_type="controller" javascript_version="20100" javascript_position="1000200">;( function($, _, undefined){
+ <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/bitracker" javascript_name="ips.bitracker.main.js" javascript_type="controller" javascript_version="20200" javascript_position="1000200">;( function($, _, undefined){
 	&quot;use strict&quot;;
 
 	ips.controller.register('bitracker.front.portal.main', {
@@ -51,7 +51,7 @@
 		}
 	});
 }(jQuery, _));</file>
- <file javascript_app="bitracker" javascript_location="admin" javascript_path="controllers/settings" javascript_name="ips.settings.settings.js" javascript_type="controller" javascript_version="20100" javascript_position="1000050">;( function($, _, undefined){
+ <file javascript_app="bitracker" javascript_location="admin" javascript_path="controllers/settings" javascript_name="ips.settings.settings.js" javascript_type="controller" javascript_version="20200" javascript_position="1000050">;( function($, _, undefined){
 	&quot;use strict&quot;;
 
 	ips.controller.register('bitracker.admin.settings.general.general', {
@@ -96,89 +96,20 @@
 
 	});
 }(jQuery, _));</file>
- <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/settings" javascript_name="clipboard.min.js" javascript_type="controller" javascript_version="20100" javascript_position="1000100"><![CDATA[/*!
+ <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/settings" javascript_name="clipboard.min.js" javascript_type="controller" javascript_version="20200" javascript_position="1000100"><![CDATA[/*!
  * clipboard.js v2.0.4
  * https://zenorocha.github.io/clipboard.js
  * 
  * Licensed MIT © Zeno Rocha
  */
 !function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.ClipboardJS=e():t.ClipboardJS=e()}(this,function(){return function(n){var o={};function r(t){if(o[t])return o[t].exports;var e=o[t]={i:t,l:!1,exports:{}};return n[t].call(e.exports,e,e.exports,r),e.l=!0,e.exports}return r.m=n,r.c=o,r.d=function(t,e,n){r.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:n})},r.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(r.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)r.d(n,o,function(t){return e[t]}.bind(null,o));return n},r.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return r.d(e,"a",e),e},r.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},r.p="",r(r.s=0)}([function(t,e,n){"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},i=function(){function o(t,e){for(var n=0;n<e.length;n++){var o=e[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}return function(t,e,n){return e&&o(t.prototype,e),n&&o(t,n),t}}(),a=o(n(1)),c=o(n(3)),u=o(n(4));function o(t){return t&&t.__esModule?t:{default:t}}var l=function(t){function o(t,e){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,o);var n=function(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}(this,(o.__proto__||Object.getPrototypeOf(o)).call(this));return n.resolveOptions(e),n.listenClick(t),n}return function(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}(o,c.default),i(o,[{key:"resolveOptions",value:function(){var t=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{};this.action="function"==typeof t.action?t.action:this.defaultAction,this.target="function"==typeof t.target?t.target:this.defaultTarget,this.text="function"==typeof t.text?t.text:this.defaultText,this.container="object"===r(t.container)?t.container:document.body}},{key:"listenClick",value:function(t){var e=this;this.listener=(0,u.default)(t,"click",function(t){return e.onClick(t)})}},{key:"onClick",value:function(t){var e=t.delegateTarget||t.currentTarget;this.clipboardAction&&(this.clipboardAction=null),this.clipboardAction=new a.default({action:this.action(e),target:this.target(e),text:this.text(e),container:this.container,trigger:e,emitter:this})}},{key:"defaultAction",value:function(t){return s("action",t)}},{key:"defaultTarget",value:function(t){var e=s("target",t);if(e)return document.querySelector(e)}},{key:"defaultText",value:function(t){return s("text",t)}},{key:"destroy",value:function(){this.listener.destroy(),this.clipboardAction&&(this.clipboardAction.destroy(),this.clipboardAction=null)}}],[{key:"isSupported",value:function(){var t=0<arguments.length&&void 0!==arguments[0]?arguments[0]:["copy","cut"],e="string"==typeof t?[t]:t,n=!!document.queryCommandSupported;return e.forEach(function(t){n=n&&!!document.queryCommandSupported(t)}),n}}]),o}();function s(t,e){var n="data-clipboard-"+t;if(e.hasAttribute(n))return e.getAttribute(n)}t.exports=l},function(t,e,n){"use strict";var o,r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},i=function(){function o(t,e){for(var n=0;n<e.length;n++){var o=e[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}return function(t,e,n){return e&&o(t.prototype,e),n&&o(t,n),t}}(),a=n(2),c=(o=a)&&o.__esModule?o:{default:o};var u=function(){function e(t){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,e),this.resolveOptions(t),this.initSelection()}return i(e,[{key:"resolveOptions",value:function(){var t=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{};this.action=t.action,this.container=t.container,this.emitter=t.emitter,this.target=t.target,this.text=t.text,this.trigger=t.trigger,this.selectedText=""}},{key:"initSelection",value:function(){this.text?this.selectFake():this.target&&this.selectTarget()}},{key:"selectFake",value:function(){var t=this,e="rtl"==document.documentElement.getAttribute("dir");this.removeFake(),this.fakeHandlerCallback=function(){return t.removeFake()},this.fakeHandler=this.container.addEventListener("click",this.fakeHandlerCallback)||!0,this.fakeElem=document.createElement("textarea"),this.fakeElem.style.fontSize="12pt",this.fakeElem.style.border="0",this.fakeElem.style.padding="0",this.fakeElem.style.margin="0",this.fakeElem.style.position="absolute",this.fakeElem.style[e?"right":"left"]="-9999px";var n=window.pageYOffset||document.documentElement.scrollTop;this.fakeElem.style.top=n+"px",this.fakeElem.setAttribute("readonly",""),this.fakeElem.value=this.text,this.container.appendChild(this.fakeElem),this.selectedText=(0,c.default)(this.fakeElem),this.copyText()}},{key:"removeFake",value:function(){this.fakeHandler&&(this.container.removeEventListener("click",this.fakeHandlerCallback),this.fakeHandler=null,this.fakeHandlerCallback=null),this.fakeElem&&(this.container.removeChild(this.fakeElem),this.fakeElem=null)}},{key:"selectTarget",value:function(){this.selectedText=(0,c.default)(this.target),this.copyText()}},{key:"copyText",value:function(){var e=void 0;try{e=document.execCommand(this.action)}catch(t){e=!1}this.handleResult(e)}},{key:"handleResult",value:function(t){this.emitter.emit(t?"success":"error",{action:this.action,text:this.selectedText,trigger:this.trigger,clearSelection:this.clearSelection.bind(this)})}},{key:"clearSelection",value:function(){this.trigger&&this.trigger.focus(),window.getSelection().removeAllRanges()}},{key:"destroy",value:function(){this.removeFake()}},{key:"action",set:function(){var t=0<arguments.length&&void 0!==arguments[0]?arguments[0]:"copy";if(this._action=t,"copy"!==this._action&&"cut"!==this._action)throw new Error('Invalid "action" value, use either "copy" or "cut"')},get:function(){return this._action}},{key:"target",set:function(t){if(void 0!==t){if(!t||"object"!==(void 0===t?"undefined":r(t))||1!==t.nodeType)throw new Error('Invalid "target" value, use a valid Element');if("copy"===this.action&&t.hasAttribute("disabled"))throw new Error('Invalid "target" attribute. Please use "readonly" instead of "disabled" attribute');if("cut"===this.action&&(t.hasAttribute("readonly")||t.hasAttribute("disabled")))throw new Error('Invalid "target" attribute. You can\'t cut text from elements with "readonly" or "disabled" attributes');this._target=t}},get:function(){return this._target}}]),e}();t.exports=u},function(t,e){t.exports=function(t){var e;if("SELECT"===t.nodeName)t.focus(),e=t.value;else if("INPUT"===t.nodeName||"TEXTAREA"===t.nodeName){var n=t.hasAttribute("readonly");n||t.setAttribute("readonly",""),t.select(),t.setSelectionRange(0,t.value.length),n||t.removeAttribute("readonly"),e=t.value}else{t.hasAttribute("contenteditable")&&t.focus();var o=window.getSelection(),r=document.createRange();r.selectNodeContents(t),o.removeAllRanges(),o.addRange(r),e=o.toString()}return e}},function(t,e){function n(){}n.prototype={on:function(t,e,n){var o=this.e||(this.e={});return(o[t]||(o[t]=[])).push({fn:e,ctx:n}),this},once:function(t,e,n){var o=this;function r(){o.off(t,r),e.apply(n,arguments)}return r._=e,this.on(t,r,n)},emit:function(t){for(var e=[].slice.call(arguments,1),n=((this.e||(this.e={}))[t]||[]).slice(),o=0,r=n.length;o<r;o++)n[o].fn.apply(n[o].ctx,e);return this},off:function(t,e){var n=this.e||(this.e={}),o=n[t],r=[];if(o&&e)for(var i=0,a=o.length;i<a;i++)o[i].fn!==e&&o[i].fn._!==e&&r.push(o[i]);return r.length?n[t]=r:delete n[t],this}},t.exports=n},function(t,e,n){var d=n(5),h=n(6);t.exports=function(t,e,n){if(!t&&!e&&!n)throw new Error("Missing required arguments");if(!d.string(e))throw new TypeError("Second argument must be a String");if(!d.fn(n))throw new TypeError("Third argument must be a Function");if(d.node(t))return s=e,f=n,(l=t).addEventListener(s,f),{destroy:function(){l.removeEventListener(s,f)}};if(d.nodeList(t))return a=t,c=e,u=n,Array.prototype.forEach.call(a,function(t){t.addEventListener(c,u)}),{destroy:function(){Array.prototype.forEach.call(a,function(t){t.removeEventListener(c,u)})}};if(d.string(t))return o=t,r=e,i=n,h(document.body,o,r,i);throw new TypeError("First argument must be a String, HTMLElement, HTMLCollection, or NodeList");var o,r,i,a,c,u,l,s,f}},function(t,n){n.node=function(t){return void 0!==t&&t instanceof HTMLElement&&1===t.nodeType},n.nodeList=function(t){var e=Object.prototype.toString.call(t);return void 0!==t&&("[object NodeList]"===e||"[object HTMLCollection]"===e)&&"length"in t&&(0===t.length||n.node(t[0]))},n.string=function(t){return"string"==typeof t||t instanceof String},n.fn=function(t){return"[object Function]"===Object.prototype.toString.call(t)}},function(t,e,n){var a=n(7);function i(t,e,n,o,r){var i=function(e,n,t,o){return function(t){t.delegateTarget=a(t.target,n),t.delegateTarget&&o.call(e,t)}}.apply(this,arguments);return t.addEventListener(n,i,r),{destroy:function(){t.removeEventListener(n,i,r)}}}t.exports=function(t,e,n,o,r){return"function"==typeof t.addEventListener?i.apply(null,arguments):"function"==typeof n?i.bind(null,document).apply(null,arguments):("string"==typeof t&&(t=document.querySelectorAll(t)),Array.prototype.map.call(t,function(t){return i(t,e,n,o,r)}))}},function(t,e){if("undefined"!=typeof Element&&!Element.prototype.matches){var n=Element.prototype;n.matches=n.matchesSelector||n.mozMatchesSelector||n.msMatchesSelector||n.oMatchesSelector||n.webkitMatchesSelector}t.exports=function(t,e){for(;t&&9!==t.nodeType;){if("function"==typeof t.matches&&t.matches(e))return t;t=t.parentNode}}}])});]]></file>
- <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/settings" javascript_name="ips.settings.settings.js" javascript_type="controller" javascript_version="20100" javascript_position="1000100">var clipboard = new ClipboardJS('.ann');
+ <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/settings" javascript_name="ips.settings.settings.js" javascript_type="controller" javascript_version="20200" javascript_position="1000100">var clipboard = new ClipboardJS('.ann');
 
 clipboard.on('success', function(e) {
     $('.copied').show();
 		$('.copied').fadeOut(1000);
 });</file>
- <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/submit" javascript_name="ips.submit.linkedNfo.js" javascript_type="controller" javascript_version="20100" javascript_position="1000150">/**
- *
- * ips.submit.linkedNfo.js - Controller to handle linked screenshots
- *
- */
-;( function($, _, undefined){
-	&quot;use strict&quot;;
-
-	ips.controller.register('bitracker.front.submit.linkedNfo', {
-
-		initialize: function () {
-			this.on( 'click', '[data-action=&quot;addField&quot;]', this.addFieldButton );
-			this.on( 'click', '[data-action=&quot;removeField&quot;]', this.removeField );
-			this.setup();
-		},
-
-		/**
-		 * Setup method
-		 *
-		 * @returns 	{void}
-		 */
-		setup: function () {
-			var initialValues = $.parseJSON( $(this.scope).attr('data-initialValue') );
-
-			if( initialValues == null )
-			{
-				return;
-			}
-
-			var i;
-			for ( i in initialValues.values ) {
-				this.addField( i, initialValues.values[i], i == initialValues.default );
-			}
-		},
-		
-		/**
-		 * Add a field
-		 *
-		 * @returns 	{void}
-		 */
-		addField: function ( id, value, isDefault ) {
-			$(this.scope).find('[data-role=&quot;fieldsArea&quot;]').append( ips.templates.render( 'bitracker.submit.linkedNfo', {
-				'name': $(this.scope).attr('data-name'),
-				'id': id,
-				'value': value,
-				'extra': isDefault ? 'checked' : ''
-			}) );
-		},
-		
-		/**
-		 * Remove a field
-		 *
-		 * @returns 	{void}
-		 */
-		removeField: function ( e ) {
-			e.preventDefault();
-			$(e.currentTarget).closest('li').remove();
-		},
-		
-		/**
-		 * Respond to add button
-		 *
-		 * @returns 	{void}
-		 */
-		addFieldButton: function () {
-			this.addField( 'linked_' + new Date().getTime(), '', false );
-		}
-	});
-}(jQuery, _));</file>
- <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/submit" javascript_name="ips.submit.linkedScreenshots.js" javascript_type="controller" javascript_version="20100" javascript_position="1000150">/**
+ <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/submit" javascript_name="ips.submit.linkedScreenshots.js" javascript_type="controller" javascript_version="20200" javascript_position="1000150">/**
  *
  * ips.submit.linkedScreenshots.js - Controller to handle linked screenshots
  *
@@ -247,7 +178,7 @@ clipboard.on('success', function(e) {
 		}
 	});
 }(jQuery, _));</file>
- <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/submit" javascript_name="ips.submit.main.js" javascript_type="controller" javascript_version="20100" javascript_position="1000150"><![CDATA[/**
+ <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/submit" javascript_name="ips.submit.main.js" javascript_type="controller" javascript_version="20200" javascript_position="1000150"><![CDATA[/**
  *
  * ips.submit.main.js - Submit controller
  *
@@ -258,7 +189,6 @@ clipboard.on('success', function(e) {
 	ips.controller.register('bitracker.front.submit.main', {
 
 		_progressbarTimeout: null,
-		_requireNfo: false,
 		_requireScreenshots: false,
 		_bulkUpload: false,
 		_ui: {},
@@ -272,7 +202,6 @@ clipboard.on('success', function(e) {
 			this.on( 'fileDeleted', this.fileDeleted );
 			this.on( 'click', '[data-action="confirmUrls"]', this.confirmURLs );
 			this.on( 'click', '[data-action="confirmImports"]', this.confirmImports );
-			this.on( 'click', '[data-action="confirmNfoUrls"]', this.confirmNfo );
 			this.on( 'click', '[data-action="confirmScreenshotUrls"]', this.confirmScreenshots );
 			this.on( 'click', '[data-action="uploadMore"]', this.uploadMore );
 
@@ -287,10 +216,6 @@ clipboard.on('success', function(e) {
 		setup: function () {
 			var self = this;
 
-			if( this.scope.attr('data-nfoReq') ){
-				this._requireNfo = true;
-			}
-
 			if( this.scope.attr('data-screenshotsReq') ){
 				this._requireScreenshots = true;
 			}
@@ -301,9 +226,8 @@ clipboard.on('success', function(e) {
 
 			this._ui = {
 				progressBar: this.scope.find('#elTorrentsSubmit_progress'),
-				nfo: this.scope.find('#elTorrentsSubmit_nfo'),
-				screenshots: this.scope.find('#elDownloadsSubmit_screenshots'),
-				fileInfo: this.scope.find('#elDownloadsSubmit_otherinfo')
+				screenshots: this.scope.find('#elTorrentsSubmit_screenshots'),
+				fileInfo: this.scope.find('#elTorrentsSubmit_otherinfo')
 			};
 
 
@@ -327,8 +251,8 @@ clipboard.on('success', function(e) {
 				if( !this.scope.find('input[name^="files_existing"]').length ){
 					hideProgressBar();
 				} else {
-					this.scope.find('#elDownloadsSubmit_uploader .ipsAttachment_dropZone').hide();
-					this.scope.find('#elDownloadsSubmit_uploader [data-action="uploadMore"]').show();
+					this.scope.find('#elTorrentsSubmit_uploader .ipsAttachment_dropZone').hide();
+					this.scope.find('#elTorrentsSubmit_uploader [data-action="uploadMore"]').show();
 					this._hiddenUploader = true;
 				}
 
@@ -372,22 +296,6 @@ clipboard.on('success', function(e) {
 		},
 
 		/**
-		 * Responds to clicking Confirm in the Import NFO popup. If there's files, we show the next steps
-		 *
-		 * @param 		{event} 	e 		Event object
-		 * @returns 	{void}
-		 */
-		confirmNfo: function (e) {
-			e.preventDefault();
-
-			var gotURLs = this._confirmMenu( 'url_nfo', 'elURLNfo' );
-
-			if( gotURLs ){
-				this._doneNfoStep();
-			}
-		},
-
-		/**
 		 * Responds to clicking Confirm in the Import Files popup. If there's files, we show the next steps
 		 *
 		 * @param 		{event} 	e 		Event object
@@ -412,8 +320,8 @@ clipboard.on('success', function(e) {
 		uploadMore: function (e) {
 			e.preventDefault();
 
-			this.scope.find('#elDownloadsSubmit_uploader .ipsAttachment_dropZone').show();
-			this.scope.find('#elDownloadsSubmit_uploader [data-action="uploadMore"]').hide();
+			this.scope.find('#elTorrentsSubmit_uploader .ipsAttachment_dropZone').show();
+			this.scope.find('#elTorrentsSubmit_uploader [data-action="uploadMore"]').hide();
 			this._hiddenUploader = false;
 			this._overriddenUploader = true;
 		},
@@ -429,8 +337,6 @@ clipboard.on('success', function(e) {
 			if( !this._bulkUpload ){
 				if( data.uploader == 'files' ){
 					this._doneUploadStep();
-				} else if( data.uploader == 'nfo' ){
-					this._doneNfoStep();
 				} else if( data.uploader == 'screenshots' ){
 					this._doneScreenshotStep();
 				}
@@ -452,14 +358,14 @@ clipboard.on('success', function(e) {
 			}
 
 			if( data.count === 0 ){
-				this.scope.find( '#elDownloadsSubmit_progress .ipsProgressBar_progress')
+				this.scope.find( '#elTorrentsSubmit_progress .ipsProgressBar_progress')
 					.attr('data-progress', '0%')
 					.css( {
 						width: '0%'
 					});
 
-				this.scope.find('#elDownloadsSubmit_uploader .ipsAttachment_dropZone').show();
-				this.scope.find('#elDownloadsSubmit_uploader [data-action="uploadMore"]').hide();
+				this.scope.find('#elTorrentsSubmit_uploader .ipsAttachment_dropZone').show();
+				this.scope.find('#elTorrentsSubmit_uploader [data-action="uploadMore"]').hide();
 				this._hiddenUploader = false;
 				this._overriddenUploader = true;
 			}
@@ -493,7 +399,7 @@ clipboard.on('success', function(e) {
 			var self = this;
 			this._showProgress();
 
-			this.scope.find( '#elDownloadsSubmit_progress .ipsProgressBar_progress')
+			this.scope.find( '#elTorrentsSubmit_progress .ipsProgressBar_progress')
 				.attr('data-progress', data.percent + '%')
 				.css( {
 					width: data.percent + '%'
@@ -585,35 +491,6 @@ clipboard.on('success', function(e) {
 		},
 
 		/**
-		 * Returns true if there are existing nfo's on the form (from upload or url)
-		 *
-		 * @returns 	{boolean}	Returns true if there are existing nfo
-		 */
-		_hasExistingNfo: function () {
-			if( this.scope.find('input[name^="nfo_existing"]').length ){
-				return true;
-			}
-
-			var hasURL = [];
-
-			if( this.scope.find('input[name^="url_nfo"]').length ){
-				hasURL = _.filter( this.scope.find('input[name^="url_nfo"]'), function (item) {
-					if( $.trim( $( item ).val() ) != '' ){
-						return true;
-					}
-
-					return false;
-				});
-
-				if( hasURL.length ){
-					return true;
-				}
-			}
-
-			return false;
-		},
-
-		/**
 		 * Returns true if there are existing screenshots on the form (from upload or url)
 		 *
 		 * @returns 	{boolean}	Returns true if there are existing screenshots
@@ -650,26 +527,6 @@ clipboard.on('success', function(e) {
 		_doneUploadStep: function () {
 			var self = this;
 
-			// Show NFO step
-			if( this._ui.nfo.length && !this._ui.nfo.is(':visible') ){
-				ips.utils.anim.go( 'fadeIn', this._ui.nfo )
-					.done( function () {
-						$( document ).trigger('contentChange', [ self._ui.nfo ] );
-					});
-			}
-
-			if( !this._requireNfo && !this._ui.fileInfo.is(':visible') ){
-				ips.utils.anim.go( 'fadeIn', this._ui.fileInfo )
-					.done( function () {
-						$( document ).trigger('contentChange', [ self._ui.fileInfo ] );
-					});
-			}
-			if( !this._requireNfo )
-			{
-				this.scope.find('[data-role="submitForm"]').prop( 'disabled', false );
-			}
-		},
-
 			// Show screenshot step
 			if( this._ui.screenshots.length && !this._ui.screenshots.is(':visible') ){
 				ips.utils.anim.go( 'fadeIn', this._ui.screenshots )
@@ -695,18 +552,6 @@ clipboard.on('success', function(e) {
 		 *
 		 * @returns 	{void}
 		 */
-
-		_doneNfoStep: function () {
-			var self = this;
-			
-			ips.utils.anim.go( 'fadeIn', this._ui.fileInfo )
-				.done( function () {
-					$( document ).trigger('contentChange', [ self._ui.fileInfo ] );
-				});
-
-			this.scope.find('[data-role="submitForm"]').prop( 'disabled', false );
-		},
-
 		_doneScreenshotStep: function () {
 			var self = this;
 			
@@ -726,131 +571,14 @@ clipboard.on('success', function(e) {
 		_showProgress: function () {
 			if( !this._hiddenUploader && !this._overriddenUploader ){
 				this._ui.progressBar.show().find('.ipsProgressBar').addClass('ipsProgressBar_animated');
-				this.scope.find('#elDownloadsSubmit_uploader .ipsAttachment_dropZone').hide();
-				this.scope.find('#elDownloadsSubmit_uploader [data-action="uploadMore"]').show();
+				this.scope.find('#elTorrentsSubmit_uploader .ipsAttachment_dropZone').hide();
+				this.scope.find('#elTorrentsSubmit_uploader [data-action="uploadMore"]').show();
 				this._hiddenUploader = true;
 			}
 		}
 	});
 }(jQuery, _));]]></file>
- <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/view" javascript_name="ips.view.bitracker.js" javascript_type="controller" javascript_version="20100" javascript_position="1000250">;( function($, _, undefined){
-	&quot;use strict&quot;;
-
-	ips.controller.register('bitracker.front.portal.view.download', {
-
-		initialize: function () {
-			this.on( 'click', '[data-action=&quot;dialogClose&quot;]', this.closeDialog );
-			this.on( 'click', '[data-action=&quot;selectFile&quot;]', this.selectFile );
-			this.on( 'click', '[data-action=&quot;download&quot;]', this.doDownload );
-		},
-
-		/**
-		 * Agree to the terms and update the display to show the list
-		 *
-		 * @param 		{event} 	e 		Event object
-		 * @returns 	{void}
-		 */
-		selectFile: function (e) {
-			var url = $( e.currentTarget ).attr('href');
-			var self = this;
-
-			e.preventDefault();
-
-			// Load the download page
-			this.scope
-				.html('')
-				.css({
-					height: '250px'
-				})
-				.addClass('ipsLoading');
-
-			ips.getAjax()( url )
-				.done( function (response) {
-					self.scope
-						.html( response )
-						.css({
-							height: 'auto'
-						})
-						.removeClass('ipsLoading');
-				})
-				.fail( function (jqXHR, textStatus, errorThrown) {
-					window.location = url;
-				});
-		},
-		
-		/**
-		 * Event handler for the 'cancel' link
-		 *
-		 * @param 		{event} 	e 		Event object
-		 * @returns 	{void}
-		 */
-		closeDialog: function (e) {
-			e.preventDefault();
-			this._closeDialog( $( e.currentTarget ).attr('href') );
-		},
-
-		/**
-		 * Closes the dialog
-		 *
-		 * @param 		{string} 	href 	Href to redirect to if not in a dialog
-		 * @returns 	{void}
-		 */
-		_closeDialog: function (href) {
-			if( this.scope.closest('.ipsDialog').length ){
-				this.scope.closest('.ipsDialog').trigger('closeDialog');
-			} else {
-				window.location = href;
-			}
-		},
-
-		/**
-		 * Initiate the actual download
-		 *
-		 * @param 		{event} 	e 		Event object
-		 * @returns 	{void}
-		 */
-		doDownload: function (e) {
-			var that = this;
-			if ( $( e.currentTarget ).attr('data-wait') ) {
-				e.preventDefault();
-				
-				ips.getAjax()( $( e.currentTarget ).attr('href') )
-					.done( function (response) {
-						var secondsRemaining = response.download - response.currentTime;
-						
-						$( e.currentTarget )
-							.hide()
-							.siblings()
-								.find('[data-role=&quot;downloadCounter&quot;]')
-									.html( secondsRemaining )
-								.end()
-							.end()
-							.siblings('[data-role=&quot;downloadCounterContainer&quot;]')
-								.removeClass('ipsHide');
-						
-						var interval = setInterval( function () {
-							secondsRemaining--;
-							$( e.currentTarget ).siblings().find('[data-role=&quot;downloadCounter&quot;]').html( secondsRemaining );
-							if ( secondsRemaining === 0 ) {
-								clearInterval(interval);
-								window.location = $( e.currentTarget ).attr('href');
-                                that.scope.closest('.ipsDialog').trigger('closeDialog');
-							}
-						}, 1000 );						
-					})
-					.fail( function () {
-						window.location = $(e.currentTarget).attr('href');
-					})
-			}
-			else
-			{
-                this.scope.closest('.ipsDialog').trigger('closeDialog');
-			}
-		}
-		
-	});
-}(jQuery, _));</file>
- <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/view" javascript_name="ips.view.changeLog.js" javascript_type="controller" javascript_version="20100" javascript_position="1000250"><![CDATA[;( function($, _, undefined){
+ <file javascript_app="bitracker" javascript_location="front" javascript_path="controllers/view" javascript_name="ips.view.changeLog.js" javascript_type="controller" javascript_version="20200" javascript_position="1000250"><![CDATA[;( function($, _, undefined){
 	"use strict";
 
 	ips.controller.register('bitracker.front.portal.view.changeLog', {
@@ -965,7 +693,125 @@ clipboard.on('success', function(e) {
 		
 	});
 }(jQuery, _));]]></file>
- <file javascript_app="bitracker" javascript_location="front" javascript_path="templates" javascript_name="ips.templates.submit.js" javascript_type="template" javascript_version="20100" javascript_position="1000050"><![CDATA[/* VIEW TEMPLATES */
+ <file javascript_app="downloads" javascript_location="front" javascript_path="controllers/view" javascript_name="ips.view.download.js" javascript_type="controller" javascript_version="104063" javascript_position="1000150">/**
+;( function($, _, undefined){
+	&quot;use strict&quot;;
+
+	ips.controller.register('downloads.front.view.download', {
+
+		initialize: function () {
+			this.on( 'click', '[data-action=&quot;dialogClose&quot;]', this.closeDialog );
+			this.on( 'click', '[data-action=&quot;selectFile&quot;]', this.selectFile );
+			this.on( 'click', '[data-action=&quot;download&quot;]', this.doDownload );
+		},
+
+		/**
+		 * Agree to the terms and update the display to show the list
+		 *
+		 * @param 		{event} 	e 		Event object
+		 * @returns 	{void}
+		 */
+		selectFile: function (e) {
+			var url = $( e.currentTarget ).attr('href');
+			var self = this;
+
+			e.preventDefault();
+
+			// Load the download page
+			this.scope
+				.html('')
+				.css({
+					height: '250px'
+				})
+				.addClass('ipsLoading');
+
+			ips.getAjax()( url )
+				.done( function (response) {
+					self.scope
+						.html( response )
+						.css({
+							height: 'auto'
+						})
+						.removeClass('ipsLoading');
+				})
+				.fail( function (jqXHR, textStatus, errorThrown) {
+					window.location = url;
+				});
+		},
+		
+		/**
+		 * Event handler for the 'cancel' link
+		 *
+		 * @param 		{event} 	e 		Event object
+		 * @returns 	{void}
+		 */
+		closeDialog: function (e) {
+			e.preventDefault();
+			this._closeDialog( $( e.currentTarget ).attr('href') );
+		},
+
+		/**
+		 * Closes the dialog
+		 *
+		 * @param 		{string} 	href 	Href to redirect to if not in a dialog
+		 * @returns 	{void}
+		 */
+		_closeDialog: function (href) {
+			if( this.scope.closest('.ipsDialog').length ){
+				this.scope.closest('.ipsDialog').trigger('closeDialog');
+			} else {
+				window.location = href;
+			}
+		},
+
+		/**
+		 * Initiate the actual download
+		 *
+		 * @param 		{event} 	e 		Event object
+		 * @returns 	{void}
+		 */
+		doDownload: function (e) {
+			var that = this;
+			if ( $( e.currentTarget ).attr('data-wait') ) {
+				e.preventDefault();
+				
+				ips.getAjax()( $( e.currentTarget ).attr('href') )
+					.done( function (response) {
+						var secondsRemaining = response.download - response.currentTime;
+						
+						$( e.currentTarget )
+							.hide()
+							.siblings()
+								.find('[data-role=&quot;downloadCounter&quot;]')
+									.html( secondsRemaining )
+								.end()
+							.end()
+							.siblings('[data-role=&quot;downloadCounterContainer&quot;]')
+								.removeClass('ipsHide');
+						
+						var interval = setInterval( function () {
+							secondsRemaining--;
+							$( e.currentTarget ).siblings().find('[data-role=&quot;downloadCounter&quot;]').html( secondsRemaining );
+							if ( secondsRemaining === 0 ) {
+								clearInterval(interval);
+								window.location = $( e.currentTarget ).attr('href');
+                                that.scope.closest('.ipsDialog').trigger('closeDialog');
+							}
+						}, 1000 );						
+					})
+					.fail( function () {
+						window.location = $(e.currentTarget).attr('href');
+					})
+			}
+			else
+			{
+                this.scope.closest('.ipsDialog').trigger('closeDialog');
+			}
+		}
+		
+	});
+}(jQuery, _));</file>
+ <file javascript_app="bitracker" javascript_location="front" javascript_path="templates" javascript_name="ips.templates.submit.js" javascript_type="template" javascript_version="20200" javascript_position="1000050"><![CDATA[/* VIEW TEMPLATES */
 ips.templates.set('bitracker.submit.screenshot', " \
 	<div class='ipsGrid_span3 ipsAttach ipsImageAttach ipsPad_half ipsAreaBackground_light' id='{{id}}' data-role='file' data-fileid='{{id}}' data-fullsizeurl='{{imagesrc}}' data-thumbnailurl='{{thumbnail}}' data-fileType='image'>\
 		<ul class='ipsList_inline ipsImageAttach_controls'>\
@@ -976,7 +822,7 @@ ips.templates.set('bitracker.submit.screenshot', " \
 			</li>\
 		</ul>\
 		<label for='{{field_name}}_primary_screenshot_{{id}}' class='ipsCursor_pointer'>\
-		<div class='ipsImageAttach_thumb ipsType_center' data-role='preview' data-grid-ratio='65' data-action='insertFile' {{#thumb}}style='background-image: url( {{thumbnail_for_css}} )'{{/thumb}}>\
+		<div class='ipsImageAttach_thumb ipsType_center' data-role='preview' data-grid-ratio='65' data-action='insertFile' {{#thumb}}style='background-image: url( \"{{thumbnail_for_css}}\" )'{{/thumb}}>\
 			{{#status}}\
 				<span class='ipsImageAttach_status ipsType_light' data-role='status'>{{{status}}}</span>\
 				<span class='ipsAttachment_progress'><span data-role='progressbar'></span></span>\
@@ -1006,4 +852,22 @@ ips.templates.set('bitracker.submit.linkedScreenshot', " \
 		</div>\
 	</li>\
 ");]]></file>
+ <order app="global" path="/dev/js//framework/">templates
+common/ips.loader.js
+common/ui
+common/utils
+common
+controllers</order>
+ <order app="global" path="/dev/js//library/">underscore
+jquery
+mustache
+jstz
+IntersectionObserver
+Debug.js
+app.js</order>
+ <order app="global" path="/dev/js//library//jquery">jquery.js
+jquery.history.js
+jquery.transform.js</order>
+ <order app="global" path="/dev/js//library//linkify">linkify.min.js
+linkify-jquery.min.js</order>
 </javascript>
