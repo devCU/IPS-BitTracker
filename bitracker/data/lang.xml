@@ -377,6 +377,11 @@
   <word key="can_edit_item_message_bitracker_file" js="0">Can edit messages on files?</word>
   <word key="can_delete_item_message_bitracker_file" js="0">Can delete messages on files?</word>
   <word key="cf_topic" js="0">Include field in topics?</word>
+  <word key="cf_format_desc" js="0"><![CDATA[Example: &lt;strong&gt;{title}:&lt;/strong&gt; {content}]]></word>
+  <word key="bitracker_field_location" js="0">Display Location</word>
+  <word key="bit_cfield_below" js="0">Below the description</word>
+  <word key="bit_cfield_tab" js="0">In a separate tab</word>
+  <word key="bit_cfield_sidebar" js="0">In the sidebar</word>
   <word key="acplogs__bitracker_settings" js="0">Updated bitracker settings</word>
   <word key="group__bitracker_Bitracker" js="0">Torrents</word>
   <word key="content_stats__bitracker_Bitracker" js="0">Torrents</word>
