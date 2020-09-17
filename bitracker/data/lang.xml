@@ -252,7 +252,6 @@
   <word key="search_contextual_item_bitracker_file" js="0">This File</word>
   <word key="bitracker_categories" js="0">Torrent Categories</word>
   <word key="filestorage__bitracker_Torrents" js="0">Torrents Files</word>
-  <word key="filestorage__bitracker_Nfo" js="0">Torrents NFO</word>
   <word key="filestorage__bitracker_Screenshots" js="0">Torrents Screenshots</word>
   <word key="filestorage__bitracker_FileField" js="0">Torrents Custom Fields</word>
   <word key="bitracker_torrents" js="0">Torrents Files</word>
@@ -268,7 +267,6 @@
   <word key="cbitoptions_disfiles" js="0">Allow files?</word>
   <word key="cbitoptions_disfiles_desc" js="0">You may want to disable to use this category as a container for other subcategories.</word>
   <word key="ctypes" js="0">Allowed file extensions</word>
-  <word key="ctypesnfo" js="0">Allowed NFO file extensions</word>
   <word key="cparent" js="0">Parent Category</word>
   <word key="any_extensions" js="0">any extensions</word>
   <word key="cmaxfile" js="0">Maximum file size</word>
@@ -279,11 +277,6 @@
   <word key="cbitoptions_reqss" js="0">Require screenshots?</word>
   <word key="cmaxss" js="0">Maximum screenshot filesize</word>
   <word key="cmaxdims" js="0">Maximum screenshot dimensions</word>
-  <word key="category_nfo" js="0">NFO</word>
-  <word key="cbitoptions_allownfo" js="0">Allow NFO?</word>
-  <word key="cbitoptions_allownfo_desc" js="0">NFO file can be submitted with files to provide information to show in the file listing.</word>
-  <word key="cbitoptions_reqnfo" js="0">Require NFO?</word>
-  <word key="cmaxnfo" js="0">Maximum NFO filesize</word>
   <word key="category_display" js="0">Category Display</word>
   <word key="csortorder" js="0">Default sort order</word>
   <word key="cbitoptions_comments" js="0">Allow comments?</word>
@@ -453,7 +446,6 @@
   <word key="url_files" js="0">Linked Torrents</word>
   <word key="url_files_no_perm" js="0">This torrent has a linked file, but you are no longer permitted to edit it. Please contact an administrator if you need to change it.</word>
   <word key="import_files" js="0">Import Torrents</word>
-  <word key="url_nfo" js="0">Linked NFO</word>
   <word key="screenshots" js="0">Screenshots</word>
   <word key="screenshots_ct" js="0">{# [1:Screenshot][?:Screenshots]}</word>
   <word key="url_screenshots" js="0">Linked Screenshots</word>
@@ -589,8 +581,6 @@
   <word key="select_your_files" js="0">Select your files</word>
   <word key="add_torrents_by_url" js="0">Add torrents by URL</word>
   <word key="add_torrents_by_path" js="0">Add torrents from server path</word>
-  <word key="add_nfo_by_url" js="0">Add NFO by URL</word>
-  <word key="add_nfo" js="0">Add NFO</word>
   <word key="submit_menu_confirm" js="0">Confirm</word>
   <word key="add_screenshots" js="0">Add screenshots</word>
   <word key="add_screenshots_by_url" js="0">Add screenshots by URL</word>
