@@ -13,7 +13,7 @@
  * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     06 SEP 2020
+ * @Updated     29 SEP 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -129,8 +129,9 @@ class _settings extends \IPS\Dispatcher\Controller
 	protected function _overview()
 	{
 
-			$announceURL = 	\IPS\Settings::i()->base_url;
-            $live_ipaddress = \IPS\bitracker\Request::i()->ipAddress();
+        $annParam = "announce";
+		$announceURL = 	\IPS\Settings::i()->base_url . $annParam ;
+        $live_ipaddress = \IPS\bitracker\Request::i()->ipAddress();
 
 		\IPS\Output::i()->jsFiles = array_merge( \IPS\Output::i()->jsFiles, \IPS\Output::i()->js( 'front_settings.js', 'bitracker', 'front' ) );
 		return \IPS\Theme::i()->getTemplate( 'system' )->settingsOverview( $live_ipaddress, $announceURL );
