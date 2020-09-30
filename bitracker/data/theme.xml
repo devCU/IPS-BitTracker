@@ -1421,11 +1421,6 @@ In Development</template>
 {{endif}}]]></template>
  <template template_group="submit" template_name="editDetailsInfo" template_data="$file" template_location="front" template_app="bitracker"><![CDATA[
 <div class='ipsMessage ipsMessage_info'><a href='{$file->url()->setQueryString( array( 'do' => 'newVersion' ) )}' title='{lang="upload_new_version_title"}'>{lang="file_versioning_info_text"}</a></div>]]></template>
- <template template_group="submit" template_name="linkedNfoField" template_data="$name, $value" template_location="front" template_app="bitracker"><![CDATA[
-<div data-controller="bitracker.front.submit.linkedNfo" data-name='{$name}' data-initialValue='{expression="json_encode( $value )"}'>
-	<ul data-role="fieldsArea" class="ipsList_reset"></ul>
-	<a class="ipsButton ipsButton_light ipsButton_small" data-action="addField"><i class="fa fa-plus-circle"></i> {lang="stack_add"}</a>
-</div>]]></template>
  <template template_group="submit" template_name="linkedScreenshotField" template_data="$name, $value" template_location="front" template_app="bitracker"><![CDATA[
 <div data-controller="bitracker.front.submit.linkedScreenshots" data-name='{$name}' data-initialValue='{expression="json_encode( $value )"}'>
 	<ul data-role="fieldsArea" class="ipsList_reset"></ul>
@@ -1444,7 +1439,7 @@ In Development</template>
 
 {$form|raw}]]></template>
  <template template_group="submit" template_name="submitForm" template_data="$form, $category, $terms, $bulk=0" template_location="front" template_app="bitracker"><![CDATA[
-{{$nonInfoFields = array('files', 'import_files', 'url_files', 'nfo', 'url_nfo', 'screenshots', 'url_screenshots');}}
+{{$nonInfoFields = array('files', 'import_files', 'url_files', 'screenshots', 'url_screenshots');}}
 {{$step = 1;}}
 
 {{if $bulk}}
@@ -1462,7 +1457,7 @@ In Development</template>
 {{endif}}
 
 
-<form accept-charset='utf-8' method="post" action="{$form->action}" id='elTorrentsSubmit' enctype="multipart/form-data" {{if $category->bitoptions['allowss'] AND $category->bitoptions['reqss']}}data-screenshotsReq='1'{{endif}} {{if $category->bitoptions['allownfo'] AND $category->bitoptions['reqnfo']}}data-nfoReq='1'{{endif}} {{if $bulk}}data-bulkUpload='1'{{endif}} data-ipsForm data-ipsFormSubmit data-controller='bitracker.front.submit.main'>
+<form accept-charset='utf-8' method="post" action="{$form->action}" id='elTorrentsSubmit' enctype="multipart/form-data" {{if $category->bitoptions['allowss'] AND $category->bitoptions['reqss']}}data-screenshotsReq='1'{{endif}} {{if $bulk}}data-bulkUpload='1'{{endif}} data-ipsForm data-ipsFormSubmit data-controller='bitracker.front.submit.main'>
 	<input type="hidden" name="{$form->id}_submitted" value="1">
 	{{foreach $form->hiddenValues as $k => $v}}
 		<input type="hidden" name="{$k}" value="{$v}">
@@ -1525,52 +1520,6 @@ In Development</template>
 	</div>
 
 	{{if !$bulk }}
-
-		{{if $category->bitoptions['allownfo'] }}
-			<div id='elTorrentsSubmit_nfo'>
-				<br><br>
-				<div class='ipsColumns ipsColumns_collapsePhone'>
-					<div class='ipsColumn ipsColumn_veryNarrow ipsType_center'>
-						<span class='cBitrackerSubmit_step'>{$step}{{$step++;}}</span>
-					</div>
-					<div class='ipsColumn ipsColumn_fluid'>
-						<div class='ipsBox'>
-							<h3 class='ipsType_sectionTitle ipsType_reset'>{lang="add_nfo"}</h3>
-							<div class='ipsAreaBackground ipsPad_half'>
-								{{if isset( $form->elements['']['url_nfo'] )}}
-									<ul class='ipsList_inline ipsClearfix ipsType_right'>
-										<li>
-											<a href='#' class='ipsButton ipsButton_veryLight ipsButton_verySmall' id='elURLNfo' data-ipsMenu data-ipsMenu-closeOnClick='false' data-ipsMenu-appendTo='#elTorrentsSubmit_nfo'>
-												<i class='fa fa-globe'></i>&nbsp; {lang="add_nfo_by_url"} <i class='fa fa-caret-down'></i>
-												<span class='ipsNotificationCount {{if !\count( $form->elements['']['url_nfo']->value )}}ipsHide{{endif}}' data-role='fileCount'>{expression="\count( $form->elements['']['url_nfo']->value )"}</span>
-											</a>
-											<div id='elURLNfo_menu' class='ipsMenu ipsMenu_wide ipsHide ipsPad'>
-												<ul class='ipsFieldRow_fullWidth'>
-													{$form->elements['']['url_nfo']|raw}
-												</ul>
-												<hr class='ipsHr'>
-												<a href='#' class='ipsButton ipsButton_fullWidth ipsButton_important' data-action='confirmNfoUrls'>{lang="submit_menu_confirm"}</a>
-											</div>
-										</li>
-									</ul>
-								{{endif}}
-								{{if isset( $form->elements['']['nfo'] )}}
-					<div id='elTorrentsSubmit_progress' class='ipsClear' data-ipsSticky>
-						<div class='ipsProgressBar ipsProgressBar_animated ipsClear' >
-							<div class='ipsProgressBar_progress' data-progress='0%'></div>
-						</div>
-					</div>
-					<div id='elTorrentsSubmit_uploader' class='ipsClear'>
-									{$form->elements['']['nfo']->html( $form )|raw}
-						<button type='button' class='ipsButton ipsButton_veryLight ipsButton_verySmall ipsHide' data-action='uploadMore'>{lang="upload_more_files"}</button>
-								</div>
-								{{endif}}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		{{endif}}
 
 		{{if $category->bitoptions['allowss'] }}
 			<div id='elTorrentsSubmit_screenshots'>
@@ -1823,20 +1772,22 @@ In Development</template>
 		<ul class='ipsDataList'>
 			<li class='ipsDataItem'>
 				<div class='ipsDataItem_main'>
-					<h3 class='ipsType_sectionHead'><strong>{lang="system_bitracker_info"}</strong></h3><br><br>
+					<h2 class='ipsType_sectionHead'>{lang="system_bitracker_info"}</h2>
+                    <hr class="ipsHr">
 			{{if settings.bit_announce_enable}}
                      <strong>{lang="system_private_tracker"}</strong> <a class="ipsBadge ipsBadge_positive" href="#" data-ipsTooltip title="{lang="system_private_tracker_enabled"}"> {lang="system_bitracker_enabled"} </a><br><br>
-            {{else}}
-                     <strong>{lang="system_private_tracker"}</strong> <a class="ipsBadge ipsBadge_negative" href="#" data-ipsTooltip title="{lang="system_private_tracker_disabled"}"> {lang="system_bitracker_disabled"} </a><br><br>
-           {{endif}}
+
 			{{if settings.bit_security_forcessl}}
                      <strong>{lang="system_ssl_secure"}</strong>   <a class="ipsBadge ipsBadge_positive" href="#" data-ipsTooltip title="{lang="system_ssl_secure_enabled"}"> {lang="system_bitracker_enabled"} </a><br><br>
             {{else}}
                      <strong>{lang="system_ssl_secure"}</strong>   <a class="ipsBadge ipsBadge_negative" href="#" data-ipsTooltip title="{lang="system_ssl_secure_disabled"}"> {lang="system_bitracker_disabled"} </a><br><br>
            {{endif}}
-				<strong>{lang="system_bitracker_announceurl"}</strong> <i class="fa fa-question-circle" aria-hidden="true" data-ipsTooltip title="{lang="system_bitracker_announceurl_tip"}"></i><br><br>
-				<input id='announce' type='text' value='{$announceURL}' readonly>
-				<button class="ann ipsButton ipsButton_link" data-clipboard-action="copy" data-clipboard-target="#announce" data-ipsTooltip title="Copy to clipboard">Copy</button>
+				<strong>{lang="system_bitracker_announceurlupload"}</strong> <i class="fa fa-question-circle" aria-hidden="true" data-ipsTooltip title="{lang="system_bitracker_announceurlupload_tip"}"></i><br>
+				<input id='announceupload' type='text' value='{$announceURL}' readonly>
+				<button class="ann ipsButton ipsButton_link" data-clipboard-action="copy" data-clipboard-target="#announceupload" data-ipsTooltip title="Copy to clipboard">Copy</button><br><br>
+				<strong>{lang="system_bitracker_announceurlprivate"}</strong> <i class="fa fa-question-circle" aria-hidden="true" data-ipsTooltip title="{lang="system_bitracker_announceurlprivate_tip"}"></i><br>
+				<input id='announceprivate' type='text' value='{$announceURL}-{member="bit_perm_key"}' readonly>
+				<button class="ann ipsButton ipsButton_link" data-clipboard-action="copy" data-clipboard-target="#announceprivate" data-ipsTooltip title="Copy to clipboard">Copy</button>
 
 				</div>
 			</li>
@@ -1944,7 +1895,10 @@ In Development</template>
 			</ul>
 		</div>
 	</div>
-</div>]]></template>
+</div>
+{{else}}
+        <strong>{lang="system_private_tracker"}</strong> <a class="ipsBadge ipsBadge_negative" href="#" data-ipsTooltip title="{lang="system_private_tracker_disabled"}"> {lang="system_bitracker_disabled"} </a><br><br>
+{{endif}}]]></template>
  <template template_group="system" template_name="settingsPrivacy" template_data="$form" template_location="front" template_app="bitracker"><![CDATA[
 <h2 class='ipsType_sectionHead'>{lang="system_profile_privacy"}</h2>
 <hr class="ipsHr">
@@ -2396,7 +2350,7 @@ In Development</template>
 				<div class='ipsPad ipsAreaBackground'>
 					<div class='ipsCarousel ipsClearfix' data-ipsCarousel data-ipsCarousel-showDots>
 						<div class='ipsCarousel_inner'>
-							<ul class='cDownloadsCarousel ipsClearfix' data-role="carouselItems">
+							<ul class='cBitrackerCarousel ipsClearfix' data-role="carouselItems">
 								{{$fullScreenshots = iterator_to_array( $file->screenshots() );}}
 								{{foreach $file->screenshots( 1 ) as $id => $screenshot}}
 									<li class='ipsCarousel_item ipsAreaBackground_reset ipsPad_half' data-ipsLazyLoad>
@@ -2604,7 +2558,7 @@ In Development</template>
 			</aside>
 		</div>
 		{{if ( $file->canEdit() or $file->canPin() or $file->canUnpin() or $file->canFeature() or $file->canUnfeature() or $file->canHide() or $file->canUnhide() or $file->canMove() or $file->canLock() or $file->canUnlock() or $file->canDelete() or $file->canEnablePurchases() or $file->canDisablePurchases() ) or ( $file->hidden() == -2 AND \IPS\Member::loggedIn()->modPermission('can_manage_deleted_content') ) or $file->canReportOrRevoke() or ( \IPS\IPS::classUsesTrait( $file, 'IPS\Content\Reactable' ) and settings.reputation_enabled )}}
-			<div class='ipsItemControls ipsPad cDownloadsItemControls'>
+			<div class='ipsItemControls ipsPad cBitrackerItemControls'>
 				{{if \IPS\IPS::classUsesTrait( $file, 'IPS\Content\Reactable' ) and settings.reputation_enabled}}
 					{template="reputation" app="core" group="global" params="$file"}
 				{{endif}}
@@ -2930,7 +2884,7 @@ In Development</template>
 			</ul>
 			<hr class='ipsHr'>
 			{{if $latestFile}}
-				<div id='elDownloadStatsLatest' class='ipsClearfix'>
+				<div id='elTorrentStatsLatest' class='ipsClearfix'>
 					{template="thumbImage" group="global" app="core" params="$latestFile->primary_screenshot, $latestFile->name, 'small', 'ipsPos_left'"}
 					<div class='ipsWidget_latestItem'>
 						<strong class='ipsType_small ipsType_uppercase'>{lang="latest_file"}</strong><br>
@@ -2965,7 +2919,7 @@ In Development</template>
 			{{endif}}
 			{{if $latestFile}}
 				<div class='ipsGrid_span{$span} ipsType_left cNewestMember'>
-					<div id='elDownloadStatsLatest' class='ipsClearfix'>
+					<div id='elTorrentStatsLatest' class='ipsClearfix'>
 						<span class='ipsType_minorHeading'>{lang="latest_file"}</span><br>
 						<div class='ipsType_break ipsContained'><a href="{$latestFile->url()}" title='{lang="view_this_file" sprintf="$latestFile->name"}' class='ipsTruncate ipsTruncate_line'>{$latestFile->name}</a></div>
 						<span class='ipsType_light ipsType_medium'>{lang="byline_nodate" htmlsprintf="$latestFile->author()->link()"}</span>
@@ -3470,10 +3424,10 @@ In Development</template>
 	padding: 5px 5px;
 }
 
-html[dir="ltr"] #elDownloadStatsLatest > .ipsWidget_latestItem {
+html[dir="ltr"] #elTorrentStatsLatest > .ipsWidget_latestItem {
 	margin-left: 85px;
 }
-html[dir="rtl"] #elDownloadStatsLatest > .ipsWidget_latestItem {
+html[dir="rtl"] #elTorrentStatsLatest > .ipsWidget_latestItem {
 	margin-right: 85px;
 }
 
