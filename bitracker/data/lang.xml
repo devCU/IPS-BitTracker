@@ -337,7 +337,7 @@
   <word key="cbitoptions_topic_delete" js="0">Delete topic if file is deleted?</word>
   <word key="cbitoptions_topic_screenshot" js="0">Include screenshot in topic?</word>
   <word key="node_no_parentd" js="0">No Parent</word>
-  <word key="view_all_files" js="0">View All Files</word>
+  <word key="view_all_torrents" js="0">View All Torrents</word>
   <word key="modperms__core_Content_bitracker_File" js="0">Torrents</word>
   <word key="download_categories" js="0">Categories</word>
   <word key="can_pin_bitracker_file" js="0">Can pin files?</word>
@@ -431,7 +431,7 @@
   <word key="bit_screenshot_for" js="0">Screenshot for %s</word>
   <word key="rss_offline" js="0">This RSS feed is disabled</word>
   <word key="rss_offline_admin" js="0"><![CDATA[The Bitracker option &quot;Enable Latest Files RSS feed&quot; is currently disabled. Toggle this option to yes in the admin control panel to enable the latest files RSS feed.]]></word>
-  <word key="submit_a_file" js="0">Submit a file</word>
+  <word key="submit_a_torrent" js="0">Submit a torrent</word>
   <word key="submit_single_file" js="0">Submit single file</word>
   <word key="submit_multiple_files" js="0">Submit multiple files</word>
   <word key="submit_first_file" js="0">Submit the first file</word>
@@ -563,13 +563,13 @@
   <word key="browse_whats_new" js="0">What's New</word>
   <word key="browse_highest_rated" js="0">Highest Rated</word>
   <word key="browse_most_downloaded" js="0">Most Downloaded</word>
-  <word key="no_new_files" js="0">There have been no uploaded files yet.</word>
-  <word key="no_rated_files" js="0">No files have been rated yet.</word>
-  <word key="no_downloaded_files__week" js="0">No files have been downloaded yet this week.</word>
-  <word key="no_downloaded_files__month" js="0">No files have been downloaded yet this month.</word>
-  <word key="no_downloaded_files__year" js="0">No files have been downloaded yet this year.</word>
-  <word key="no_downloaded_files" js="0">No files have been downloaded yet.</word>
-  <word key="no_download_review" js="0">You may only provide a review once you have downloaded the file.</word>
+  <word key="no_new_torrents" js="0">There have been no uploaded torrents yet.</word>
+  <word key="no_rated_torrents" js="0">No torrents have been rated yet.</word>
+  <word key="no_downloaded_torrents__week" js="0">No torrents have been downloaded yet this week.</word>
+  <word key="no_downloaded_torrents__month" js="0">No torrents have been downloaded yet this month.</word>
+  <word key="no_downloaded_torrents__year" js="0">No torrents have been downloaded yet this year.</word>
+  <word key="no_downloaded_torrents" js="0">No torrents have been downloaded yet.</word>
+  <word key="no_torrents_review" js="0">You may only provide a review once you have downloaded the torrent.</word>
   <word key="index_discover" js="0">Discover</word>
   <word key="index_explore" js="0">Explore Categories</word>
   <word key="browse_categories_d" js="0">Browse Categories</word>
@@ -662,8 +662,8 @@
   <word key="r__member_manage" js="0">Can view member stats?</word>
   <word key="r__submitters_manage" js="0">Can view submission stats?</word>
   <word key="ipAddresses__bitracker_DownloadLog" js="0">Torrents</word>
-  <word key="block_fileFeed" js="0">Files Feed</word>
-  <word key="block_fileFeed_desc" js="0">Create a feed of files</word>
+  <word key="block_fileFeed" js="0">Torrents Feed</word>
+  <word key="block_fileFeed_desc" js="0">Create a feed of torrents</word>
   <word key="widget_feed_container_bitracker_file" js="0">Categories</word>
   <word key="block_topSubmitters" js="0">Top Submitters</word>
   <word key="block_topSubmitters_desc" js="0">Shows top submitters</word>
