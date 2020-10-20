@@ -15,14 +15,6 @@
         "menu_style": "menu",
         "embeddable": true
     },
-    "bitrackerPeers": {
-        "class": "\\IPS\\Widget\\PermissionCache",
-        "restrict": [],
-        "default_area": "",
-        "allow_reuse": false,
-        "menu_style": "menu",
-        "embeddable": true
-    },
     "topTorrents": {
         "class": "\\IPS\\Widget\\PermissionCache",
         "restrict": [],
