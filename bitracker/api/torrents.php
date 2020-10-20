@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     29 AUG 2020
+ * @Updated     20 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -60,7 +60,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @apiparam	int		hidden			If 1, only files which are hidden are returned, if 0 only not hidden
 	 * @apiparam	int		pinned			If 1, only files which are pinned are returned, if 0 only not pinned
 	 * @apiparam	int		featured		If 1, only files which are featured are returned, if 0 only not featured
-	 * @apiparam	string	sortBy			What to sort by. Can be 'date' for creation date, 'title' or leave unspecified for ID
+	 * @apiparam	string	sortBy			What to sort by. Can be 'date' for creation date, 'title', 'updated', 'popular' or leave unspecified for ID
 	 * @apiparam	string	sortDir			Sort direction. Can be 'asc' or 'desc' - defaults to 'asc'
 	 * @apiparam	int		page			Page number
 	 * @apiparam	int		perPage			Number of results per page - defaults to 25
@@ -70,9 +70,18 @@ class _torrents extends \IPS\Content\Api\ItemController
 	{
 		/* Where clause */
 		$where = array();
-				
+		$sortBy = NULL;
+
+		/* Sort by popular files */
+		if( \IPS\Request::i()->sortBy == 'popular' )
+		{
+			\IPS\Request::i()->sortDir = \IPS\Request::i()->sortDir ?: 'ASC';
+			$sortBy = 'file_rating ' . \IPS\Request::i()->sortDir . ', file_reviews';
+			$where = array( array( 'file_rating>?', 0 ) );
+		}
+
 		/* Return */
-		return $this->_list( $where, 'categories' );
+		return $this->_list( $where, 'categories', FALSE, $sortBy );
 	}
 	
 	/**
@@ -82,7 +91,7 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @param		int		$id				ID Number
 	 * @apiparam	int		version			If specified, will show a previous version of a file (see GET /bitracker/files/{id}/versions)
 	 * @throws		2S303/1	INVALID_ID		The file ID does not exist or the authorized user does not have permission to view it
-	 * @throws		2S303/1	INVALID_VERSION	The version ID does not exist
+	 * @throws		2S303/6	INVALID_VERSION	The version ID does not exist
 	 * @return		\IPS\bitracker\File
 	 */
 	public function GETitem( $id )
@@ -226,7 +235,6 @@ class _torrents extends \IPS\Content\Api\ItemController
 				'record_time'		=> time(),
 			) );
 		}
-			
 		if ( $category->bitoptions['allowss'] and isset( \IPS\Request::i()->screenshots ) )
 		{
 			$primary = 1;
@@ -495,6 +503,80 @@ class _torrents extends \IPS\Content\Api\ItemController
 	}
 	
 	/**
+	 * GET /bitracker/torrents/{id}/download
+	 * Download a torrent, increments download counter
+	 *
+	 * @apimemberonly
+	 * @param		int		$id					ID Number
+	 * @apiparam	int		version				If specified, will show a previous version of a torrent (see GET /bitracker/torrents/{id}/versions)
+	 * @return		array
+	 * @throws		2S303/M	INVALID_ID			The torrent ID does not exist or the authorized user does not have permission to view it
+	 * @throws		2S303/N	NO_PERMISSION		The torrent cannot be downloaded by the authorized member
+	 * @throws		2S303/O	INVALID_VERSION		The version ID does not exist
+	 * @apiresponse	[\IPS\File]					torrents				The torrents
+	 */
+	public function GETitem_download( $id )
+	{
+		try
+		{
+			$file = \IPS\bitracker\File::load( $id );
+			$backup = FALSE;
+			if ( $this->member and !$file->can( 'read', $this->member ) )
+			{
+				throw new \OutOfRangeException;
+			}
+
+			if ( !$file->canDownload( $this->member ) )
+			{
+				throw new \IPS\Api\Exception( 'NO_PERMISSION', '2S303/N', 404 );
+			}
+
+			if ( isset( \IPS\Request::i()->version ) )
+			{
+				try
+				{
+					$backup = \IPS\Db::i()->select( '*', 'bitracker_filebackup', array( 'b_id=? AND b_fileid=?', \IPS\Request::i()->version, $file->id ) )->first();
+				}
+				catch ( \UnderflowException $e )
+				{
+					throw new \IPS\Api\Exception( 'INVALID_VERSION', '2S303/O', 404 );
+				}
+			}
+
+			if ( $file->container()->log !== 0 )
+			{
+				\IPS\Db::i()->insert( 'bitracker_downloads', array(
+					'dfid'		=> $file->id,
+					'dtime'		=> time(),
+					'dip'		=> \IPS\Request::i()->ipAddress(),
+					'dmid'		=> (int) $this->member->member_id,
+					'dsize'		=> 0,
+					'dua'		=> 'REST API',
+					'dbrowsers'	=> '',
+					'dos'		=> ''
+				) );
+			}
+
+			$file->downloads++;
+			$file->save();
+
+			if ( \IPS\Application::appIsEnabled( 'nexus' ) and \IPS\Settings::i()->bit_nexus_on and ( $file->cost or $file->nexus ) )
+			{
+				\IPS\nexus\Customer::load( $this->member->member_id )->log( 'download', array( 'type' => 'bit', 'id' => $file->id, 'name' => $file->name ) );
+			}
+
+			$member = $this->member;
+			return new \IPS\Api\Response( 200, array( 'files' => array_values( array_map( function( $file ) use ( $member ) {
+						return $file->apiOutput( $member );
+					}, iterator_to_array( $file->files( $backup ? $backup['b_id'] : NULL ) ) ) ) ) );
+		}
+		catch ( \OutOfRangeException $e )
+		{
+			throw new \IPS\Api\Exception( 'INVALID_ID', '2S303/M', 404 );
+		}
+	}
+	
+	/**
 	 * GET /bitracker/torrents/{id}/reviews
 	 * Get reviews on an torrent
 	 *
@@ -576,7 +658,8 @@ class _torrents extends \IPS\Content\Api\ItemController
 	 * @param		int		$id			ID Number
 	 * @throws		2S303/F				INVALID_ID		The file ID is invalid or the authorized user does not have permission to view it
 	 * @throws		1S303/G				NO_TORRENTS	    No torrents were supplied
-	 * @throws		2S303/Q				NO_PERMISSION	The authorized user does not have permission to edit the file
+	 * @throws		2S303/Q				NO_PERMISSION	The authorized user doesnot have permission to edit the file
+	 * @throws		2S303/P				PENDING_VERSION	The file already has a new version waiting for approval, this version must be deleted or approved by a moderator first.
 	 * @throws		1S303/I				BAD_FILE_EXT	One of the files has a file type that is not allowed
 	 * @throws		1S303/J				BAD_FILE_SIZE	One of the files is too big
 	 * @throws		1S303/K				BAD_SS			One of the screenshots is not a valid image
@@ -598,6 +681,10 @@ class _torrents extends \IPS\Content\Api\ItemController
 			if ( $this->member and !$file->canEdit( $this->member ) )
 			{
 				throw new \IPS\Api\Exception( 'NO_PERMISSION', '2S303/O', 403 );
+			}
+			if( $file->hasPendingVersion() )
+			{
+				throw new \IPS\Api\Exception( 'PENDING_VERSION', '2S303/P', 403 );
 			}
 			$category = $file->container();
 			
@@ -702,6 +789,128 @@ class _torrents extends \IPS\Content\Api\ItemController
 		{
 			throw new \IPS\Api\Exception( 'INVALID_ID', '2S303/F', 404 );
 		}
+	}
+	
+	/**
+	 * POST /bitracker/torrents/{id}/buy
+	 * Generate an invoice to buy a file
+	 *
+	 * @apimemberonly
+	 * @param		int			$id					ID Number
+	 * @apiparam	string		currency				Desired currency. If not specified, will use member's default
+	 * @apiparam	string		returnUri			The URI to return to after payment is complete. If not specified, will redirect back to the file URI
+	 * @return		\IPS\nexus\Invoice
+	 * @throws		2S303/V		INVALID_ID			The file ID does not exist or the authorized user does not have permission to view it
+	 * @throws		1S303/R		CANNOT_BUY			The member cannot buy the file
+	 * @throws		1S303/S		NOT_PURCHASABLE		The file is not currently purchasable
+	 * @throws		1S303/T		BUY_PRODUCT			The file cannot be bought directly - direct user to buy associated product
+	 * @throws		1S303/U		INVALID_CURRENCY	The currency specified is not available
+	 */
+	public function POSTitem_buy( $id )
+	{
+		/* Get the torrent */
+		try
+		{
+			$file = \IPS\bitracker\File::load( $id );
+			if ( $this->member and !$file->can( 'read', $this->member ) )
+			{
+				throw new \OutOfRangeException;
+			}
+		}
+		catch ( \OutOfRangeException $e )
+		{
+			throw new \IPS\Api\Exception( 'INVALID_ID', '2S303/V', 404 );
+		}
+		$customer = \IPS\nexus\Customer::load( $this->member->member_id );
+				
+		/* Can we buy? */
+		if ( !$file->canBuy( $this->member ) )
+		{
+			throw new \IPS\Api\Exception( 'CANNOT_BUY', '2S303/R', 403 );
+		}
+		if ( !$file->isPurchasable() )
+		{
+			throw new \IPS\Api\Exception( 'NOT_PURCHASABLE', '2S303/S', 403 );
+		}
+		
+		/* Is it associated with a Nexus product? */
+		if ( $file->nexus )
+		{
+			throw new \IPS\Api\Exception( 'BUY_PRODUCT', '2S303/T', 400 );
+		}
+		
+		/* Work out which currency to use */
+		if ( isset( \IPS\Request::i()->currency ) )
+		{
+			if ( \in_array( \IPS\Request::i()->currency, \IPS\nexus\Money::currencies() ) )
+			{
+				$currency = \IPS\Request::i()->currency;
+			}
+			else
+			{
+				throw new \IPS\Api\Exception( 'INVALID_CURRENCY', '1S303/U', 400 );
+			}
+		}
+		else
+		{
+			$currency = $customer->defaultCurrency();
+		}
+		
+		/* Work out the price */
+		$costs = json_decode( $file->cost, TRUE );
+		if ( \is_array( $costs ) )
+		{
+			if ( isset( $costs[ $currency ]['amount'] ) and $costs[ $currency ]['amount'] )
+			{
+				$price = new \IPS\nexus\Money( $costs[ $currency ]['amount'], $currency );
+			}
+			else
+			{
+				throw new \IPS\Api\Exception( 'INVALID_CURRENCY', '1S303/U', 400 );
+			}
+		}
+		else
+		{
+			$price = new \IPS\nexus\Money( $cost, $currency );
+		}
+		
+		/* Create the item */		
+		$item = new \IPS\bitracker\extensions\nexus\Item\File( $file->name, $price );
+		$item->id = $file->id;
+		try
+		{
+			$item->tax = \IPS\Settings::i()->bit_nexus_tax ? \IPS\nexus\Tax::load( \IPS\Settings::i()->bit_nexus_tax ) : NULL;
+		}
+		catch ( \OutOfRangeException $e ) { }
+		if ( \IPS\Settings::i()->bit_nexus_gateways )
+		{
+			$item->paymentMethodIds = explode( ',', \IPS\Settings::i()->bit_nexus_gateways );
+		}
+		$item->renewalTerm = $file->renewalTerm();
+		$item->payTo = $file->author();
+		$item->commission = \IPS\Settings::i()->bit_nexus_percent;
+		if ( $fees = json_decode( \IPS\Settings::i()->bit_nexus_transfee, TRUE ) and isset( $fees[ $price->currency ] ) )
+		{
+			$item->fee = new \IPS\nexus\Money( $fees[ $price->currency ]['amount'], $price->currency );
+		}
+				
+		/* Generate the invoice */
+		$invoice = new \IPS\nexus\Invoice;
+		$invoice->currency = $currency;
+		$invoice->member = $customer;
+		$invoice->addItem( $item );
+		if ( \IPS\Request::i()->returnUri )
+		{
+			$invoice->return_uri = \IPS\Request::i()->returnUri;
+		}
+		else
+		{
+			$invoice->return_uri = "app=bitracker&module=portal&controller=view&id={$file->id}";
+		}
+		$invoice->save();
+		
+		/* Return */
+		return new \IPS\Api\Response( 200, $invoice->apiOutput( $this->member ) );
 	}
 	
 	/**
