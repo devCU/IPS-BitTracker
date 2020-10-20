@@ -9,7 +9,7 @@
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/GaalexxC/IPS-4.4-BitTracker/master.svg)](https://www.devcu.com/devcu-tracker/)
 
 ```diff
-- THIS IS AN INCOMPLETE VERSION UNDER DEVELOPMENT AND SHOULD NOT BE USED IN ANY ENVIRONMENT!!!
+- THIS IS AN INCOMPLETE DEVELOPMENT VERSION ONLY SUPPORTERS AND REQUESTS CAN ACCESS FULL VERSIONS
 ```
 
 ## ** Become a Supporter of devCU **
@@ -47,14 +47,14 @@
 
 10/20/20
 
-- NEW version 2.5.0 Stable final release for IPS 4.5x. Upgrading this version to 4.5 will not support legacy software so 4.4 users are out
+- NEW version 2.5.0 Stable release for IPS 4.5x. Upgrading this version 4.4x to 4.5x will not support legacy software so 4.4 users are out
 - Only devCU supporters will have access to the release betas for testing
 - Stable release expected end of October and via request only now
 - IPS 4.5x Development environment 
    - Ubuntu 20.04.1 Server
    - Nginx 1.19.3
    - PHP 7.4.11
-   - Percona MySQL 8.0.21-11
+   - Percona MySQL 8.0.21-12
    - Redis Server 5.0.7
 - [Requirements and Recommendations](https://github.com/devCU/IPS-4.4-BitTracker/issues/7)
 
