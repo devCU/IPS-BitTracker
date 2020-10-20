@@ -47,7 +47,7 @@
 
 10/20/20
 
-- NEW version 2.6.0 Stable final release for IPS 4.5x. Upgrading this version to 4.5 will not support legacy software so 4.4 users are out
+- NEW version 2.5.0 Stable final release for IPS 4.5x. Upgrading this version to 4.5 will not support legacy software so 4.4 users are out
 - Only devCU supporters will have access to the release betas for testing
 - Stable release expected end of October and via request only now
 - IPS 4.5x Development environment 
