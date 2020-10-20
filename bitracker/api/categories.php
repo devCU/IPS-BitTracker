@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     14 SEP 2020
+ * @Updated     20 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -53,6 +53,10 @@ class _categories extends \IPS\Node\Api\NodeController
 	 * GET /bitracker/categories
 	 * Get list of categories
 	 *
+	 * @apiparam	int		clubs			0|1 Include club categories, default: 1
+	 * @apiparam	int		page			Page number
+	 * @apiparam	int		perPage			Number of results per page - defaults to 25
+	 * @note		For requests using an OAuth Access Token for a particular member, only categories the authorized user can view will be included
 	 * @return		\IPS\Api\PaginatedResponse<IPS\bitracker\Category>
 	 */
 	public function GETindex()
@@ -80,7 +84,7 @@ class _categories extends \IPS\Node\Api\NodeController
 	 *
 	 * @apiparam	int|null	parent					The ID number of the parent the category should be created in. NULL for root.
 	 * @apiparam	int			moderation				Files must be approved?
-	 * @apiparam	int			moderation_edits		New versions must be re-approved?
+	 * @apiparam	int			moderation_edits		New versions must be approved?
 	 * @apiparam	int			allowss					Allow screenshots?
 	 * @apiparam	int			reqss					Require screenshots?
 	 * @apiparam	int			comments				Allow comments?
@@ -108,7 +112,7 @@ class _categories extends \IPS\Node\Api\NodeController
 	 * 
 	 * @apiparam	int|null	parent					The ID number of the parent the category should be created in. NULL for root.
 	 * @apiparam	int			moderation				Files must be approved?
-	 * @apiparam	int			moderation_edits		New versions must be re-approved?
+	 * @apiparam	int			moderation_edits		New versions must be approved?
 	 * @apiparam	int			allowss					Allow screenshots?
 	 * @apiparam	int			reqss					Require screenshots?
 	 * @apiparam	int			comments				Allow comments?
