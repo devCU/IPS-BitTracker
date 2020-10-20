@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     29 AUG 2020
+ * @Updated     20 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -44,10 +44,25 @@ class _Application extends \IPS\Application
 	 */
 	public function init()
 	{
-		/* If the viewing member cannot view the board (ex: guests must login first), then send a 404 Not Found header here, before the Login page shows in the dispatcher */
-		if ( !\IPS\Member::loggedIn()->group['g_view_board'] and ( \IPS\Request::i()->module == 'bitracker' and \IPS\Request::i()->controller == 'browse' and \IPS\Request::i()->do == 'rss' ) )
+		/* Handle RSS requests */
+		if ( \IPS\Request::i()->module == 'bitracker' and \IPS\Request::i()->controller == 'main' and \IPS\Request::i()->do == 'rss' )
 		{
-			\IPS\Output::i()->error( 'node_error', '2D220/1', 404, '' );
+			$member = NULL;
+			if( \IPS\Request::i()->member AND \IPS\Request::i()->key )
+			{
+				$member = \IPS\Member::load( \IPS\Request::i()->member );
+				if( !\IPS\Login::compareHashes( md5( ( $member->members_pass_hash ?: $member->email ) . $member->members_pass_salt ), (string) \IPS\Request::i()->key ) )
+				{
+					$member = NULL;
+				}
+			}
+
+			$this->sendDownloadsRss( $member ?? new \IPS\Member );
+
+			if( !\IPS\Member::loggedIn()->group['g_view_board'] )
+			{
+				\IPS\Output::i()->error( 'node_error', '2D220/1', 404, '' );
+			}
 		}
 		
 		\IPS\Output::i()->cssFiles = array_merge( \IPS\Output::i()->cssFiles, \IPS\Theme::i()->css( 'bitracker.css' ) );
@@ -56,6 +71,30 @@ class _Application extends \IPS\Application
 		{
 			\IPS\Output::i()->cssFiles = array_merge( \IPS\Output::i()->cssFiles, \IPS\Theme::i()->css( 'bitracker_responsive.css', 'bitracker', 'front' ) );
 		}
+	}
+
+	/**
+	 * Send the latest file RSS feed for the indicated member
+	 *
+	 * @param	\IPS\Member		$member		Member
+	 * @return	void
+	 */
+	protected function sendBitrackerRss( $member )
+	{
+		if( !\IPS\Settings::i()->bit_rss )
+		{
+			\IPS\Output::i()->error( 'rss_offline', '2D175/2', 403, 'rss_offline_admin' );
+		}
+
+		$document = \IPS\Xml\Rss::newDocument( \IPS\Http\Url::internal( 'app=bitracker&module=portal&controller=main', 'front', 'bitracker' ), $member->language()->get(bit_rss_title'), $member->language()->get('bit_rss_title') );
+		
+		foreach ( \IPS\bitracker\File::getItemsWithPermission( array(), NULL, 10, 'read', \IPS\Content\Hideable::FILTER_AUTOMATIC, 0, $member ) as $file )
+		{
+			$document->addItem( $file->name, $file->url(), $file->desc, \IPS\DateTime::ts( $file->updated ), $file->id );
+		}
+		
+		/* @note application/rss+xml is not a registered IANA mime-type so we need to stick with text/xml for RSS */
+		\IPS\Output::i()->sendOutput( $document->asXML(), 200, 'text/xml', array(), TRUE );
 	}
 
 	/**
@@ -135,5 +174,18 @@ class _Application extends \IPS\Application
 	{
 		/* Apps can overload this */
 		return array( 'bit_watermarkpath' );
+	}
+
+	/**
+	 * Return an array of specific links to add to the sitemap
+	 *
+	 * @return	array
+	 */
+	public function sitemapLinks()
+	{
+		return array(
+			\IPS\Http\Url::internal( 'app=bitracker&module=portal&controller=main&do=categories', 'front', 'bitracker_categories' ),
+			\IPS\Http\Url::internal( 'app=bitracker&module=portal&controller=main', 'front', 'bitracker' ),
+		);
 	}
 }
