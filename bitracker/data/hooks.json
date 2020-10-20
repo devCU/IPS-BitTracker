@@ -1,11 +1,15 @@
 {
+    "Forums": {
+        "type": "C",
+        "class": "\\IPS\\forums\\Forum"
+    },
     "nexusPackage": {
         "type": "C",
         "class": "\\IPS\\nexus\\Package\\Item"
     },
-    "Forums": {
+    "frontModcp": {
         "type": "C",
-        "class": "\\IPS\\forums\\Forum"
+        "class": "\\IPS\\core\\modules\\front\\modcp\\modcp"
     },
     "Forum": {
         "type": "C",
