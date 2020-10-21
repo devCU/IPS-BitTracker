@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     14 SEP 2020
+ * @Updated     20 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -236,6 +236,8 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 	{
 		\IPS\Content\Search\Index::i()->massUpdate( static::$contentItemClass, $node->_id, NULL, ( $enabled ) ? $node->searchIndexPermissions() : '' );
 		
+		\IPS\Db::i()->update( 'core_tags_perms', array( 'tag_perm_text' => ( $enabled ) ? $node->searchIndexPermissions() : '' ), array( 'tag_perm_aap_lookup=?', md5( static::$permApp . ';' . static::$permType . ';' . $node->_id ) ) );
+
 		if ( $node->hasChildren( NULL ) )
 		{
 			foreach( $node->children( NULL ) AS $child )
@@ -302,11 +304,13 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		$form->addHeader( 'category_display' );
 		$form->add( new \IPS\Helpers\Form\Select( 'csortorder', $this->sortorder ?: 'updated', FALSE, array( 'options' => array( 'updated' => 'sort_updated', 'last_comment' => 'last_reply', 'title' => 'file_title', 'rating' => 'sort_rating', 'date' => 'sort_date', 'num_comments' => 'sort_num_comments', 'num_reviews' => 'sort_num_reviews', 'views' => 'sort_num_views' ) ), NULL, NULL, NULL, 'csortorder' ) );
 		$form->add( new \IPS\Helpers\Form\Translatable( 'cdisclaimer', NULL, FALSE, array( 'app' => 'bitracker', 'key' => ( $this->id ? "bitracker_category_{$this->id}_disclaimer" : NULL ), 'editor' => array( 'app' => 'bitracker', 'key' => 'Categories', 'autoSaveKey' => ( $this->id ? "bitracker-cat-{$this->id}-disc" : "bitracker-new-cat-disc" ), 'attachIds' => $this->id ? array( $this->id, NULL, 'disclaimer' ) : NULL, 'minimize' => 'cdisclaimer_placeholder' ) ), NULL, NULL, NULL, 'cdisclaimer-editor' ) );
+		$form->add( new \IPS\Helpers\Form\Radio( 'cdisclaimer_location', $this->id ? $this->disclaimer_location : 'bitrack', FALSE, array( 'options' => array( 'purchase' => 'cdisclaimer_purchase', 'download' => 'cdisclaimer_download', 'both' => 'cdisclaimer_both' ) ) ) );
 		$form->addHeader( 'category_logs' );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'clog_on', $this->log !== 0, FALSE, array( 'disableCopy' => TRUE, 'togglesOn' => array( 'clog', 'submitter_log' ) ) ) );
 		$form->add( new \IPS\Helpers\Form\Interval( 'clog', $this->log === NULL ? -1 : $this->log, FALSE, array(
-			'valueAs' => \IPS\Helpers\Form\Interval::DAYS, 'unlimited' => -1
-		), NULL, NULL, ( $this->id and \IPS\Member::loggedIn()->hasAcpRestriction( 'bitracker', 'configure', 'categories_recount_bitracker' ) ) ? '<a data-confirm data-confirmSubMessage="' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount_desc') . '" href="' . \IPS\Http\Url::internal( "app=bitracker&module=configure&controller=categories&do=recountTorrents&id={$this->id}") . '">' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount') . '</a>' : '', 'clog' ) );
+			'valueAs' => \IPS\Helpers\Form\Interval::DAYS, 'unlimited' => -1,
+			'endSuffix'	=> ( $this->id and \IPS\Member::loggedIn()->hasAcpRestriction( 'bitracker', 'configure', 'categories_recount_downloads' ) ) ? '<a data-confirm data-confirmSubMessage="' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount_desc') . '" href="' . \IPS\Http\Url::internal( "app=bitracker&module=configure&controller=categories&do=recountTorrents&id={$this->id}")->csrf() . '">' . \IPS\Member::loggedIn()->language()->addToStack('clog_recount') . '</a>' : ''
+		), NULL, NULL, NULL, 'clog' ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_submitter_log', $this->bitoptions['submitter_log'], FALSE, array(), NULL, NULL, NULL, 'submitter_log' ) );
 		
 		$form->addTab( 'category_submissions' );
@@ -318,6 +322,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 				throw new \InvalidArgumentException('form_required');
 			}
 		}, NULL, \IPS\Member::loggedIn()->language()->addToStack('filesize_raw_k'), 'cmaxfile' ) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'cmultiple_files', $this->id ? $this->multiple_files : TRUE ) );
 		$form->add( new \IPS\Helpers\Form\Translatable( 'csubmissionterms', $this->submissionterms, FALSE, array( 'app' => 'bitracker', 'key' => ( $this->id ? "bitracker_category_{$this->id}_subterms" : NULL ), 'editor' => array( 'app' => 'bitracker', 'key' => 'Categories', 'autoSaveKey' => ( $this->id ? "bitracker-cat-{$this->id}-subt" : "bitracker-new-cat-subt" ), 'attachIds' => $this->id ? array( $this->id, NULL, 'subt' ) : NULL, 'minimize' => 'csubmissionterms_placeholder' ) ) ) );
 		$form->addHeader( 'category_versioning' );
 		$form->add( new \IPS\Helpers\Form\Radio( 'cversion_numbers', $this->id ? $this->version_numbers : 1, TRUE, array( 'options' => array( 0 => 'version_numbers_disabled', 1 => 'version_numbers_enabled', 2 => 'version_numbers_required' ) ) ) );
@@ -337,11 +342,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 			$form->addHeader( 'category_tags' );
 			$form->add( new \IPS\Helpers\Form\YesNo( 'ctags_disabled', !$this->tags_disabled, FALSE, array( 'togglesOn' => array( 'ctags_noprefixes', 'ctags_predefined' ) ), NULL, NULL, NULL, 'ctags_disabled' ) );
 			$form->add( new \IPS\Helpers\Form\YesNo( 'ctags_noprefixes', !$this->tags_noprefixes, FALSE, array(), NULL, NULL, NULL, 'ctags_noprefixes' ) );
-			
-			if ( !\IPS\Settings::i()->tags_open_system )
-			{
-				$form->add( new \IPS\Helpers\Form\Text( 'ctags_predefined', $this->tags_predefined, FALSE, array( 'autocomplete' => array( 'unique' => 'true' ), 'nullLang' => 'ctags_predefined_unlimited' ), NULL, NULL, NULL, 'ctags_predefined' ) );
-			}
+			$form->add( new \IPS\Helpers\Form\Text( 'ctags_predefined', $this->tags_predefined, FALSE, array( 'autocomplete' => array( 'unique' => 'true' ), 'nullLang' => 'ctags_predefined_unlimited' ), NULL, NULL, NULL, 'ctags_predefined' ) );
 		}
 		
 		$form->addTab( 'category_errors', NULL, 'category_errors_blurb' );
@@ -352,7 +353,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		{
 			if ( $this->id )
 			{
-				$rebuildUrl = \IPS\Http\Url::internal( 'app=bitracker&module=bitracker&controller=categories&id=' . $this->id . '&do=rebuildTopicContent' );
+				$rebuildUrl = \IPS\Http\Url::internal( 'app=bitracker&module=bitracker&controller=categories&id=' . $this->id . '&do=rebuildTopicContent' )->csrf();
 
 				\IPS\Member::loggedIn()->language()->words['cforum_on_desc'] = \IPS\Member::loggedIn()->language()->addToStack( 'database_forum_record__desc' );
 			}
@@ -365,7 +366,12 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 				'cbitoptions_topic_delete',
 				'cbitoptions_topic_screenshot'
 			) ), NULL, NULL, $this->id ? \IPS\Member::loggedIn()->language()->addToStack( 'downloadcategory_topic_rebuild', NULL, array( 'sprintf' => array( $rebuildUrl ) ) ) : NULL ) );
-			$form->add( new \IPS\Helpers\Form\Node( 'cforum_id', $this->forum_id ? $this->forum_id  : NULL, FALSE, array( 'class' => 'IPS\forums\Forum', 'permissionCheck' => function ( $forum ) { return $forum->sub_can_post and !$forum->redirect_url; } ), NULL, NULL, NULL, 'cforum_id' ) );
+			$form->add( new \IPS\Helpers\Form\Node( 'cforum_id', $this->forum_id ? $this->forum_id  : NULL, FALSE, array( 'class' => 'IPS\forums\Forum', 'permissionCheck' => function ( $forum ) { return $forum->sub_can_post and !$forum->redirect_url; } ), function( $val ) {
+				if( \IPS\Request::i()->cforum_on_checkbox AND !$val )
+				{
+					throw new \DomainException( 'form_required' );
+				}
+			}, NULL, NULL, 'cforum_id' ) );
 			$form->add( new \IPS\Helpers\Form\Text( 'ctopic_prefix', $this->topic_prefix, FALSE, array( 'trim' => FALSE ), NULL, NULL, NULL, 'ctopic_prefix' ) );
 			$form->add( new \IPS\Helpers\Form\Text( 'ctopic_suffix', $this->topic_suffix, FALSE, array( 'trim' => FALSE ), NULL, NULL, NULL, 'ctopic_suffix' ) );
 			$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_topic_delete', $this->id ? $this->bitoptions['topic_delete'] : NULL, FALSE, array(), NULL, NULL, NULL, 'cbitoptions_topic_delete' ) );
@@ -797,7 +803,7 @@ class _Category extends \IPS\Node\Model implements \IPS\Node\Permissions
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_reviews', $this->id ? $this->bitoptions['reviews'] : TRUE, FALSE, array( 'togglesOn' => array( 'cbitoptions_reviews_bitrack' ) ) ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_allowss', $this->id ? $this->bitoptions['allowss'] : TRUE, FALSE, array( 'togglesOn' => array( 'cbitoptions_reqss', 'cmaxss', 'cmaxdims' ) ), NULL, NULL, NULL, 'cbitoptions_allowss' ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'cbitoptions_reqss', $this->bitoptions['reqss'], FALSE, array(), NULL, NULL, NULL, 'cbitoptions_reqss' ) );
-		$form->add( new \IPS\Helpers\Form\Text( 'ctypes', $this->id ? $this->_data['types'] : NULL, FALSE, array( 'autocomplete' => array( 'unique' => 'true' ), 'nullLang' => 'any_extensions' ), NULL, NULL, NULL, 'ctypes' ) );
+		$form->add( new \IPS\Helpers\Form\Text( 'ctypes', $this->id ? $this->_data['types'] : NULL, FALSE, array( 'autocomplete' => array( 'unique' => 'true', 'lang' => 'files_optional' ), 'nullLang' => 'any_extensions' ), NULL, NULL, NULL, 'ctypes' ) );
 	}
 	
 	/**
