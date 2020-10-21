@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     31 AUG 2020
+ * @Updated     20 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -52,7 +52,8 @@ class _File extends \IPS\Content\Item implements
 \IPS\Content\Shareable,
 \IPS\Content\Searchable,
 \IPS\Content\Embeddable,
-\IPS\Content\MetaData
+\IPS\Content\MetaData,
+\IPS\Content\EditHistory
 {
 	use \IPS\Content\Reactable, \IPS\Content\Reportable, \IPS\Content\ItemTopic
 	{
@@ -126,7 +127,11 @@ class _File extends \IPS\Content\Item implements
 		'featured'				=> 'featured',
 		'locked'				=> 'locked',
 		'ip_address'			=> 'ipaddress',
-		'meta_data'				=> 'meta_data'
+		'meta_data'				=> 'meta_data',
+		'edit_time'				=> 'edit_time',
+		'edit_member_name'		=> 'edit_name',
+		'edit_show'				=> 'append_edit',
+		'edit_reason'			=> 'edit_reason',
 	);
 	
 	/**
@@ -298,9 +303,10 @@ class _File extends \IPS\Content\Item implements
 	 *
 	 * @param	int|NULL	$version		If provided, will get the file records for a specific previous version (bitracker_filebackup.b_id)
 	 * @param	bool		$includeLinks	If true, will include linked files
+	 * @param	bool		$pendingVersion	Only include files from a pending new version
 	 * @return	\IPS\File\Iterator
 	 */
-	public function files( $version=NULL, $includeLinks=TRUE )
+	public function files( $version=NULL, $includeLinks=TRUE, $pendingVersion=FALSE )
 	{
 		if( isset( $this->_files[ (int) $version ] ) )
 		{
@@ -317,9 +323,12 @@ class _File extends \IPS\Content\Item implements
 		{
 			$where[] = array( 'record_backup=0' );
 		}
+
+		/* Exclude future versions */
+		$where[] = array( 'record_hidden=?', $pendingVersion );
 						
-		$iterator = \IPS\Db::i()->select( '*', 'bitracker_torrents_records', $where )->setKeyField( 'record_id' );
-		$iterator = new \IPS\File\Iterator( $iterator, 'bitracker_Torrents', 'record_location', FALSE, 'record_realname' );
+		$iterator = \IPS\Db::i()->select( '*', 'bitracker_files_records', $where )->setKeyField( 'record_id' );
+		$iterator = new \IPS\File\Iterator( $iterator, 'bitracker_Torrents', 'record_location', FALSE, 'record_realname', 'record_size' );
 
 		$this->_files[ (int) $version ]	= $iterator;
 		return $this->_files[ (int) $version ];
@@ -609,31 +618,35 @@ class _File extends \IPS\Content\Item implements
 	 *
 	 * @param	int			$type			0 = Normal, 1 = Thumbnails, 2 = No watermark
 	 * @param	bool		$includeLinks	If true, will include linked files
-	 * @param	int|NULL	$version		If provided, will get the file records for a specific previous version (bitracker_filebackup.b_id)
+	 * @param	int|NULL	$version		If provided, will get the file records for a specific previous version (downloads_filebackup.b_id)
+	 * @param 	bool		$pendingVersion	Only show screenshots from new pending version
 	 * @return	\IPS\File\Iterator
 	 */
-	public function screenshots( $type=0, $includeLinks=TRUE, $version = NULL )
+	public function screenshots( $type=0, $includeLinks=TRUE, $version = NULL, $pendingVersion=FALSE )
 	{
+		$fileSizeField = null;
 		switch ( $type )
 		{
 			case 0:
-				if( $this->_screenshotsNormal !== NULL )
+				if( $this->_screenshotsNormal !== NULL AND $pendingVersion === FALSE )
 				{
 					return $this->_screenshotsNormal;
 				}
 				$valueField = 'record_location';
 				$property	= "_screenshotsNormal";
+				$fileSizeField = 'record_size';
 				break;
 			case 1:
-				if( $this->_screenshotsThumbs !== NULL )
+				if( $this->_screenshotsThumbs !== NULL AND $pendingVersion === FALSE )
 				{
 					return $this->_screenshotsThumbs;
 				}
 				$valueField = function( $row ) { return ( $row['record_type'] == 'sslink' ) ? 'record_location' : 'record_thumb'; };
 				$property	= "_screenshotsThumbs";
+				$fileSizeField = FALSE;
 				break;
 			case 2:
-				if( $this->_screenshotsOriginal !== NULL )
+				if( $this->_screenshotsOriginal !== NULL AND $pendingVersion === FALSE )
 				{
 					return $this->_screenshotsOriginal;
 				}
@@ -664,9 +677,19 @@ class _File extends \IPS\Content\Item implements
 		{
 			$where[] = array( 'record_backup=0' );
 		}
-		$iterator = \IPS\Db::i()->select( 'record_id, record_location, record_thumb, record_no_watermark, record_default, record_type, record_realname', 'bitracker_torrents_records', $where, NULL, NULL, NULL, NULL, \IPS\Db::SELECT_SQL_CALC_FOUND_ROWS )->setKeyField( 'record_id' );
-		$iterator = new \IPS\File\Iterator( $iterator, 'bitracker_Screenshots', $valueField, FALSE, 'record_realname' );
+
+		/* Ignore future versions */
+		$where[] = array( 'record_hidden=?', $pendingVersion );
+
+		$iterator = \IPS\Db::i()->select( 'record_id, record_location, record_thumb, record_no_watermark, record_default, record_type, record_realname, record_size', 'bitracker_torrents_records', $where )->setKeyField( 'record_id' );
+		$iterator = new \IPS\File\Iterator( $iterator, 'bitracker_Screenshots', $valueField, FALSE, 'record_realname', $fileSizeField );
 		$iterator = new \CachingIterator( $iterator, \CachingIterator::FULL_CACHE );
+
+		/* Do not cache if loading pending version data */
+		if( $pendingVersion === TRUE )
+		{
+			return $iterator;
+		}
 
 		$this->$property	= $iterator;
 		return $this->$property;
@@ -675,14 +698,14 @@ class _File extends \IPS\Content\Item implements
 	/**
 	 * Returns the content images
 	 *
-	 * @param	int|null	$limit	Number of attachments to fetch, or NULL for all
-	 *
-	 * @return	array|NULL	If array, then array( 'core_Attachment' => 'month_x/foo.gif', ... );
+	 * @param	int|null	$limit				Number of attachments to fetch, or NULL for all
+	 * @param	bool		$ignorePermissions	If set to TRUE, permission to view the images will not be checked
+	 * @return	array|NULL
 	 * @throws	\BadMethodCallException
 	 */
-	public function contentImages( $limit = NULL )
+	public function contentImages( $limit = NULL, $ignorePermissions = FALSE )
 	{
-		$images = parent::contentImages( $limit ) ?: array();
+		$images = parent::contentImages( $limit, $ignorePermissions ) ?: array();
 		$count = 0;
 		foreach( $this->screenshots( 0, FALSE ) as $image )
 		{
@@ -759,7 +782,7 @@ class _File extends \IPS\Content\Item implements
 		}
 
 		$screenshots = $this->screenshots( 1 );
-		if ( $this->_data['primary_screenshot'] and isset( $screenshots[ $this->_data['primary_screenshot'] ] ) )
+		if ( isset( $this->_data['primary_screenshot'] ) and isset( $screenshots[ $this->_data['primary_screenshot'] ] ) )
 		{
 			$this->_primaryScreenshotThumb	= $screenshots[ $this->_data['primary_screenshot'] ];
 			return $this->_primaryScreenshotThumb;
@@ -1281,13 +1304,13 @@ class _File extends \IPS\Content\Item implements
 
 
 		/* Minimum posts */
-		if ( $member->member_id and $restrictions['min_posts'] and $restrictions['min_posts'] > $member->member_posts )
+		if ( $member->member_id and isset( $restrictions['min_posts'] ) and $restrictions['min_posts'] and $restrictions['min_posts'] > $member->member_posts )
 		{
-			throw new \DomainException( $member->language()->addToStack( 'download_min_posts', FALSE, array( 'pluralize' => array( $restrictions['min_posts'] ) ) ) );
+			throw new \DomainException( $member->language()->addToStack( 'bitrack_min_posts', FALSE, array( 'pluralize' => array( $restrictions['min_posts'] ) ) ) );
 		}
 		
 		/* Simultaneous downloads */
-		if ( $restrictions['limit_sim'] )
+		if ( isset( $restrictions['min_posts'] ) AND $restrictions['limit_sim'] )
 		{
 			if ( $this->getCurrentTrackerSessions( $member ) >= $restrictions['limit_sim'] )
 			{
@@ -1316,7 +1339,7 @@ class _File extends \IPS\Content\Item implements
 			$timePeriodWhere = array( $logWhere, array( 'dtime>?', \IPS\DateTime::create()->sub( new \DateInterval( $interval ) )->getTimestamp() ) );
 			
 			/* Bandwidth */
-			if ( $restrictions[ $k . '_bw' ] )
+			if ( isset( $restrictions[ $k . '_bw' ] ) AND $restrictions[ $k . '_bw' ] )
 			{
 				$usedThisPeriod = \IPS\Db::i()->select( 'SUM(dsize)', 'bitracker_downloads', $timePeriodWhere )->first();
 				if ( ( $record['record_size'] + $usedThisPeriod ) > ( $restrictions[ $k . '_bw' ] * 1024 ) )
@@ -1344,7 +1367,7 @@ class _File extends \IPS\Content\Item implements
 			}
 			
 			/* Download */
-			if ( $restrictions[ $k . '_dl' ] )
+			if ( isset( $restrictions[ $k . '_dl' ] ) AND $restrictions[ $k . '_dl' ] )
 			{
 				try
 				{
@@ -1411,16 +1434,39 @@ class _File extends \IPS\Content\Item implements
 	 *
 	 * @param	\IPS\Content\Item|NULL	$item		The current item if editing or NULL if creating
 	 * @param	\IPS\Node\Model|NULL 	$container	Container (e.g. forum) ID, if appropriate
+	 * @param	string|NULL				$bulkKey	If we are submitting multiple torrents at once, a key that is used to differentiate between which fields are for which torrents
 	 * @return	array
 	 */
-	public static function formElements( $item=NULL, \IPS\Node\Model $container=NULL )
+	public static function formElements( $item=NULL, \IPS\Node\Model $container=NULL, $bulkKey = '' )
 	{
 		/* Init */
-		$return = parent::formElements( $item, $container );
+		$return = [];
+		foreach ( parent::formElements( $item, $container ) as $k => $input )
+		{
+			$input->name = "{$bulkKey}{$input->name}";
+			$return[ $k ] = $input;
+		}
 
 		/* Description */
-		$return['description'] = new \IPS\Helpers\Form\Editor( 'file_desc', $item ? $item->desc : NULL, TRUE, array( 'app' => 'bitracker', 'key' => 'Bitracker', 'autoSaveKey' => 'bitracker-new-file', 'attachIds' => ( $item === NULL ? NULL : array( $item->id, NULL, 'desc' ) ) ), '\IPS\Helpers\Form::floodCheck' );
-		
+		$return['description'] = new \IPS\Helpers\Form\Editor( "{$bulkKey}file_desc", $item ? $item->desc : NULL, TRUE, array( 'app' => 'bitracker', 'key' => 'Bitracker', 'autoSaveKey' => ( $item ? "bitracker-file-{$item->id}" : "{$bulkKey}bitracker-new-file" ), 'attachIds' => ( $item === NULL ? NULL : array( $item->id, NULL, 'desc' ) ) ), '\IPS\Helpers\Form::floodCheck' );
+
+		/* Edit Log Fields need to be under the editor */
+		$editReason = NULL;
+		if( isset( $return['edit_reason']) )
+		{
+			$editReason = $return['edit_reason'];
+			unset( $return['edit_reason'] );
+			$return['edit_reason'] = $editReason;
+		}
+
+		$logEdit = NULL;
+		if( isset( $return['log_edit']) )
+		{
+			$logEdit = $return['log_edit'];
+			unset( $return['log_edit'] );
+			$return['log_edit'] = $logEdit;
+		}
+
 		/* Primary screenshot */
 		if ( $item )
 		{
@@ -1432,7 +1478,7 @@ class _File extends \IPS\Content\Item implements
 
 			if ( \count( $screenshotOptions ) > 1 )
 			{
-				$return['primary_screenshot'] = new \IPS\Helpers\Form\Radio( 'file_primary_screenshot', $item->_primary_screenshot, FALSE, array( 'options' => $screenshotOptions, 'parse' => 'image' ) );
+				$return['primary_screenshot'] = new \IPS\Helpers\Form\Radio( "{$bulkKey}file_primary_screenshot", $item->_primary_screenshot, FALSE, array( 'options' => $screenshotOptions, 'parse' => 'image' ) );
 			}
 		}
 		
@@ -1448,11 +1494,11 @@ class _File extends \IPS\Content\Item implements
 				$options['nexus'] = 'file_associate_nexus';
 			}
 			
-			$return['file_cost_type'] = new \IPS\Helpers\Form\Radio( 'file_cost_type', $item ? ( $item->cost ? 'paid' : ( $item->nexus ? 'nexus' : 'free' ) ) : 'free', TRUE, array(
+			$return['file_cost_type'] = new \IPS\Helpers\Form\Radio( "{$bulkKey}file_cost_type", $item ? ( $item->cost ? 'paid' : ( $item->nexus ? 'nexus' : 'free' ) ) : 'free', TRUE, array(
 				'options'	=> $options,
 				'toggles'	=> array(
-					'paid'		=> array( 'file_cost', 'file_renewals' ),
-					'nexus'		=> array( 'file_nexus' )
+					'paid'		=> array( "{$bulkKey}file_cost", "{$bulkKey}file_renewals" ),
+					'nexus'		=> array( "{$bulkKey}file_nexus" )
 				)
 			) );
 			
@@ -1479,13 +1525,37 @@ class _File extends \IPS\Content\Item implements
 			{
 				$commissionBlurb = \IPS\Member::loggedIn()->language()->addToStack('file_cost_desc_fee', FALSE, array( 'sprintf' => $fees ) );
 			}
+
+			$minimums = json_decode( \IPS\Settings::i()->bit_nexus_mincost, true );
+			$minCosts = [];
+			foreach( $minimums as $currency => $cost )
+			{
+				if( ( new \IPS\Math\Number( $minimums[ $currency ]['amount'] ) )->isGreaterThanZero() )
+				{
+					$minCosts[] = (string) ( new \IPS\nexus\Money( $minimums[ $currency ]['amount'], $currency ) );
+				}
+			}
+
+			if( \count( $minCosts ) )
+			{
+				$commissionBlurb .= \IPS\Member::loggedIn()->language()->addToStack('file_cost_desc_minimum', FALSE, array( 'sprintf' => \IPS\Member::loggedIn()->language()->formatList( $minCosts ) ) );
+			}
 			
-			\IPS\Member::loggedIn()->language()->words['file_cost_desc'] = $commissionBlurb;			
-			$return['file_cost'] = new \IPS\nexus\Form\Money( 'file_cost', $item ? json_decode( $item->cost, TRUE ) : array(), NULL, array(), NULL, NULL, NULL, 'file_cost' );
-			$return['file_renewals']  = new \IPS\Helpers\Form\Radio( 'file_renewals', $item ? ( $item->renewal_term ? 1 : 0 ) : 0, TRUE, array(
+			\IPS\Member::loggedIn()->language()->words['file_cost_desc'] = $commissionBlurb;
+
+			$return['file_cost'] = new \IPS\nexus\Form\Money( "{$bulkKey}file_cost", $item ? json_decode( $item->cost, TRUE ) : array(), NULL, array(), function( $val ) use ( $minimums, $bulkKey ) {
+				foreach( $val as $currency => $money )
+				{
+					if( isset( $minimums[ $currency ]['amount'] ) AND $money->amount->compare( new \IPS\Math\Number( $minimums[ $currency ]['amount'] ) ) === -1 )
+					{
+						throw new \DomainException('file_cost_too_low');
+					}
+				}
+			}, NULL, NULL, "{$bulkKey}file_cost" );
+			$return['file_renewals']  = new \IPS\Helpers\Form\Radio( "{$bulkKey}file_renewals", $item ? ( $item->renewal_term ? 1 : 0 ) : 0, TRUE, array(
 				'options'	=> array( 0 => 'file_renewals_off', 1 => 'file_renewals_on' ),
-				'toggles'	=> array( 1 => array( 'file_renewal_term' ) )
-			), NULL, NULL, NULL, 'file_renewals' );
+				'toggles'	=> array( 1 => array( "{$bulkKey}file_renewal_term" ) )
+			), NULL, NULL, NULL, "{$bulkKey}file_renewals" );
 			\IPS\Member::loggedIn()->language()->words['file_renewal_term_desc'] = $commissionBlurb;
 			$renewTermForEdit = NULL;
 			if ( $item and $item->renewal_term )
@@ -1497,11 +1567,11 @@ class _File extends \IPS\Content\Item implements
 				}
 				$renewTermForEdit = new \IPS\nexus\Purchase\RenewalTerm( $renewPrices, new \DateInterval( 'P' . $item->renewal_term . mb_strtoupper( $item->renewal_units ) ) );
 			}
-			$return['file_renewal_term'] = new \IPS\nexus\Form\RenewalTerm( 'file_renewal_term', $renewTermForEdit, NULL, array( 'allCurrencies' => TRUE ), NULL, NULL, NULL, 'file_renewal_term' );
+			$return['file_renewal_term'] = new \IPS\nexus\Form\RenewalTerm( "{$bulkKey}file_renewal_term", $renewTermForEdit, NULL, array( 'allCurrencies' => TRUE ), NULL, NULL, NULL, "{$bulkKey}file_renewal_term" );
 
 			if ( \IPS\Member::loggedIn()->isAdmin() AND \count( \IPS\nexus\Package::roots() ) > 0 )
 			{
-				$return['file_nexus'] = new \IPS\Helpers\Form\Node( 'file_nexus', $item ? $item->nexus : array(), FALSE, array( 'class' => '\IPS\nexus\Package', 'multiple' => TRUE ), NULL, NULL, NULL, 'file_nexus' );
+				$return['file_nexus'] = new \IPS\Helpers\Form\Node( "{$bulkKey}file_nexus", $item ? $item->nexus : array(), FALSE, array( 'class' => '\IPS\nexus\Package', 'multiple' => TRUE ), NULL, NULL, NULL, "{$bulkKey}file_nexus" );
 			}
 		}
 		
@@ -1509,12 +1579,32 @@ class _File extends \IPS\Content\Item implements
 		$customFieldValues = $item ? $item->customFields() : array();
 		foreach ( $container->cfields as $k => $field )
 		{
-			$return[] = $field->buildHelper( isset( $customFieldValues[ "field_{$k}" ] ) ? $customFieldValues[ "field_{$k}" ] : NULL );
+			$_id = $field->id;
+			$field->id = "{$bulkKey}{$field->id}";
+			if ( $field->type === 'Editor' )
+			{
+				if ( $field->allow_attachments AND $item )
+				{
+					$attachIds = array( $item->id, $_id, 'fields' );
+					$field::$editorOptions = array_merge( $field::$editorOptions, array( 'attachIds' => $attachIds ) );
+				}
+			}
+			$helper = $field->buildHelper( isset( $customFieldValues[ "field_{$k}" ] ) ? $customFieldValues[ "field_{$k}" ] : NULL, NULL, $item );
+			$helper->label = \IPS\Member::loggedIn()->language()->addToStack( 'bitracker_field_' . $_id );
+			$field->id = $_id;
+			if ( $field->type === 'Editor' )
+			{
+				if ( $field->allow_attachments AND !$item )
+				{
+					$field::$editorOptions = array_merge( $field::$editorOptions, array( 'attachIds' => NULL ) );
+				}
+			}
+			$return[] = $helper;
 		}
 
 		if( $item )
 		{
-			$return['versioning']	= new \IPS\Helpers\Form\Custom( 'file_versioning_info', NULL, FALSE, array( 'getHtml' => function( $element ) use ( $item )
+			$return['versioning']	= new \IPS\Helpers\Form\Custom( "{$bulkKey}file_versioning_info", NULL, FALSE, array( 'getHtml' => function( $element ) use ( $item )
 			{
 				return \IPS\Theme::i()->getTemplate( 'submit' )->editDetailsInfo( $item );
 			} ) );
@@ -1597,7 +1687,7 @@ class _File extends \IPS\Content\Item implements
 		$cfields = array();
 		foreach ( $this->container()->cfields as $field )
 		{
-			$helper							 = $field->buildHelper();
+			$helper							 = $field->buildHelper( NULL, NULL, $new ? NULL : $this );
 			if ( $helper instanceof \IPS\Helpers\Form\Upload )
 			{
 				$cfields[ "field_{$field->id}" ] = (string) $values[ "bitracker_field_{$field->id}" ];
@@ -1609,7 +1699,7 @@ class _File extends \IPS\Content\Item implements
 			
 			if ( $helper instanceof \IPS\Helpers\Form\Editor )
 			{
-				$field->claimAttachments( $this->id );
+				$field->claimAttachments( $this->id, 'fields' );
 			}
 		}
 		
@@ -1619,7 +1709,7 @@ class _File extends \IPS\Content\Item implements
 		}
 		
 		/* Update Category */
-		$this->container()->setLastFile( $new ? $this : NULL );
+		$this->container()->setLastFile( ( $new and $this->open ) ? $this : NULL );
 		$this->container()->save();
 	}
 	
@@ -1664,6 +1754,23 @@ class _File extends \IPS\Content\Item implements
 		$this->save();
 		
 		parent::processAfterCreate( $comment, $values );
+	}
+	
+	/**
+	 * Process after the object has been edited on the front-end
+	 *
+	 * @param	array	$values		Values from form
+	 * @return	void
+	 */
+	public function processAfterEdit( $values )
+	{
+		parent::processAfterEdit( $values );
+
+		\IPS\Request::i()->setClearAutosaveCookie( 'bitracker-file-' . $this->id );
+		foreach ( $this->container()->cfields as $field )
+		{
+			\IPS\Request::i()->setClearAutosaveCookie( md5( 'IPS\bitracker\Field-' . $field->id . '-' . $this->id ) );
+		}
 	}
 
 	/**
@@ -1741,12 +1848,45 @@ class _File extends \IPS\Content\Item implements
 		\IPS\Db::i()->delete( 'bitracker_downloads', array( 'dfid=?', $this->id ) );
 		\IPS\Db::i()->delete( 'bitracker_filebackup', array( 'b_fileid=?', $this->id ) );
 		\IPS\Db::i()->delete( 'bitracker_torrents_records', array( 'record_file_id=?', $this->id ) );
+		\IPS\Db::i()->delete( 'bitracker_files_notify', array( 'notify_file_id=?', $this->id ) );
 		
 		/* Update Category */
 		$this->container()->setLastFile();
 		$this->container()->save();
 	}
 	
+	/**
+	 * Delete Records
+	 *
+	 * @param 	int|array		$ids		Must be INT if url and handler are provided
+	 * @param 	string			$url		Record location
+	 * @param	string			$handler	File storage handler key
+	 */
+	public function deleteRecords( $ids, string $url=NULL, string $handler=NULL ): void
+	{
+		if( $ids AND $handler AND $url )
+		{
+			try
+			{
+				if( !\IPS\Db::i()->select( 'COUNT(record_id)', 'bitracker_files_records', array( 'record_id<>? AND record_location=?', $ids, $url ) )->first() )
+				{
+					\IPS\File::get( $handler, $url )->delete();
+				}
+			}
+			catch ( \Exception $e ) { }
+			\IPS\Db::i()->delete( 'bitracker_files_records', array( 'record_id=? AND record_location=?', $ids, $url ) );
+		}
+		else
+		{
+			if( $ids !== NULL AND !\is_array( $ids ) )
+			{
+				$ids = array( $ids );
+			}
+
+			\IPS\Db::i()->delete( 'bitracker_files_records', array( \IPS\Db::i()->in( 'record_id', $ids ) ) );
+		}
+	}
+
 	/**
 	 * URL Blacklist Check
 	 *
@@ -1829,7 +1969,7 @@ class _File extends \IPS\Content\Item implements
 			'b_hidden'		=> FALSE,
 			'b_backup'		=> $this->updated,
 			'b_updated'		=> time(),
-			'b_records'		=> implode( ',', iterator_to_array( \IPS\Db::i()->select( 'record_id', 'bitracker_torrents_records', array( 'record_file_id=? AND record_backup=0', $this->id ) ) ) ),
+			'b_records'		=> implode( ',', iterator_to_array( \IPS\Db::i()->select( 'record_id', 'bitracker_torrents_records', array( 'record_file_id=? AND record_backup=0 AND record_hidden=0', $this->id ) ) ) ),
 			'b_version'		=> $this->version,
 			'b_changelog'	=> $this->changelog,
 		) );
@@ -1838,7 +1978,7 @@ class _File extends \IPS\Content\Item implements
 		$locations = array();
 		$thumbs = array();
 		$watermarks = array();
-		foreach( \IPS\Db::i()->select( '*', 'bitracker_torrents_records', array( 'record_file_id=? AND record_backup=0', $this->id ) ) as $file )
+		foreach( \IPS\Db::i()->select( '*', 'bitracker_torrents_records', array( 'record_file_id=? AND record_backup=0 AND record_hidden=0', $this->id ) ) as $file )
 		{
 			$locations[] = $file['record_location'];
 			
@@ -1857,7 +1997,7 @@ class _File extends \IPS\Content\Item implements
 		\IPS\File::claimAttachments( "bitracker-{$this->id}-changelog", $this->id, $b_id, 'changelog' );
 		
 		/* Set the old records to be backups */
-		\IPS\Db::i()->update( 'bitracker_torrents_records', array( 'record_backup' => TRUE ), array( 'record_file_id=? AND record_backup=0', $this->id ) );
+		\IPS\Db::i()->update( 'bitracker_torrents_records', array( 'record_backup' => TRUE ), array( 'record_file_id=? AND record_backup=0 AND record_hidden=0', $this->id ) );
 						
 		/* Delete any old versions we no longer keep */
 		$category = $this->container();
@@ -1962,7 +2102,7 @@ class _File extends \IPS\Content\Item implements
 	/**
 	 * Users to receive immediate notifications (bulk)
 	 *
-	 * @param	\IPS\downloads\Category	$category	The category the files were posted in.
+	 * @param	\IPS\bitracker\Category	$category	The category the files were posted in.
 	 * @param	\IPS\Member|NULL		$member		The member posting the files or NULL for currently logged in member.
 	 * @param	int|array				$limit		LIMIT clause
 	 * @param	bool					$countOnly	Only return the count
@@ -2085,7 +2225,7 @@ class _File extends \IPS\Content\Item implements
 	/**
 	 * Send Notification Batch (bulk)
 	 *
-	 * @param	\IPS\downloads\Category	$category	The category the files were posted too.
+	 * @param	\IPS\bitracker\Category	$category	The category the files were posted too.
 	 * @param	\IPS\Member|NULL		$member		The member posting the images, or NULL for currently logged in member.
 	 * @param	int						$offset		Offset
 	 * @return	int|NULL				New Offset or NULL if complete
@@ -2172,91 +2312,15 @@ class _File extends \IPS\Content\Item implements
 	 */
 	public function sendUpdateNotifications()
 	{		
-		try
-		{
-			$count = $this->notificationRecipients( NULL, NULL, TRUE );
-		}
-		catch ( \BadMethodCallException $e )
-		{
-			return;
-		}	
-				
-		if ( $count > static::NOTIFICATIONS_PER_BATCH )
+		$count = \IPS\Db::i()->select( 'count(*)', 'bitracker_files_notify', array( 'notify_file_id=?', $this->id ) )->first();
+
+		if ( $count )
 		{
 			$idColumn = static::$databaseColumnId;
-			\IPS\Task::queue( 'core', 'Follow', array( 'class' => \get_class( $this ), 'item' => $this->$idColumn, 'extra' => 'update', 'exclude' => array(), 'followerCount' => $count ), 2 );
-		}
-		else
-		{
-			$sendTo = array();
-			$this->sendNotificationsBatch( 0, $sendTo, 'update' );
+			\IPS\Task::queue( 'bitracker', 'Notify', array( 'file' => $this->$idColumn, 'notifyCount' => $count ), 2 );
 		}
 	}
-	
-	/**
-	 * Users to receive immediate notifications
-	 *
-	 * @param	int|array		$limit		LIMIT clause
-	 * @param	string|NULL		$extra		Additional data
-	 * @param	boolean			$countOnly	Just return the count
-	 * @return \IPS\Db\Select
-	 */
-	public function notificationRecipients( $limit=array( 0, 25 ), $extra=NULL, $countOnly=FALSE )
-	{
-		/* Do we only want the count? */
-		if( $countOnly )
-		{
-			$count	= 0;
-			$count	+= $this->author()->followersCount( 3, array( 'immediate' ), $this->mapped('date') );
 
-			if( $extra == 'update' )
-			{
-				$count	+= $this->followersCount( 3, array( 'immediate' ) );
-			}
-			else
-			{
-				$count	+= static::containerFollowerCount( $this->container(), 3, array( 'immediate' ), $this->mapped('date') );
-			}
-
-			return $count;
-		}
-
-		$memberFollowers = $this->author()->followers( 3, array( 'immediate' ), $this->mapped('date'), NULL );
-		
-		if( $memberFollowers !== NULL )
-		{
-			$unions	= array( 
-				( $extra === 'update' ? $this->followers( 3, array( 'immediate' ), NULL, NULL ) : static::containerFollowers( $this->container(), 3, array( 'immediate' ), $this->mapped('date'), NULL ) ),
-				$memberFollowers
-			);
-		
-			return \IPS\Db::i()->union( $unions, 'follow_added', $limit );
-		}
-		else
-		{
-			return ( $extra === 'update' ) ? $this->followers( 3, array( 'immediate' ), NULL, $limit, 'follow_added' ) : static::containerFollowers( $this->container(), 3, array( 'immediate' ), $this->mapped('date'), $limit, 'follow_added' );
-		}
-	}
-	
-	/**
-	 * Create Notification
-	 *
-	 * @param	string|NULL		$extra		Additional data
-	 * @return	\IPS\Notification
-	 */
-	protected function createNotification( $extra=NULL )
-	{
-		// New content is sent with itself as the item as we deliberately do not group notifications about new content items. Unlike comments where you're going to read them all - you might scan the notifications list for topic titles you're interested in
-		if ( $extra === 'update' )
-		{
-			return new \IPS\Notification( \IPS\Application::load( 'bitracker' ), 'new_torrent_version', $this, array( $this ) );
-		}
-		else
-		{
-			return new \IPS\Notification( \IPS\Application::load( 'core' ), 'new_content', $this, array( $this ) );
-		}
-	}
-	
 	/**
 	 * Syncing when uploading a new version.
 	 *
@@ -2335,58 +2399,88 @@ class _File extends \IPS\Content\Item implements
 	 * @apiresponse	int								id					ID number
 	 * @apiresponse	string							title				Title
 	 * @apiresponse	\IPS\bitracker\Category			category			Category
-	 * @apiresponse	\IPS\Member						author				Author
-	 * @apiresponse	datetime						date				When the file was created
-	 * @apiresponse	string							description			Description
-	 * @apiresponse	string							version				Current version number
-	 * @apiresponse	string							changelog			Description of what changed between this version and the previous one
-	 * @apiresponse	[\IPS\File]						files				The files
-	 * @apiresponse	[\IPS\File]						screenshots			Screenshots
-	 * @apiresponse	\IPS\File						primaryScreenshot	The primary screenshot
-	 * @apiresponse	int								bitracker			Number of downloads
-	 * @apiresponse	int								comments			Number of comments
-	 * @apiresponse	int								reviews				Number of reviews
-	 * @apiresponse	int								views				Number of views
-	 * @apiresponse	string							prefix				The prefix tag, if there is one
-	 * @apiresponse	[string]						tags				The tags
-	 * @apiresponse	bool							locked				File is locked
-	 * @apiresponse	bool							hidden				File is hidden
-	 * @apiresponse	bool							pinned				File is pinned
-	 * @apiresponse	bool							featured			File is featured
-	 * @apiresponse	string							url					URL
-	 * @apiresponse	\IPS\forums\Topic				topic				The topic
+	 * @apiresponse	\IPS\Member					author					Author
+	 * @apiresponse	datetime					date					When the file was created
+	 * @apiresponse	datetime					updated					When the file was last updated
+	 * @apiresponse	string						description				Description
+	 * @apiresponse	string						version					Current version number
+	 * @apiresponse	string						changelog				Description of what changed between this version and the previous one
+	 * @apiresponse	[\IPS\File]					files					The files (deprecated, see /downloads/files/{id}/download instead)
+	 * @apiresponse	\IPS\File					primaryScreenshot		The primary screenshot
+	 * @apiresponse	[\IPS\File]					screenshots				Screenshots
+	 * @apiresponse	[\IPS\File]					screenshotsThumbnails	Screenshots in Thumbnail size
+	 * @apiresponse	\IPS\File					primaryScreenshot		The primary screenshot
+	 * @apiresponse	\IPS\File					primaryScreenshotThumb	The primary screenshot
+	 * @apiresponse	int							downloads				Number of downloads
+	 * @apiresponse	int							comments				Number of comments
+	 * @apiresponse	int							reviews					Number of reviews
+	 * @apiresponse	int							views					Number of views
+	 * @apiresponse	string						prefix					The prefix tag, if there is one
+	 * @apiresponse	[string]					tags					The tags
+	 * @apiresponse	bool						locked					File is locked
+	 * @apiresponse	bool						hidden					File is hidden
+	 * @apiresponse	bool						pinned					File is pinned
+	 * @apiresponse	bool						featured				File is featured
+	 * @apiresponse	string						url						URL
+	 * @apiresponse	\IPS\forums\Topic			topic					The topic
+	 * @apiresponse	bool						isPaid					Is the file paid?
+	 * @apiresponse	[float]						prices					Prices (key is currency, value is price). Does not consider associated packages.
+	 * @apiresponse	bool						canDownload				If the authenticated member can download. Will be NULL for requests made using an API Key or the Client Credentials Grant Type
+	 * @apiresponse	bool						canBuy					Can purchase the file
+	 * @apiresponse	bool						canReview				Can review the file
+	 * @apiresponse	float						rating					File rating
+	 * @apiresponse	int							purchases				Number of purchases
+	 * @apiresponse array						renewalTerm				File renewal term
+	 * @apiresponse	bool						hasPendingVersion		Whether file has a new version pending. Will be NULL for client requests where the authorized member cannot upload new versions.
 	 */
 	public function apiOutput( \IPS\Member $authorizedMember = NULL, $backup=NULL )
 	{		
-		return array(
-			'id'				=> $this->id,
-			'title'				=> $backup ? $backup['b_filetitle'] : $this->name,
-			'category'			=> $this->container()->apiOutput( $authorizedMember ),
-			'author'			=> $this->author()->apiOutput( $authorizedMember ),
-			'date'				=> \IPS\DateTime::ts( $backup ? $backup['b_backup'] :  $this->submitted )->rfc3339(),
-			'description'		=> $backup ? $backup['b_filedesc'] : \IPS\Text\Parser::removeLazyLoad( $this->content() ),
-			'version'			=> $backup ? $backup['b_version'] : $this->version,
-			'changelog'			=> $backup ? $backup['b_changelog'] : $this->changelog,
-			'files'				=> array_values( array_map( function( $file ) use ( $authorizedMember ) {
+		$return = array(
+			'id'						=> $this->id,
+			'title'						=> $backup ? $backup['b_filetitle'] : $this->name,
+			'category'					=> $this->container()->apiOutput( $authorizedMember ),
+			'author'					=> $this->author()->apiOutput( $authorizedMember ),
+			'date'						=> \IPS\DateTime::ts( $backup ? $backup['b_backup'] :  $this->submitted )->rfc3339(),
+			'updated'					=> \IPS\DateTime::ts( $this->updated )->rfc3339(),
+			'description'				=> $backup ? $backup['b_filedesc'] : \IPS\Text\Parser::removeLazyLoad( $this->content() ),
+			'version'					=> $backup ? $backup['b_version'] : $this->version,
+			'changelog'					=> $backup ? $backup['b_changelog'] : $this->changelog,
+			'files'						=> ( ( $authorizedMember AND $this->canDownload( $authorizedMember ) ) OR !$authorizedMember ) ? array_values( array_map( function( $file ) use ( $authorizedMember ) {
 				return $file->apiOutput( $authorizedMember );
-			}, iterator_to_array( $this->files( $backup ? $backup['b_id'] : NULL ) ) ) ),
-			'screenshots'		=> array_values( array_map( function( $file ) use ( $authorizedMember ) {
+			}, iterator_to_array( $this->files( $backup ? $backup['b_id'] : NULL ) ) ) ) : NULL,
+			'screenshots'				=> array_values( array_map( function( $file ) use ( $authorizedMember ) {
 				return $file->apiOutput( $authorizedMember );
 			}, iterator_to_array( $this->screenshots( 0, TRUE, $backup ? $backup['b_id'] : NULL ) ) ) ),
-			'primaryScreenshot'	=> $this->primary_screenshot ? ( $this->primary_screenshot->apiOutput( $authorizedMember ) ) : null,
-			'downloads'			=> $this->downloads,
-			'comments'			=> $this->comments,
-			'reviews'			=> $this->reviews,
-			'views'				=> $this->views,
-			'prefix'			=> $this->prefix(),
-			'tags'				=> $this->tags(),
-			'locked'			=> (bool) $this->locked(),
-			'hidden'			=> (bool) $this->hidden(),
-			'pinned'			=> (bool) $this->mapped('pinned'),
-			'featured'			=> (bool) $this->mapped('featured'),
-			'url'				=> (string) $this->url(),
-			'topic'				=> $this->topicid ? $this->topic()->apiOutput( $authorizedMember ) : NULL,
+			'screenshotsThumbnails'		=> array_values( array_map( function( $file ) use ( $authorizedMember ) {
+				return $file->apiOutput( $authorizedMember );
+			}, iterator_to_array( $this->screenshots( 1, TRUE, $backup ? $backup['b_id'] : NULL ) ) ) ),
+			'primaryScreenshot'			=> $this->primary_screenshot ? ( $this->primary_screenshot->apiOutput( $authorizedMember ) ) : null,
+			'primaryScreenshotThumb'	=> $this->primary_screenshot_thumb ? ( $this->primary_screenshot_thumb->apiOutput( $authorizedMember ) ) : null,
+			'downloads'					=> $this->downloads,
+			'comments'					=> $this->comments,
+			'reviews'					=> $this->reviews,
+			'views'						=> $this->views,
+			'prefix'					=> $this->prefix(),
+			'tags'						=> $this->tags(),
+			'locked'					=> (bool) $this->locked(),
+			'hidden'					=> (bool) $this->hidden(),
+			'pinned'					=> (bool) $this->mapped('pinned'),
+			'featured'					=> (bool) $this->mapped('featured'),
+			'url'						=> (string) $this->url(),
+			'topic'						=> $this->topic() ? $this->topic()->apiOutput( $authorizedMember ) : NULL,
+			'isPaid'					=> $this->isPaid(),
+			'isPurchasable'				=> $this->isPurchasable(),
+			'prices'					=> ( $this->isPaid() and $this->cost ) ? array_map( function( $price ) { return $price['amount']; }, json_decode( $this->cost, TRUE ) ) : NULL,
+			'canDownload'				=> $authorizedMember ? (bool) $this->canDownload( $authorizedMember ) : NULL,
+			'canBuy'					=> $authorizedMember ? (bool) $this->canBuy( $authorizedMember ) : NULL,
+			'canReview'					=> (bool) $authorizedMember ? ( $this->canReview( $authorizedMember ) AND !$this->hasReviewed( $authorizedMember ) ) : NULL,
+			'rating'					=> $this->averageReviewRating(),
+			'purchases'					=> $this->purchaseCount(),
+			'renewalTerm'				=> $this->isPaid() ? $this->renewalTerm() : NULL,
+			'hasPendingVersion'			=> ( !$authorizedMember OR $this->canEdit( $authorizedMember ) ) ? $this->hasPendingVersion() : NULL
 		);
+
+		return $return;
 	}
 
 	/**
@@ -2452,6 +2546,20 @@ class _File extends \IPS\Content\Item implements
 	}
 
 	/**
+	 * Return size and downloads count when this content type is inserted as an attachment via the "Insert other media" button on an editor.
+	 *
+	 * @note Most content types do not support this, and those that do will need to override this method to return the appropriate info
+	 * @return array
+	 */
+	public function getAttachmentInfo()
+	{
+		return array(
+			'size' => \IPS\Output\Plugin\Filesize::humanReadableFilesize( $this->size, FALSE, TRUE ),
+			'downloads' => \IPS\Member::loggedIn()->language()->formatNumber( $this->downloads )
+		);
+	}
+
+	/**
 	 * Get the topic title
 	 *
 	 * @return string
@@ -2469,5 +2577,67 @@ class _File extends \IPS\Content\Item implements
 	function getTopicContent()
 	{
 		return \IPS\Theme::i()->getTemplate( 'submit', 'bitracker', 'front' )->topic( $this );
+	}
+
+	/**
+	 * Subscribed?
+	 *
+	 * @return bool
+	 */
+	function subscribed( \IPS\Member $member = NULL )
+	{
+		$member = $member ?: \IPS\Member::loggedIn();
+
+		try
+		{
+			\IPS\Db::i()->select( '*', 'bitracker_files_notify', array( 'notify_member_id=? and notify_file_id=?', $member->member_id, $this->id ) )->first();
+
+			return TRUE;
+		}
+		catch ( \UnderflowException $e )
+		{
+			return FALSE;
+		}
+	}
+
+	/**
+	 * @brief	Cache for pending version check
+	 */
+	protected $_pendingVersion = NULL;
+
+	/**
+	 * Check whether file has a pending new version
+	 *
+	 * @return	bool
+	 */
+	public function hasPendingVersion(): bool
+	{
+		if( $this->_pendingVersion !== NULL )
+		{
+			return $this->_pendingVersion;
+		}
+
+		try
+		{
+			\IPS\Db::i()->select( 'pending_id', 'bitracker_files_pending', array( 'pending_file_id=?', $this->id ) )->first();
+			$this->_pendingVersion = TRUE;
+		}
+		catch ( \UnderflowException $e )
+		{
+			$this->_pendingVersion = FALSE;
+		}
+
+		return $this->_pendingVersion;
+	}
+
+	/**
+	 * Add form elements to 'new version' form
+	 *
+	 * @param	\IPS\Helpers\Form		$form
+	 * @return	void
+	 */
+	public function newVersionFormElements( \IPS\Helpers\Form &$form ): void
+	{
+
 	}
 }
