@@ -3,17 +3,17 @@
  *     Support this Project... Keep it free! Become an Open Source Patron
  *                      https://www.devcu.com/donate/
  *
- * @brief       BitTracker Application Class
+ * @brief       BitTracker Downloaders Stats
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     06 SEP 2020
+ * @Updated     21 OCT 2020
  *
  *                    GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -45,6 +45,11 @@ if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
 class _downloaders extends \IPS\Dispatcher\Controller
 {
 	/**
+	 * @brief	Has been CSRF-protected
+	 */
+	public static $csrfProtected = TRUE;
+	
+	/**
 	 * @brief	Number of results per page
 	 */
 	const PER_PAGE = 25;
@@ -56,7 +61,7 @@ class _downloaders extends \IPS\Dispatcher\Controller
 	 */
 	public function execute()
 	{
-		\IPS\Dispatcher::i()->checkAcpPermission( 'downloaders_manage' );
+		\IPS\Dispatcher::i()->checkAcpPermission( 'torrents_manage' );
 		parent::execute();
 	}
 
@@ -110,8 +115,19 @@ class _downloaders extends \IPS\Dispatcher\Controller
 			$page = 1;
 		}
 
-		$select = \IPS\Db::i()->select( 'dmid, count(*) as bitracker', 'bitracker_torrents', $where, 'bitracker DESC', array( ( $page - 1 ) * static::PER_PAGE, static::PER_PAGE ), 'dmid', NULL, \IPS\Db::SELECT_SQL_CALC_FOUND_ROWS );
-		$mids = array();
+		try
+		{
+			$total = \IPS\Db::i()->select( 'COUNT(DISTINCT(dmid))', 'bitracker_downloads', $where )->first();
+		}
+		catch ( \UnderflowException $e )
+		{
+			$total = 0;
+		}
+
+		if( $total )
+		{
+			$select	= \IPS\Db::i()->select( 'dmid, count(*) as downloads', 'bitracker_downloads', $where, 'downloads DESC', array( ( $page - 1 ) * static::PER_PAGE, static::PER_PAGE ), 'dmid' );
+			$mids = array();
 		
 		foreach( $select as $row )
 		{
@@ -144,5 +160,11 @@ class _downloaders extends \IPS\Dispatcher\Controller
 		
 		\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate('stats')->bitrackerTable( $select, $pagination, $members );
 		\IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('menu__bitracker_stats_downloaders');
+		}
+		else
+		{
+			/* Return the no results message */
+			\IPS\Output::i()->output .= \IPS\Theme::i()->getTemplate( 'global', 'core' )->block( \IPS\Member::loggedIn()->language()->addToStack('menu__bitracker_stats_downloaders'), \IPS\Member::loggedIn()->language()->addToStack('no_results'), FALSE , 'ipsPad', NULL, TRUE );
+		}
 	}
 }

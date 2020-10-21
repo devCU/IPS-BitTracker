@@ -3,17 +3,17 @@
  *     Support this Project... Keep it free! Become an Open Source Patron
  *                      https://www.devcu.com/donate/
  *
- * @brief       BitTracker Application Class
+ * @brief       BitTracker Torrent Stats
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     06 SEP 2020
+ * @Updated     21 OCT 2020
  *
  *                    GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -45,13 +45,18 @@ if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
 class _torrents extends \IPS\Dispatcher\Controller
 {
 	/**
+	 * @brief	Has been CSRF-protected
+	 */
+	public static $csrfProtected = TRUE;
+	
+	/**
 	 * Execute
 	 *
 	 * @return	void
 	 */
 	public function execute()
 	{
-		\IPS\Dispatcher::i()->checkAcpPermission( 'bitracker_manage' );
+		\IPS\Dispatcher::i()->checkAcpPermission( 'torrents_manage' );
 		parent::execute();
 	}
 
@@ -67,7 +72,7 @@ class _torrents extends \IPS\Dispatcher\Controller
 			'colors'			=> array( '#10967e', '#ea7963', '#de6470', '#6b9dde', '#b09be4', '#eec766', '#9fc973', '#e291bf', '#55c1a6', '#5fb9da' ),
 			'hAxis'				=> array( 'gridlines' => array( 'color' => '#f5f5f5' ) ),
 			'lineWidth'			=> 1,
-			'areaOpacity'		=> 0.4,
+			'areaOpacity'		=> 0.4
 		), 'AreaChart', 'monthly', array( 'start' => 0, 'end' => 0 ), array( 'dmid', 'dfid', 'dtime', 'dsize', 'dua', 'dip' ) );
 		
 		$chart->addSeries( \IPS\Member::loggedIn()->language()->addToStack('bitracker'), 'number', 'COUNT(*)', FALSE );
