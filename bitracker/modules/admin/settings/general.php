@@ -3,7 +3,7 @@
  *     Support this Project... Keep it free! Become an Open Source Patron
  *                      https://www.devcu.com/donate/
  *
- * @brief       BitTracker Application Class
+ * @brief       BitTracker General Settings
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
