@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     31 AUG 2020
+ * @Updated     20 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -132,11 +132,16 @@ class _Field extends \IPS\CustomField
 
 		$form->add( new \IPS\Helpers\Form\Radio( 'bitracker_field_location', $this->id ? $this->display_location : 'below', FALSE, array( 'options' => array( 'sidebar' => 'bit_cfield_sidebar', 'below' => 'bit_cfield_below', 'tab' => 'bit_cfield_tab' ) ), NULL, NULL, NULL, 'bit_field_location' ) );
 		
+		if ( \IPS\Application::appIsEnabled( 'nexus' ) and \IPS\Settings::i()->bit_nexus_on )
+		{
+			$form->add( new \IPS\Helpers\Form\YesNo( 'bitracker_field_paid', $this->id ? $this->paid_field : FALSE, FALSE, array( 'togglesOff' => array( 'bit_cf_topic', 'bit_pf_format', 'form_' . ( $this->id ?? 'new' ) . '_header_category_forums_integration' ) ) ) );
+		}
+
 		if ( \IPS\Application::appIsEnabled( 'forums' ) )
 		{
 			$form->addHeader('category_forums_integration');
-			$form->add( new \IPS\Helpers\Form\YesNo( 'cf_topic', $this->topic ) );
-			$form->add( new \IPS\Helpers\Form\TextArea( 'pf_format', $this->id ? $this->topic_format : '', FALSE ) );
+			$form->add( new \IPS\Helpers\Form\YesNo( 'cf_topic', $this->topic, FALSE, array(), NULL, NULL, NULL, 'bit_cf_topic' ) );
+			$form->add( new \IPS\Helpers\Form\TextArea( 'pf_format', $this->id ? $this->topic_format : '', FALSE, array(), NULL, NULL, NULL, 'bitpf_format' ) );
 
 			\IPS\Member::loggedIn()->language()->words['pf_format_desc'] = \IPS\Member::loggedIn()->language()->addToStack('cf_format_desc');
 		}
@@ -152,7 +157,8 @@ class _Field extends \IPS\CustomField
 	{
 		if ( \IPS\Application::appIsEnabled( 'forums' ) AND isset( $values['cf_topic'] ) )
 		{
-			$values['topic'] = $values['cf_topic'];
+			/* Forcibly disable include in topic option if it is a paid field */
+			$values['topic'] = ( isset( $values['bitracker_field_paid'] ) AND $values['bitracker_field_paid'] ) ? $values['cf_topic'] : 0;
 			unset( $values['cf_topic'] );
 		}
 
@@ -162,7 +168,8 @@ class _Field extends \IPS\CustomField
 		unset( $values['pf_allow_attachments'] );
 
 		$values['display_location'] = $values['bitracker_field_location'];
-		unset( $values['bitracker_field_location'] );
+		$values['paid_field'] = $values['bitracker_field_paid'];
+		unset( $values['bitracker_field_location'], $values['bitracker_field_paid'] );
 
 		return parent::formatFormValues( $values );
 	}
