@@ -1,16 +1,19 @@
 <?php
 /**
+ *     Support this Project... Keep it free! Become an Open Source Patron
+ *                      https://www.devcu.com/donate/
+ *
  * @brief       BitTracker Application Class
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.2x/4.3x
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     1.0.2 Beta 3
- * @source      https://github.com/GaalexxC/IPS-4.2-BitTracker
- * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/ips4bt/
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
+ * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated    17 MAR 2019
+ * @Updated     21 OCT 2020
  *
  *                    GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -30,7 +33,7 @@
 namespace IPS\bitracker\modules\admin\settings;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
-if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
+if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
 {
 	header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden' );
 	exit;
@@ -42,6 +45,11 @@ if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
 class _general extends \IPS\Dispatcher\Controller
 {
 	/**
+	 * @brief	Has been CSRF-protected
+	 */
+	public static $csrfProtected = TRUE;
+	
+	/**
 	 * Manage Settings
 	 *
 	 * @return	void
@@ -50,7 +58,7 @@ class _general extends \IPS\Dispatcher\Controller
 	{
 		\IPS\Dispatcher::i()->checkAcpPermission( 'settings_manage' );
 
-		$form = $this->_manageSettings();
+		$form = $this->getForm();
 
 		if ( $values = $form->values( TRUE ) )
 		{
@@ -62,7 +70,7 @@ class _general extends \IPS\Dispatcher\Controller
 			\IPS\Session::i()->log( 'acplogs__bitracker_settings' );
 		}
 
-		\IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('General Settings');
+		\IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('general_settings');
 		\IPS\Output::i()->output = $form;
 	}
 
@@ -72,9 +80,13 @@ class _general extends \IPS\Dispatcher\Controller
 	 * @note	Abstracted to allow third party devs to extend easier
 	 * @return	\IPS\Helpers\Form
 	 */
-	protected function _manageSettings()
+	protected function getForm()
 	{
 		$form = new \IPS\Helpers\Form;
+
+		\IPS\Output::i()->jsFiles = array_merge( \IPS\Output::i()->jsFiles, \IPS\Output::i()->js( 'admin_settings.js', 'bitracker', 'admin' ) );
+		$form->attributes['data-controller'] = 'bitracker.admin.settings.settings';
+		$form->hiddenValues['rebuildWatermarkScreenshots'] = \IPS\Request::i()->rebuildWatermarkScreenshots ?: 0;
 
         $form->addTab( 'bit_portal_general' );
 		$form->addHeader( 'head_portal_layout' );
@@ -120,109 +132,58 @@ class _general extends \IPS\Dispatcher\Controller
 
 
         $form->addTab( 'basic_settings' );
-		$form->addHeader( 'basic_settings' );
+		$form->addHeader('basic_settings');
 		$form->add( new \IPS\Helpers\Form\Upload( 'bit_watermarkpath', \IPS\Settings::i()->bit_watermarkpath ? \IPS\File::get( 'core_Theme', \IPS\Settings::i()->bit_watermarkpath ) : NULL, FALSE, array( 'image' => TRUE, 'storageExtension' => 'core_Theme' ) ) );
-		$form->add( new \IPS\Helpers\Form\Stack( 'bit_link_blacklist', explode( ',', '\IPS\Settings::i()->bit_link_blacklist' ), FALSE, array( 'placeholder' => 'example.com' ) ) );
+		$form->add( new \IPS\Helpers\Form\Stack( 'bit_link_blacklist', explode( ',', \IPS\Settings::i()->bit_link_blacklist ), FALSE, array( 'placeholder' => 'example.com' ) ) );
 		$form->add( new \IPS\Helpers\Form\YesNo( 'bit_antileech', \IPS\Settings::i()->bit_antileech ) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'bit_rss', \IPS\Settings::i()->bit_rss ) );
 
 		if ( \IPS\Application::appIsEnabled( 'nexus' ) )
 		{
 			$form->addTab( 'paid_file_settings' );
-			$form->add( new \IPS\Helpers\Form\YesNo( 'bit_nexus_on', \IPS\Settings::i()->bit_nexus_on, FALSE, array( 'togglesOn' => array( 'bit_nexus_tax', 'bit_nexus_percent', 'bit_nexus_transfee' ) ) ) );
+			$form->add( new \IPS\Helpers\Form\YesNo( 'bit_nexus_on', \IPS\Settings::i()->bit_nexus_on, FALSE, array( 'togglesOn' => array( 'bit_nexus_tax', 'bit_nexus_percent', 'bit_nexus_transfee', 'bit_nexus_mincost', 'bit_nexus_gateways', 'bit_nexus_display' ) ) ) );
 			$form->add( new \IPS\Helpers\Form\Node( 'bit_nexus_tax', \IPS\Settings::i()->bit_nexus_tax ?:0, FALSE, array( 'class' => '\IPS\nexus\Tax', 'zeroVal' => 'do_not_tax' ), NULL, NULL, NULL, 'bit_nexus_tax' ) );
 			$form->add( new \IPS\Helpers\Form\Number( 'bit_nexus_percent', \IPS\Settings::i()->bit_nexus_percent, FALSE, array( 'min' => 0, 'max' => 100 ), NULL, NULL, '%', 'bit_nexus_percent' ) );
-			$form->add( new \IPS\nexus\Form\Money( 'bit_nexus_transfee', json_decode( '\IPS\Settings::i()->bit_nexus_transfee', TRUE ), FALSE, array(), NULL, NULL, NULL, 'bit_nexus_transfee' ) );
+			$form->add( new \IPS\nexus\Form\Money( 'bit_nexus_transfee', json_decode( \IPS\Settings::i()->bit_nexus_transfee, TRUE ), FALSE, array(), NULL, NULL, NULL, 'bit_nexus_transfee' ) );
+			$form->add( new \IPS\nexus\Form\Money( 'bit_nexus_mincost', json_decode( \IPS\Settings::i()->bit_nexus_mincost, TRUE ), FALSE, array(), NULL, NULL, NULL, 'bit_nexus_mincost' ) );
 			$form->add( new \IPS\Helpers\Form\Node( 'bit_nexus_gateways', ( \IPS\Settings::i()->bit_nexus_gateways ) ? explode( ',', \IPS\Settings::i()->bit_nexus_gateways ) : 0, FALSE, array( 'class' => '\IPS\nexus\Gateway', 'zeroVal' => 'no_restriction', 'multiple' => TRUE ), NULL, NULL, NULL, 'bit_nexus_gateways' ) );
-			$form->add( new \IPS\Helpers\Form\CheckboxSet( 'bit_nexus_display', explode( ',', '\IPS\Settings::i()->bit_nexus_display' ), FALSE, array( 'options' => array( 'purchases' => 'bit_purchases', 'downloads' => 'bit_downloads' ) ) ) );
-        }
-		/* Save values - Nexus values refactored */
-		if ( $values = $form->values() )
-		{
-
-			$form->saveAsSettings( $values );
-
-			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=settings&controller=general' ), 'saved' );
+			$form->add( new \IPS\Helpers\Form\CheckboxSet( 'bit_nexus_display', explode( ',', \IPS\Settings::i()->bit_nexus_display ), FALSE, array( 'options' => array( 'purchases' => 'bit_purchases', 'bitracker' => 'bitracker' ) ), NULL, NULL, NULL, 'bit_nexus_display' ) );
 		}
 
 		return $form;
 	}
 
 	/**
-	 * Rebuild Watermarks
+	 * Save the settings form
 	 *
-	 * @return	void
+	 * @param \IPS\Helpers\Form 	$form		The Form Object
+	 * @param array 				$values		Values
 	 */
-	protected function rebuildWatermarks()
+	protected function _saveSettingsForm( \IPS\Helpers\Form $form, array $values )
 	{
-		$perGo = 1;
-		$watermark = \IPS\Settings::i()->bit_watermarkpath ? \IPS\Image::create( \IPS\File::get( 'core_Theme', \IPS\Settings::i()->bit_watermarkpath )->contents() ) : NULL;
-
-		\IPS\Output::i()->output = new \IPS\Helpers\MultipleRedirect( \IPS\Http\Url::internal( 'app=bitracker&module=general&controller=settings&do=rebuildWatermarks' ), function( $doneSoFar ) use( $watermark, $perGo )
+		/* We can't store '' for bit_nexus_display as it will fall back to the default */
+		if ( \IPS\Application::appIsEnabled( 'nexus' ) and !$values['bit_nexus_display'] )
 		{
-			$doneSoFar = intval( $doneSoFar );
+			$values['bit_nexus_display'] = 'none';
+		}
 
-			$where = array( array( 'record_type=?', 'ssupload' ) );
-			if ( !$watermark )
-			{
-				$where[] = array( 'record_no_watermark<>?', '' );
-			}
+		$rebuildScreenshots = $values['rebuildWatermarkScreenshots'];
 
-			$select = \IPS\Db::i()->select( '*', 'bitracker_torrents_records', $where, 'record_id', array( $doneSoFar, $perGo ), NULL, NULL, \IPS\Db::SELECT_SQL_CALC_FOUND_ROWS );
-			if ( !$select->count() )
-			{
-				return NULL;
-			}
+		unset( $values['rebuildWatermarkScreenshots'] );
 
-			foreach ( $select as $row )
-			{
-				try
-				{
-					if ( $row['record_no_watermark'] )
-					{
-						$original = \IPS\File::get( 'bitracker_Screenshots', $row['record_no_watermark'] );
+		$form->saveAsSettings( $values );
 
-						try
-						{
-							\IPS\File::get( 'bitracker_Screenshots', $row['record_location'] )->delete();
-						}
-						catch ( \Exception $e ) { }
-
-						if ( !$watermark )
-						{
-							\IPS\Db::i()->update( 'bitracker_torrents_records', array(
-								'record_location'		=> (string) $original,
-								'record_thumb'			=> (string) $original->thumbnail( 'bitracker_Screenshots' ),
-								'record_no_watermark'	=> NULL
-							), array( 'record_id=?', $row['record_id'] ) );
-
-							continue;
-						}
-					}
-					else
-					{
-						$original = \IPS\File::get( 'bitracker_Screenshots', $row['record_location'] );
-					}
-
-					$image = \IPS\Image::create( $original->contents() );
-					$image->watermark( $watermark );
-
-					$newFile = \IPS\File::create( 'bitracker_Screenshots', $original->originalFilename, $image );
-
-					\IPS\Db::i()->update( 'bitracker_torrents_records', array(
-						'record_location'		=> (string) $newFile,
-						'record_thumb'			=> (string) $newFile->thumbnail( 'bitracker_Screenshots' ),
-						'record_no_watermark'	=> (string) $original
-					), array( 'record_id=?', $row['record_id'] ) );
-				}
-				catch ( \Exception $e ) {}
-			}
-
-			$doneSoFar += $perGo;
-			return array( $doneSoFar, \IPS\Member::loggedIn()->language()->addToStack('rebuilding'), 100 / $select->count( TRUE ) * $doneSoFar );
-
-		}, function()
+		/* Save the form first, then queue the rebuild */
+		if( $rebuildScreenshots )
 		{
-			\IPS\Output::i()->redirect( \IPS\Http\Url::internal( 'app=bitracker&module=settings&controller=general' ), 'completed' );
-		} );
+			\IPS\Db::i()->delete( 'core_queue', array( '`app`=? OR `key`=?', 'bitracker', 'RebuildScreenshotWatermarks' ) );
+
+			\IPS\Task::queue( 'bitracker', 'RebuildScreenshotWatermarks', array( ), 5 );
+			\IPS\Output::i()->inlineMessage	= \IPS\Member::loggedIn()->language()->addToStack('bitrack_settings_saved_rebuilding');
+		}
+		else
+		{
+			\IPS\Output::i()->inlineMessage	= \IPS\Member::loggedIn()->language()->addToStack('saved');
+		}
 	}
 }
