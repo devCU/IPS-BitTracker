@@ -64,7 +64,7 @@ class _Files
 
 		if( $member !== NULL AND ( $member instanceof \IPS\Member ) AND \IPS\bitracker\File::modPermission( 'unhide', $member ) )
 		{
-			$this->classes[] = 'IPS\bitracker\File';
+			$this->classes[] = 'IPS\bitracker\File\PendingVersion';
 		}
 	}
 }
