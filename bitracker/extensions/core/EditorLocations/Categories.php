@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     31 AUG 2020
+ * @Updated     23 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -132,23 +132,22 @@ class _Categories
 	}
 
 	/**
-	 * @brief	Store image proxy status ( true = enabled )
+	 * @brief	Use the cached image URL instead of the original URL
 	 */
-	protected $_imageProxyStatus = null;
+	protected $proxyUrl	= FALSE;
 
 	/**
 	 * Rebuild content to add or remove image proxy
 	 *
 	 * @param	int|null		$offset		Offset to start from
 	 * @param	int|null		$max		Maximum to parse
-	 * @param	bool			$status		Enable/Disable Image Proxy
+	 * @param	bool			$proxyUrl	Use the cached image URL instead of the original URL
 	 * @return	int			Number completed
 	 * @note	This method is optional and will only be called if it exists
 	 */
-	public function rebuildImageProxy( $offset, $max, $status=TRUE )
+	public function rebuildImageProxy( $offset, $max, $proxyUrl = FALSE )
 	{
-		$this->_imageProxyStatus = $status;
-
+		$this->proxyUrl = $proxyUrl;
 		return $this->performRebuild( $offset, $max, 'parseImageProxy' );
 	}
 
@@ -194,7 +193,7 @@ class _Categories
 			{
 				if( $callback == 'parseImageProxy' )
 				{
-					$rebuilt = \IPS\Text\Parser::parseImageProxy( $word['word_custom'], $this->_imageProxyStatus );
+					$rebuilt = \IPS\Text\Parser::removeImageProxy( $word['word_custom'], $this->proxyUrl );
 				}
 				elseif( $callback == 'parseLazyLoad' )
 				{
