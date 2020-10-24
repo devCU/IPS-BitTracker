@@ -1,19 +1,19 @@
 <?php
 /**
  *     Support this Project... Keep it free! Become an Open Source Patron
- *                       https://www.patreon.com/devcu
+ *                      https://www.devcu.com/donate/
  *
  * @brief       BitTracker Main Controller
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4x
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.1.0 RC 1
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     17 MAR 2020
+ * @Updated     24 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -141,6 +141,13 @@ class _main extends \IPS\Dispatcher\Controller
 		if ( \IPS\Settings::i()->bit_rss )
 		{
 			\IPS\Output::i()->rssFeeds['bit_rss_title'] = \IPS\Http\Url::internal( 'app=bitracker&module=portal&controller=main&do=rss', 'front', 'bitracker_rss' );
+
+			if ( \IPS\Member::loggedIn()->member_id )
+			{
+				$key = md5( ( \IPS\Member::loggedIn()->members_pass_hash ?: \IPS\Member::loggedIn()->email ) . \IPS\Member::loggedIn()->members_pass_salt );
+
+				\IPS\Output::i()->rssFeeds['bit_rss_title'] = \IPS\Output::i()->rssFeeds['bit_rss_title']->setQueryString( array( 'member' => \IPS\Member::loggedIn()->member_id , 'key' => $key ) );
+			}
 		}
 		
 		/* Get stuff */
@@ -208,6 +215,8 @@ class _main extends \IPS\Dispatcher\Controller
 	 */
 	protected function _category( $category )
 	{
+		$category->clubCheckRules();
+		
 		\IPS\Output::i()->sidebar['contextual'] = '';
 		
 		$_count = \IPS\bitracker\File::getItemsWithPermission( array( array( \IPS\bitracker\File::$databasePrefix . \IPS\bitracker\File::$databaseColumnMap['container'] . '=?', $category->_id ) ), NULL, 1, 'read', \IPS\Content\Hideable::FILTER_AUTOMATIC, 0, NULL, FALSE, FALSE, FALSE, TRUE );
@@ -288,28 +297,5 @@ class _main extends \IPS\Dispatcher\Controller
 		\IPS\Output::i()->title		= \IPS\Member::loggedIn()->language()->addToStack('bitracker_categories_pagetitle');
 		\IPS\Output::i()->breadcrumb[] = array( \IPS\Http\Url::internal( 'app=bitracker&module=portal&controller=main&do=categories', 'front', 'bitracker_categories' ), \IPS\Member::loggedIn()->language()->addToStack('bitracker_categories') );
 		\IPS\Output::i()->output	= \IPS\Theme::i()->getTemplate( 'browse' )->categories();
-	}
-	
-	/**
-	 * Latest Files RSS
-	 *
-	 * @return	void
-	 */
-	protected function rss()
-	{
-		if( !\IPS\Settings::i()->bit_rss )
-		{
-			\IPS\Output::i()->error( 'rss_offline', '2D175/2', 403, 'rss_offline_admin' );
-		}
-
-		$document = \IPS\Xml\Rss::newDocument( \IPS\Http\Url::internal( 'app=bitracker&module=portal&controller=main', 'front', 'bitracker' ), \IPS\Member::loggedIn()->language()->get('bit_rss_title'), \IPS\Member::loggedIn()->language()->get('bit_rss_title') );
-		
-		foreach ( \IPS\bitracker\File::getItemsWithPermission() as $file )
-		{
-			$document->addItem( $file->name, $file->url(), $file->desc, \IPS\DateTime::ts( $file->updated ), $file->id );
-		}
-		
-		/* @note application/rss+xml is not a registered IANA mime-type so we need to stick with text/xml for RSS */
-		\IPS\Output::i()->sendOutput( $document->asXML(), 200, 'text/xml', array(), TRUE );
 	}
 }
