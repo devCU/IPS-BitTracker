@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     17 SEP 2020
+ * @Updated     24 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -59,7 +59,9 @@ class _view extends \IPS\Content\Controller
 		try
 		{
 			$this->file = \IPS\bitracker\File::load( \IPS\Request::i()->id );
-
+			
+			$this->file->container()->clubCheckRules();
+			
 			/* Downloading and viewing the embed does not need to check the permission, as there is a separate download permission already and embed method need to return it's own error  */
 			if ( !$this->file->canView( \IPS\Member::loggedIn() ) and \IPS\Request::i()->do != 'download' and \IPS\Request::i()->do != 'embed' )
 			{
@@ -134,6 +136,13 @@ class _view extends \IPS\Content\Controller
 			{
 				if ( $fields[ 'field_' . $field->id ] !== null AND $fields[ 'field_' . $field->id ] !== '' )
 				{
+					/* Check for download permission, this is also used to determine if the torrent has been purchased by the viewer
+					If this is flagged as a paid field, and download is not available, do not show it */
+					if( $field->paid_field AND !$this->file->canDownload( NULL, \IPS\Member::loggedIn() ) )
+					{
+						continue;
+					}
+
 					$cfields[ 'field_' . $field->id ] = array( 
 						'type'	=> $field->type, 
 						'key'	=> 'field_' . $field->id, 
@@ -197,7 +206,7 @@ class _view extends \IPS\Content\Controller
 			);
 		}
 
-		if( $this->file->screenshots()->getInnerIterator()->count( true ) )
+		if( $this->file->screenshots()->getInnerIterator()->count() )
 		{
 			\IPS\Output::i()->jsonLd['download']['screenshot'] = array();
 
@@ -323,6 +332,13 @@ class _view extends \IPS\Content\Controller
 		if ( !$this->file->isPurchasable() )
 		{
 			\IPS\Output::i()->error( 'no_module_permission', '2D161/K', 403, '' );
+		}
+
+		/* Have we accepted the terms? */
+		if ( $downloadTerms = $this->file->container()->message('disclaimer') and \in_array( $this->file->container()->disclaimer_location, [ 'purchase', 'both'] ) and !isset( \IPS\Request::i()->confirm ) )
+		{
+			\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate( 'view' )->purchaseTerms( $this->file, $downloadTerms, $this->file->url('buy')->csrf()->setQueryString( 'confirm', 1 ) );
+			return;
 		}
 		
 		/* Is it associated with a Nexus product? */
@@ -458,7 +474,7 @@ class _view extends \IPS\Content\Controller
 		$files = $this->file->files( isset( \IPS\Request::i()->version ) ? \IPS\Request::i()->version : NULL );
 		
 		/* Have we accepted the terms? */
-		if ( $downloadTerms = $category->message('disclaimer') and !isset( \IPS\Request::i()->confirm ) )
+		if ( $downloadTerms = $category->message('disclaimer') and \in_array( $this->file->container()->disclaimer_location, [ 'download', 'both'] ) and !isset( \IPS\Request::i()->confirm ) )
 		{
 			\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate( 'view' )->download( $this->file, $downloadTerms, null, $confirmUrl, \count( $files ) > 1 );
 			return;
@@ -566,7 +582,7 @@ class _view extends \IPS\Content\Controller
 			}
 			else
 			{
-				$file = \IPS\File::get( 'bitracker_Torrents', $data['record_location'] );
+				$file = \IPS\File::get( 'bitracker_Torrents', $data['record_location'], $data['record_size'] );
 				$file->originalFilename = $data['record_realname'] ?: $file->originalFilename;
 				$this->_download( $file );
 			}
@@ -613,9 +629,9 @@ class _view extends \IPS\Content\Controller
 		} );
 		
 		/* If it's an AWS file just redirect to it */
-		if ( $file instanceof \IPS\File\Amazon )
+		if ( $signedUrl = $file->generateTemporaryDownloadUrl() )
 		{
-			\IPS\Output::i()->redirect( $file->generateTemporaryDownloadUrl() );
+			\IPS\Output::i()->redirect( $signedUrl );
 		}
 
 		/* Print the file, honoring ranges */
@@ -865,12 +881,36 @@ class _view extends \IPS\Content\Controller
 		\IPS\Output::i()->jsFiles = array_merge( \IPS\Output::i()->jsFiles, \IPS\Output::i()->js( 'front_submit.js', 'bitracker', 'front' ) );
 
 		/* Permission check */
-		if ( !$this->file->canEdit() )
+		if ( !$this->file->canEdit() OR $this->file->hasPendingVersion() )
 		{
 			\IPS\Output::i()->error( 'no_module_permission', '2D161/C', 403, '' );
 		}
 		
 		$category = $this->file->container();
+		\IPS\Output::i()->sidebar['enabled'] = FALSE;
+
+		/* Club */
+		try
+		{
+			if ( $club = $category->club() )
+			{
+				\IPS\core\FrontNavigation::$clubTabActive = TRUE;
+				\IPS\Output::i()->breadcrumb = array();
+				\IPS\Output::i()->breadcrumb[] = array( \IPS\Http\Url::internal( 'app=core&module=clubs&controller=directory', 'front', 'clubs_list' ), \IPS\Member::loggedIn()->language()->addToStack('module__core_clubs') );
+				\IPS\Output::i()->breadcrumb[] = array( $club->url(), $club->name );
+				\IPS\Output::i()->breadcrumb[] = array( $category->url(), $category->_title );
+			}
+		}
+		catch ( \OutOfRangeException $e ) { }
+		
+		/* Require approval */
+		$requireApproval = FALSE;
+		if( $category->bitoptions['moderation'] and $category->bitoptions['moderation_edits'] and !$this->file->canUnhide() )
+		{
+			$requireApproval = TRUE;
+		}
+
+		$postingInformation = ( $requireApproval ) ? \IPS\Theme::i()->getTemplate( 'forms', 'core' )->postingInformation( NULL, TRUE, TRUE ) : NULL;
 		
 		/* Build form */
 		$form = new \IPS\Helpers\Form;
@@ -885,11 +925,19 @@ class _view extends \IPS\Content\Controller
 		{
 			$form->add( new \IPS\Helpers\Form\Text( 'file_version', $this->file->version, ( $category->version_numbers == 2 ) ? TRUE : FALSE, array( 'maxLength' => 32 ) ) );
 		}
-		$form->add( new \IPS\Helpers\Form\Editor( 'file_changelog', $this->file->changelog, FALSE, array( 'app' => 'bitracker', 'key' => 'Bitracker', 'autoSaveKey' => "bitracker-{$this->file->id}-changelog") ) );
-		$form->addHeader( 'upload_files' );
-		$form->add( new \IPS\Helpers\Form\Upload( 'files', iterator_to_array( $this->file->files( NULL, FALSE ) ), ( !\IPS\Member::loggedIn()->group['bit_linked_torrents'] and !\IPS\Member::loggedIn()->group['bit_import_torrents'] ), array( 'storageExtension' => 'bitracker_Torrents', 'allowedFileTypes' => $category->types, 'maxFileSize' => $category->maxfile ? ( $category->maxfile / 1024 ) : NULL, 'multiple' => TRUE, 'retainDeleted' => TRUE ) ) );
+		$form->add( new \IPS\Helpers\Form\Editor( 'file_changelog', NULL, FALSE, array( 'app' => 'bitracker', 'key' => 'Bitracker', 'autoSaveKey' => "bitracker-{$this->file->id}-changelog", 'allowAttachments' => FALSE ) ) );
 
-		$linkedFiles = iterator_to_array( \IPS\Db::i()->select( 'record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0', $this->file->id, 'link' ) ) );
+		$defaultFiles = iterator_to_array( $this->file->files( NULL, FALSE ) );
+		if( !$category->multiple_files )
+		{
+			$defaultFiles = array_pop( $defaultFiles );
+		}
+
+		$fileField = new \IPS\Helpers\Form\Upload( 'files', $defaultFiles, ( !\IPS\Member::loggedIn()->group['bit_linked_files'] and !\IPS\Member::loggedIn()->group['bit_import_files'] ), array( 'storageExtension' => 'bitracker_Torrents', 'allowedFileTypes' => $category->types, 'maxFileSize' => $category->maxfile ? ( $category->maxfile / 1024 ) : NULL, 'multiple' => $category->multiple_files, 'retainDeleted' => TRUE ) );
+		$fileField->label = \IPS\Member::loggedIn()->language()->addToStack('bitracker_file');
+		$form->add( $fileField );
+
+		$linkedFiles = iterator_to_array( \IPS\Db::i()->select( 'record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0 AND record_hidden=0', $this->file->id, 'link' ) ) );
 
 		if ( \IPS\Member::loggedIn()->group['bit_linked_torrents'] )
 		{
@@ -926,25 +974,33 @@ class _view extends \IPS\Content\Controller
 				$screenshots[ $this->file->_primary_screenshot ] = array( 'fileurl' => $screenshots[ $this->file->_primary_screenshot ], 'default' => true );
 			}
 
-			$form->add( new \IPS\Helpers\Form\Upload( 'screenshots', $screenshots, ( $category->bitoptions['reqss'] and !\IPS\Member::loggedIn()->group['bit_linked_torrents'] ), array(
+			$image = TRUE;
+			if ( $category->maxdims and $category->maxdims != '0x0' )
+			{
+				$maxDims = explode( 'x', $category->maxdims );
+				$image = array( 'maxWidth' => $maxDims[0], 'maxHeight' => $maxDims[1] );
+			}
+
+			$form->add( new \IPS\Helpers\Form\Upload( 'screenshots', $screenshots, ( $category->bitoptions['reqss'] and !\IPS\Member::loggedIn()->group['bit_linked_files'] ), array(
 				'storageExtension'	=> 'bitracker_Screenshots',
-				'image'				=> $category->maxssdims ? explode( 'x', $category->maxssdims ) : TRUE,
+				'image'				=> $image,
 				'maxFileSize'		=> $category->maxss ? ( $category->maxss / 1024 ) : NULL,
 				'multiple'			=> TRUE,
 				'retainDeleted'		=> TRUE,
 				'template'			=> "bitracker.submit.screenshot",
 			) ) );
 
-			if ( \IPS\Member::loggedIn()->group['bit_linked_torrents'] )
+			if ( \IPS\Member::loggedIn()->group['bit_linked_files'] )
 			{
-				//iterator_to_array( \IPS\Db::i()->select( 'record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0', $this->file->id, 'sslink' ) ) )
-				//
 				$form->add( new \IPS\bitracker\Form\LinkedScreenshots( 'url_screenshots', array(
-					'values'	=> iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0', $this->file->id, 'sslink' ) )->setKeyField('record_id')->setValueField('record_location') ),
+					'values'	=> iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0 AND record_hidden=0', $this->file->id, 'sslink' ) )->setKeyField('record_id')->setValueField('record_location') ),
 					'default'	=> $this->file->_primary_screenshot
 				), FALSE, array( 'IPS\bitracker\File', 'blacklistCheck' ) ) );
 			}
 		}
+
+		/* Check for any extra form elements */
+		$this->file->newVersionFormElements( $form );
 
 		/* Output */
 		\IPS\Output::i()->title = $this->file->name;
@@ -956,33 +1012,56 @@ class _view extends \IPS\Content\Controller
 			if ( empty( $values['files'] ) and empty( $values['url_files'] ) and empty( $values['import_files'] ) )
 			{
 				$form->error = \IPS\Member::loggedIn()->language()->addToStack('err_no_torrents');
-				\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate( 'submit' )->newVersion( $form, $category->versioning !== 0 );
+				\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate( 'submit' )->submissionForm( $form, $category, $category->message('subterms'), FALSE, 0, $postingInformation, $category->versioning !== 0 );
 				return (string) $form;
+			}
+			elseif ( !$category->multiple_files AND \is_array( $values['files'] ) AND ( \count( $values['files'] ?? [] ) + \count( $values['url_files'] ?? [] ) + \count( $values['import_files'] ?? [] ) > 1 ) )
+			{
+				$form->error = \IPS\Member::loggedIn()->language()->addToStack('err_too_many_torrents');
+				return \IPS\Theme::i()->getTemplate( 'submit' )->submissionForm( $form, $category, $category->message('subterms'), FALSE, 0, $postingInformation, $category->versioning !== 0 );
 			}
 			if ( $category->bitoptions['reqss'] and empty( $values['screenshots'] ) and empty( $values['url_screenshots'] ) )
 			{
 				$form->error = \IPS\Member::loggedIn()->language()->addToStack('err_no_screenshots');
-				\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate( 'submit' )->newVersion( $form, $category->versioning !== 0 );
+				\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate( 'submit' )->submissionForm( $form, $category, $category->message('subterms'), FALSE, 0, $postingInformation, $category->versioning !== 0 );
 				return (string) $form;
 			}
 			
 			/* Versioning */
+			if( $requireApproval )
+			{
+				$fileObj = new \IPS\bitracker\File\PendingVersion;
+				$fileObj->file_id = $this->file->id;
+				$fileObj->member_id = \IPS\Member::loggedIn()->member_id;
+				$fileObj->form_values = $values;
+			}
+			else
+			{
+				$fileObj = $this->file;
+			}
+
 			$existingRecords = array();
 			$existingScreenshots = array();
 			$existingLinks = array();
 			$existingScreenshotLinks = array();
 			if ( $category->versioning !== 0 and ( !\IPS\Member::loggedIn()->group['bit_bypass_revision'] or $values['file_save_revision'] ) )
 			{
-				$this->file->saveVersion();
+				$fileObj->saveVersion();
 			}
 			else
 			{
-				$existingRecords = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'upload', 0 ) ) ) );
-				$existingScreenshots = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'ssupload', 0 ) ) ) );
+				$existingRecords = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'upload', 0 ) )->setKeyField('record_id')->setValueField('record_location') ) );
+				$existingScreenshots = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'ssupload', 0 ) )->setKeyField('record_id')->setValueField('record_location') ) );
 				$existingLinks = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'link', 0 ) )->setKeyField('record_id')->setValueField('record_location') ) );
-				$existingScreenshotLinks = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'sslink', 0 ) )->setKeyField('record_id')->setValueField('record_location') ) );
+                $existingScreenshotLinks = array_unique( iterator_to_array( \IPS\Db::i()->select( 'record_id, record_location', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=?', $this->file->id, 'sslink', 0 ) )->setKeyField('record_id')->setValueField('record_location') ) );
 			}
-			
+
+			/* Files may not be an array since we have an option to limit to a single upload */
+			if( !\is_array( $values['files'] ) )
+			{
+				$values['files'] = [ $values['files'] ];
+			}
+
 			/* Insert the new records */
 			foreach ( $values['files'] as $file )
 			{
@@ -1001,6 +1080,7 @@ class _view extends \IPS\Content\Controller
 						'record_realname'	=> $file->originalFilename,
 						'record_size'		=> $file->filesize(),
 						'record_time'		=> time(),
+						'record_hidden'		=> $requireApproval
 					) );
 				}
 			}
@@ -1025,6 +1105,7 @@ class _view extends \IPS\Content\Controller
 							'record_realname'	=> $file->originalFilename,
 							'record_size'		=> $file->filesize(),
 							'record_time'		=> time(),
+							'record_hidden'		=> $requireApproval
 						) );
 					}
 				}
@@ -1048,6 +1129,7 @@ class _view extends \IPS\Content\Controller
 							'record_realname'	=> NULL,
 							'record_size'		=> 0,
 							'record_time'		=> time(),
+							'record_hidden'		=> $requireApproval
 						) );
 					}
 				}
@@ -1114,7 +1196,8 @@ class _view extends \IPS\Content\Controller
 							'record_size'			=> $file->filesize(),
 							'record_time'			=> time(),
 							'record_no_watermark'	=> $noWatermark,
-							'record_default'		=> ( \IPS\Request::i()->screenshots_primary_screenshot AND \IPS\Request::i()->screenshots_primary_screenshot == $_key ) ? 1 : 0
+							'record_default'		=> ( \IPS\Request::i()->screenshots_primary_screenshot AND \IPS\Request::i()->screenshots_primary_screenshot == $_key ) ? 1 : 0,
+							'record_hidden'			=> $requireApproval
 						) );
 					}
 				}
@@ -1141,72 +1224,82 @@ class _view extends \IPS\Content\Controller
 							'record_realname'	=> NULL,
 							'record_size'		=> 0,
 							'record_time'		=> time(),
-							'record_default'	=> ( \IPS\Request::i()->screenshots_primary_screenshot AND \IPS\Request::i()->screenshots_primary_screenshot == $_key ) ? 1 : 0
+							'record_default'	=> ( \IPS\Request::i()->screenshots_primary_screenshot AND \IPS\Request::i()->screenshots_primary_screenshot == $_key ) ? 1 : 0,
+							'record_hidden'		=> $requireApproval
 						) );
 					}
 				}
 			}
 			
+			$deletions = array( 'records' => array(), 'links' => array() );
+			
 			/* Delete any we're not using anymore */
-			foreach ( $existingRecords as $url )
+			foreach ( $existingRecords as $recordId => $url )
 			{
+				$deletions['records'][ $recordId ] = array( 'handler' => 'bitracker_Torrents', 'url' => $url );
+			}
+			foreach ( $existingScreenshots as $recordId => $url )
+			{
+				$deletions['records'][ $recordId ] = array( 'handler' => 'bitracker_Screenshots', 'url' => $url );
+			}
+			foreach ( ( $existingLinks + $existingScreenshotLinks ) as $id => $url )
+			{
+				$deletions['links'][ $id ] = $id;
+			}
+
+            if( $requireApproval )
+			{
+				$fileObj->record_deletions = $deletions;
+			}
+            else
+			{
+				array_walk( $deletions['records'], function( $arr, $key  ) use( $fileObj ) {
+					$fileObj->deleteRecords( $key, $arr['url'], $arr['handler'] );
+				});
+				$fileObj->deleteRecords( $deletions['links'] );
+
+				/* Set the new details */
+				$fileObj->version = ( isset( $values['file_version'] ) ) ? $values['file_version'] : NULL;
+				$fileObj->changelog = $values['file_changelog'];
+			}
+			
+			/* These are specific to unapproved updates */
+			if ( !$requireApproval )
+			{
+				$fileObj->size = \floatval( \IPS\Db::i()->select( 'SUM(record_size)', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0', $this->file->id, 'upload' ), NULL, NULL, NULL, NULL, \IPS\Db::SELECT_FROM_WRITE_SERVER )->first() );
+
+				/* Work out the new primary screenshot */
 				try
 				{
-					$file = \IPS\File::get( 'bitracker_Torrents', $url )->delete();
+					$this->file->primary_screenshot = \IPS\Db::i()->select( 'record_id', 'bitracker_torrents_records', array( 'record_file_id=? AND ( record_type=? OR record_type=? ) AND record_backup=0 AND record_hidden=0', $this->file->id, 'ssupload', 'sslink' ), 'record_default DESC, record_id ASC', NULL, NULL, NULL, \IPS\Db::SELECT_FROM_WRITE_SERVER )->first();
 				}
-				catch ( \Exception $e ) { }
-				
-				\IPS\Db::i()->delete( 'bitracker_torrents_records', array( 'record_location=?', $url ) );
-			}
-			foreach ( $existingScreenshots as $url )
-			{
-				try
-				{
-					$file = \IPS\File::get( 'bitracker_Screenshots', $url )->delete();
-				}
-				catch ( \Exception $e ) { }
-				
-				\IPS\Db::i()->delete( 'bitracker_torrents_records', array( 'record_location=?', $url ) );
-			}
-			foreach ( $existingLinks as $id => $url )
-			{				
-				\IPS\Db::i()->delete( 'bitracker_torrents_records', array( 'record_id=?', $id ) );
-			}
-            foreach ( $existingScreenshotLinks as $id => $url )
-            {
-                \IPS\Db::i()->delete( 'bitracker_torrents_records', array( 'record_id=?', $id ) );
-            }
-			
-			/* Set the new details */
-			$this->file->version = ( isset( $values['file_version'] ) ) ? $values['file_version'] : NULL;
-			$this->file->changelog = $values['file_changelog'];
-			$this->file->size = \floatval( \IPS\Db::i()->select( 'SUM(record_size)', 'bitracker_torrents_records', array( 'record_file_id=? AND record_type=? AND record_backup=0', $this->file->id, 'upload' ), NULL, NULL, NULL, NULL, \IPS\Db::SELECT_FROM_WRITE_SERVER )->first() );
-			
-			/* Work out the new primary screenshot */
-			try
-			{
-				$this->file->primary_screenshot = \IPS\Db::i()->select( 'record_id', 'bitracker_torrents_records', array( 'record_file_id=? AND ( record_type=? OR record_type=? ) AND record_backup=0', $this->file->id, 'ssupload', 'sslink' ), 'record_default DESC, record_id ASC', NULL, NULL, NULL, \IPS\Db::SELECT_FROM_WRITE_SERVER )->first();
-			}
-			catch ( \UnderflowException $e ) { }
-			
-			/* Does it have to be reapproved? */
-			if ( $category->bitoptions['moderation'] and $category->bitoptions['moderation_edits'] and !$this->file->canUnhide() )
-			{
-				$this->file->open = 0;
+				catch ( \UnderflowException $e ) { }
 			}
 			
 			/* Save */
-			$this->file->updated = time();
-			$this->file->save();
-			
-			/* Send notifications */
-			if ( $this->file->open )
+			$fileObj->updated = time();
+			$fileObj->save();
+
+			if( $requireApproval )
 			{
-				$this->file->sendUpdateNotifications();
+				$this->file->save();
+				$fileObj->sendUnapprovedNotification();
 			}
-			
-			$this->file->processAfterNewVersion( $values );
-			
+			else
+			{
+				/* Send notifications */
+				if ( $this->file->open )
+				{
+					$this->file->sendUpdateNotifications();
+				}
+				else
+				{
+					$this->file->sendUnapprovedNotification();
+				}
+
+				$this->file->processAfterNewVersion( $values );
+			}
+
 			/* Boink */
 			\IPS\Output::i()->redirect( $this->file->url() );
 		}
@@ -1223,7 +1316,7 @@ class _view extends \IPS\Content\Controller
 		catch ( \Exception $e ) { }
 		\IPS\Output::i()->breadcrumb[] = array( $this->file->url(), $this->file->name );
 
-		\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate( 'submit' )->newVersion( $form, $category->versioning !== 0 );
+		\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate( 'submit' )->submissionForm( $form, $this->file->container(), $this->file->container()->message('subterms'), FALSE, 0, $postingInformation, $category->versioning !== 0 );
 	}
 	
 	/**
@@ -1253,5 +1346,59 @@ class _view extends \IPS\Content\Controller
 		
 		/* Display form */
 		\IPS\Output::i()->output = $form->customTemplate( array( \IPS\Theme::i()->getTemplate( 'forms', 'core' ), 'popupTemplate' ) );
+	}
+
+	/**
+	 * Subscribe
+	 *
+	 * @return void
+	 */
+	function toggleSubscription()
+	{
+		\IPS\Session::i()->csrfCheck();
+
+		if( $this->file->subscribed() )
+		{
+			\IPS\Db::i()->delete( 'bitracker_torrents_notify', array( 'notify_member_id=? and notify_file_id=?', \IPS\Member::loggedIn()->member_id, $this->file->id ) );
+			$subscribed = FALSE;
+		}
+		else
+		{
+			\IPS\Db::i()->replace( 'bitracker_torrents_notify', array( 'notify_member_id' => \IPS\Member::loggedIn()->member_id, 'notify_file_id' => $this->file->id ) );
+			$subscribed = TRUE;
+		}
+
+		if ( \IPS\Request::i()->isAjax() )
+		{
+			\IPS\Output::i()->json( $subscribed ? 'subscribed' : 'unsubscribed' );
+		}
+		else
+		{
+			\IPS\Output::i()->redirect( $this->file->url(), $subscribed ? 'file_subscribed' : 'file_unsubscribed' );
+		}
+	}
+
+	/**
+	 * Subscribe Hover
+	 *
+	 * @return void
+	 */
+	function subscribeBlurb()
+	{
+		$notificationConfiguration = \IPS\Member::loggedIn()->notificationsConfiguration();
+		$notificationConfiguration = isset( $notificationConfiguration[ 'new_file_version' ] ) ? $notificationConfiguration[ 'new_file_version' ] : array();
+
+		$options = NULL;
+		if( \count( $notificationConfiguration ) )
+		{
+			foreach( $notificationConfiguration as $option )
+			{
+				$methods[] = \IPS\Member::loggedIn()->language()->addToStack( 'member_notifications_' . $option );
+			}
+
+			$options = \IPS\Member::loggedIn()->language()->formatList( $methods );
+		}
+
+		\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate( 'view' )->notifyBlurb( $this->file, $options );
 	}
 }
