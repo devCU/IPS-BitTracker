@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     31 AUG 2020
+ * @Updated     23 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -91,7 +91,7 @@ class _Files
 		foreach ( \IPS\Db::i()->select( '*', 'bitracker_torrents_records', $where, 'record_time DESC', array( ( $page - 1 ) * $limit, $limit ) ) as $row )
 		{
 			$file = \IPS\bitracker\File::load( $row['record_file_id'] );
-			$obj = \IPS\File::get( 'bitracker_Torrents', $row['record_location'] );
+			$obj = \IPS\File::get( 'bitracker_Torrents', $row['record_location'], $row['record_size'] );
 			$obj->contextInfo = $file->name;
 			$obj->screenshot = $file->primary_screenshot;
 			$obj->originalFilename = $row['record_realname'];
