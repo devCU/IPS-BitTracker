@@ -3,7 +3,7 @@
  *     Support this Project... Keep it free! Become an Open Source Patron
  *                      https://www.devcu.com/donate/
  *
- * @brief       BitTracker Follow
+ * @brief       BitTracker Notify
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
@@ -12,7 +12,7 @@
  * @version     2.5.0 Stable
  * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
- * @Created     11 FEB 2018
+ * @Created     24 OCT 2020
  * @Updated     24 OCT 2020
  *
  *                       GNU General Public License v3.0
@@ -42,8 +42,19 @@ if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
 /**
  * Background Task
  */
-class _Follow
+class _Notify
 {
+	/**
+	 * Parse data before queuing
+	 *
+	 * @param	array	$data
+	 * @return	array
+	 */
+	public function preQueueData( $data )
+	{
+		return $data;
+	}
+
 	/**
 	 * Run Background Task
 	 *
@@ -54,16 +65,40 @@ class _Follow
 	 */
 	public function run( $data, $offset )
 	{
-		$category	= \IPS\bitracker\Category::load( $data['category_id'] );
-		$member		= \IPS\Member::load( $data['member_id'] );
-		$newOffset	= \IPS\bitracker\File::_sendNotificationsBatch( $category, $member, $offset );
-
-		if( $newOffset === NULL )
+		try
+		{
+			$file = \IPS\bitracker\File::load( $data['file'] );
+		}
+		catch( \OutOfRangeException $e )
 		{
 			throw new \IPS\Task\Queue\OutOfRangeException;
 		}
 
-		return $newOffset;
+		$notifyIds = array();
+
+		$recipients = iterator_to_array( \IPS\Db::i()->select( 'bitracker_torrents_notify.*', 'bitracker_torrents_notify', array( 'notify_file_id=?', $data['file'] ), 'notify_id ASC', array( $offset, \IPS\Bitracker\File::NOTIFICATIONS_PER_BATCH ) ) );
+
+		if( !\count( $recipients ) )
+		{
+			throw new \IPS\Task\Queue\OutOfRangeException;
+		}
+
+		$notification = new \IPS\Notification( \IPS\Application::load( 'bitracker' ), 'new_torrent_version', $file, array( $file ) );
+
+		foreach( $recipients AS $recipient )
+		{
+			$recipientMember = \IPS\Member::load( $recipient['notify_member_id'] );
+			if ( $file->container()->can( 'view', $recipientMember ) )
+			{
+				$notifyIds[] = $recipient['notify_id'];
+				$notification->recipients->attach( $recipientMember );
+			}
+		}
+
+		\IPS\Db::i()->update( 'bitracker_torrents_notify', array( 'notify_sent' => time() ), \IPS\Db::i()->in( 'notify_id', $notifyIds ) );
+		$notification->send();
+
+		return $offset + \IPS\bitracker\File::NOTIFICATIONS_PER_BATCH;
 	}
 	
 	/**
@@ -76,9 +111,17 @@ class _Follow
 	 */
 	public function getProgress( $data, $offset )
 	{
-		$category			= \IPS\bitracker\Category::load( $data['category_id'] );
-		$complete			= $data['followerCount'] ? round( 100 / $data['followerCount'] * $offset, 2 ) : 100;
+		try
+		{
+			$file = \IPS\bitracker\File::load( $data['file'] );
+		}
+		catch( \OutOfRangeException $e )
+		{
+			throw new \IPS\Task\Queue\OutOfRangeException;
+		}
 
-		return array( 'text' => \IPS\Member::loggedIn()->language()->addToStack('backgroundQueue_follow', FALSE, array( 'htmlsprintf' => array( \IPS\Theme::i()->getTemplate( 'global', 'core', 'global' )->basicUrl( $category->url(), TRUE, $category->_title, FALSE ) ) ) ), 'complete' => $complete );
-	}		
+		$complete			= $data['notifyCount'] ? round( 100 / $data['notifyCount'] * $offset, 2 ) : 100;
+
+		return array( 'text' => \IPS\Member::loggedIn()->language()->addToStack('backgroundQueue_new_version', FALSE, array( 'htmlsprintf' => array( \IPS\Theme::i()->getTemplate( 'global', 'core', 'global' )->basicUrl( $file->url(), TRUE, $file->name, FALSE ) ) ) ), 'complete' => $complete );
+	}
 }
