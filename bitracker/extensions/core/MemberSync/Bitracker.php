@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     31 AUG 2020
+ * @Updated     24 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -54,10 +54,32 @@ class _Bitracker
 	public function onMerge( $member, $member2 )
 	{
 		\IPS\Db::i()->update( 'bitracker_downloads', array( 'dmid' => $member->member_id ), array( 'dmid=?', $member2->member_id ) );
-		\IPS\Db::i()->update( 'bitracker_torrents', array( 'file_approver' => $member->member_id ), array( 'file_approver=?', $member2->member_id ) );
+		\IPS\Db::i()->update( 'bitracker_files', array( 'file_approver' => $member->member_id ), array( 'file_approver=?', $member2->member_id ) );
+		\IPS\Db::i()->update( 'bitracker_files_notify', array( 'notify_member_id' => $member->member_id ), array( 'notify_member_id=?', $member2->member_id ) );
 		\IPS\Db::i()->delete( 'bitracker_sessions', array( 'dsess_mid=?', $member2->member_id ) );
-	}
 
+		/* Clean up duplicate notify rows */
+		$unique		= array();
+		$duplicate	= array();
+
+		foreach( \IPS\Db::i()->select( 'bitracker_torrents_notify.*, bitracker_torrents.file_submitter', 'bitracker_torrents_notify', array( 'notify_member_id=?', $member->member_id ) )->join( 'bitracker_torrents', "bitracker_torrents_notify.notify_file_id=bitracker_torrents.file_id" ) as $notify )
+		{
+			if( !\in_array( $notify['notify_file_id'], $unique ) and $notify['notify_member_id'] !== $notify['file_submitter'] )
+			{
+				$unique[]	= $notify['notify_file_id'];
+			}
+			else
+			{
+				$duplicate[]	= $notify['notify_id'];
+			}
+		}
+
+		if( \count( $duplicate ) )
+		{
+			\IPS\Db::i()->delete( 'bitracker_torrents_notify', array( "notify_id IN('" . implode( "','", $duplicate ) . "')" ) );
+		}
+	}
+	
 	/**
 	 * Member is deleted
 	 *
@@ -69,5 +91,6 @@ class _Bitracker
 		\IPS\Db::i()->delete( 'bitracker_downloads', array( 'dmid=?', $member->member_id ) );
 		\IPS\Db::i()->delete( 'bitracker_sessions', array( 'dsess_mid=?', $member->member_id ) );
 		\IPS\Db::i()->update( 'bitracker_torrents', array( 'file_approver' => 0 ), array( 'file_approver=?', $member->member_id ) );
+		\IPS\Db::i()->delete( 'bitracker_torrents_notify', array( 'notify_member_id=?', $member->member_id ) );
 	}
 }
