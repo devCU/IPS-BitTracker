@@ -7,13 +7,13 @@
  * @author      Gary Cornell for devCU Software Open Source Projects
  * @copyright   (c) <a href='https://www.devcu.com'>devCU Software Development</a>
  * @license     GNU General Public License v3.0
- * @package     Invision Community Suite 4.4.10
+ * @package     Invision Community Suite 4.5x
  * @subpackage	BitTracker
- * @version     2.2.0 Final
- * @source      https://github.com/GaalexxC/IPS-4.4-BitTracker
+ * @version     2.5.0 Stable
+ * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     14 SEP 2020
+ * @Updated     24 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -153,7 +153,19 @@ class _submit extends \IPS\Dispatcher\Controller
 			}
 			
 			/* Add the fields */
-			$form->add( new \IPS\Helpers\Form\Upload( 'files', $files, ( !\IPS\Member::loggedIn()->group['bit_linked_torrents'] and !\IPS\Member::loggedIn()->group['bit_import_torrents'] ), array( 'storageExtension' => 'bitracker_Torrents', 'allowedFileTypes' => $category->types, 'maxFileSize' => $category->maxfile !== NULL ? ( $category->maxfile / 1024 ) : NULL, 'multiple' => TRUE, 'minimize' => FALSE ) ) );
+			$maximums = array();
+
+			if( $category->maxfile !== NULL AND !$category->club() )
+			{
+				$maximums[] = ( $category->maxfile / 1024 );
+			}
+
+			if( \IPS\Member::loggedIn()->group['bit_max_size'] !== -1 )
+			{
+				$maximums[] = ( \IPS\Member::loggedIn()->group['bit_max_size'] / 1024 );
+			}
+
+			$form->add( new \IPS\Helpers\Form\Upload( 'files', $files, ( !\IPS\Member::loggedIn()->group['bit_linked_files'] and !\IPS\Member::loggedIn()->group['bit_import_files'] ), array( 'storageExtension' => 'bitracker_Torrents', 'allowedFileTypes' => $category->types, 'maxFileSize' => ( ( \count( $maximums ) ) ? min( $maximums ) : NULL ), 'multiple' => $category->multiple_files, 'minimize' => FALSE ) ) );
 
 			if ( !isset( \IPS\Request::i()->bulk ) )
 			{
@@ -186,7 +198,7 @@ class _submit extends \IPS\Dispatcher\Controller
 				if ( $category->bitoptions['allowss'] )
 				{
 					$image = TRUE;
-					if ( $category->maxdims )
+					if ( $category->maxdims and $category->maxdims != '0x0' )
 					{
 						$maxDims = explode( 'x', $category->maxdims );
 						$image = array( 'maxWidth' => $maxDims[0], 'maxHeight' => $maxDims[1] );
@@ -223,13 +235,17 @@ class _submit extends \IPS\Dispatcher\Controller
 				if ( empty( $values['files'] ) and empty( $values['url_files'] ) and empty( $values['import_files'] ) )
 				{
 					$form->error = \IPS\Member::loggedIn()->language()->addToStack('err_no_torrents');
-					return \IPS\Theme::i()->getTemplate( 'submit' )->submitForm( $form, $category, $category->message('subterms'), ( \IPS\Member::loggedIn()->group['bit_bulk_submit'] && \IPS\Request::i()->bulk ) );
+					return \IPS\Theme::i()->getTemplate( 'submit' )->submissionForm( $form, $category, $category->message('subterms'), TRUE, ( \IPS\Member::loggedIn()->group['bit_bulk_submit'] && \IPS\Request::i()->bulk ) );
 				}
-
+				elseif ( !$category->multiple_files AND \is_array( $values['files'] ) AND ( \count( $values['files'] ?? [] ) + \count( $values['url_files'] ?? [] ) + \count( $values['import_files'] ?? [] ) > 1 ) )
+				{
+					$form->error = \IPS\Member::loggedIn()->language()->addToStack('err_too_many_torrents');
+					return \IPS\Theme::i()->getTemplate( 'submit' )->submissionForm( $form, $category, $category->message('subterms'), TRUE, ( \IPS\Member::loggedIn()->group['bit_bulk_submit'] && \IPS\Request::i()->bulk ) );
+				}
 				if ( !isset( \IPS\Request::i()->bulk ) && $category->bitoptions['reqss'] and empty( $values['screenshots'] ) and empty( $values['url_screenshots'] ) )
 				{
 					$form->error = \IPS\Member::loggedIn()->language()->addToStack('err_no_screenshots');
-					return \IPS\Theme::i()->getTemplate( 'submit' )->submitForm( $form, $category, $category->message('subterms'), ( \IPS\Member::loggedIn()->group['bit_bulk_submit'] && \IPS\Request::i()->bulk ) );
+					return \IPS\Theme::i()->getTemplate( 'submit' )->submissionForm( $form, $category, $category->message('subterms'), TRUE, ( \IPS\Member::loggedIn()->group['bit_bulk_submit'] && \IPS\Request::i()->bulk ) );
 				}
 												
 				/* Get any records we had before in case we need to delete them */
@@ -241,6 +257,13 @@ class _submit extends \IPS\Dispatcher\Controller
 				$linkedFiles		= array();
 				$screenshots		= array();
 				$linkedScreenshots	= array();
+
+				/* Files may not be an array since we have an option to limit to a single upload */
+				if( !\is_array( $values['files'] ) )
+				{
+					$values['files'] = [ $values['files'] ];
+				}
+
 				foreach ( $values['files'] as $file )
 				{
 					$files[ $k ] = (string) $file;
@@ -302,7 +325,6 @@ class _submit extends \IPS\Dispatcher\Controller
 						unset( $existing[ (string) $url ] );
 					}
 				}
-
 				if ( isset( $values['screenshots'] ) )
 				{
 					foreach ( $values['screenshots'] as $_key => $file )
@@ -366,7 +388,7 @@ class _submit extends \IPS\Dispatcher\Controller
 				{
 					try
 					{
-						\IPS\File::get( $file['record_type'] === 'upload' ? 'bitracker_Files' : 'bitracker_Screenshots', $location )->delete();
+						\IPS\File::get( $file['record_type'] === 'upload' ? 'bitracker_Torrents' : 'bitracker_Screenshots', $location )->delete();
 					}
 					catch ( \Exception $e ) { }
 
@@ -395,7 +417,8 @@ class _submit extends \IPS\Dispatcher\Controller
 				if ( !isset( \IPS\Request::i()->bulk ) )
 				{
 					$file = \IPS\bitracker\File::createFromForm( array_merge( $data, $values, array( 'postKey' => \IPS\Request::i()->postKey ) ), $category );
-
+					$file->markRead();
+					
 					/* Redirect */
 					if ( isset( $values['guest_email'] ) )
 					{
@@ -440,7 +463,7 @@ class _submit extends \IPS\Dispatcher\Controller
 				$postingInformation = NULL;
 			}
 
-			return \IPS\Theme::i()->getTemplate( 'submit' )->submitForm( $form, $category, $category->message('subterms'), ( \IPS\Member::loggedIn()->group['bit_bulk_submit'] && \IPS\Request::i()->bulk ), $postingInformation );
+			return \IPS\Theme::i()->getTemplate( 'submit' )->submissionForm( $form, $category, $category->message('subterms'), TRUE, ( \IPS\Member::loggedIn()->group['bit_bulk_submit'] && \IPS\Request::i()->bulk ), $postingInformation );
 		};
 
 		/**
@@ -479,37 +502,13 @@ class _submit extends \IPS\Dispatcher\Controller
 				$form->addHeader( $displayName );
 				
 				/* Form Elements */
-				foreach ( \IPS\bitracker\File::formElements( NULL, $category ) as $input )
+				foreach ( \IPS\bitracker\File::formElements( NULL, $category, "filedata_{$key}_" ) as $input )
 				{
-					\IPS\Member::loggedIn()->language()->words[ "filedata_{$key}_{$input->name}" ] = \IPS\Member::loggedIn()->language()->addToStack( $input->name, FALSE );
-					
-					if ( !$input->value and \in_array( $input->name, array( 'file_title', 'file_desc' ) ) )
+					\IPS\Member::loggedIn()->language()->words[ $input->name ] = \IPS\Member::loggedIn()->language()->addToStack( mb_substr( $input->name, mb_strlen( "filedata_{$key}_" ) ), FALSE );
+					if ( !$input->value and \in_array( $input->name, array( "filedata_{$key}_file_title", "filedata_{$key}_file_desc" ) ) )
 					{
 						$input->value = $displayName;
 					}
-											
-					$input->name = "filedata_{$key}_{$input->name}";
-					if ( $input instanceof \IPS\Helpers\Form\Editor )
-					{
-						$input->options['autoSaveKey'] .= $key;
-					}
-					
-					if ( isset( $input->options['toggles'] ) )
-					{
-						foreach ( $input->options['toggles'] as $trigger => $toggles )
-						{
-							foreach ( $toggles as $k => $v )
-							{
-								$input->options['toggles'][ $trigger ][ $k ] = "{$v}_{$key}";
-							}
-						}
-					}
-					
-					if ( $input->htmlId )
-					{
-						$input->htmlId = "{$input->htmlId}_{$key}";
-					}
-									
 					$form->add( $input );
 				}
 				
@@ -517,10 +516,17 @@ class _submit extends \IPS\Dispatcher\Controller
 				if ( $category->bitoptions['allowss'] )
 				{
 					$existing[ $key ] = iterator_to_array( new \IPS\File\Iterator( \IPS\Db::i()->select( '*', 'bitracker_torrents_records', array( 'record_post_key=? AND record_type=?', md5( "{$data['postKey']}-{$key}" ), 'ssupload' ) )->setValueField( function( $row ) { return $row['record_no_watermark'] ?: $row['record_location']; } )->setKeyField( function( $row ) { return $row['record_no_watermark'] ?: $row['record_location']; } ), 'bitracker_Screenshots' ) );
-											
-					$form->add( new \IPS\Helpers\Form\Upload( "screenshots_{$key}", $existing[ $key ], ( $category->bitoptions['reqss'] and !\IPS\Member::loggedIn()->group['bit_linked_torrents'] ), array(
+
+					$image = TRUE;
+					if ( $category->maxdims and $category->maxdims != '0x0' )
+					{
+						$maxDims = explode( 'x', $category->maxdims );
+						$image = array( 'maxWidth' => $maxDims[0], 'maxHeight' => $maxDims[1] );
+					}
+
+					$form->add( new \IPS\Helpers\Form\Upload( "screenshots_{$key}", $existing[ $key ], ( $category->bitoptions['reqss'] and !\IPS\Member::loggedIn()->group['bit_linked_files'] ), array(
 						'storageExtension'	=> 'bitracker_Screenshots',
-						'image'				=> $category->maxssdims ? explode( 'x', $category->maxssdims ) : TRUE,
+						'image'				=> $image,
 						'maxFileSize'		=> $category->maxss ? ( $category->maxss / 1024 ) : NULL,
 						'multiple'			=> TRUE
 					) ) );
@@ -598,6 +604,7 @@ class _submit extends \IPS\Dispatcher\Controller
 				{
 					/* $values isn't going to work as is here */
 					$save = array( 'postKey' => md5( "{$data['postKey']}-{$key}" ) );
+					$customFields = [];
 					$len = mb_strlen( "filedata_{$key}_" );
 					foreach ( $values as $k => $v )
 					{
@@ -605,10 +612,22 @@ class _submit extends \IPS\Dispatcher\Controller
 						{
 							$save[ mb_substr( $k, $len ) ] = $v;
 						}
+						elseif ( mb_substr( $k, 0, $len + 16 ) == "downloads_field_filedata_{$key}_" ) // That's a custom field, because the underscore after the language prefix is hardcoded
+						{
+							$customFields[] = mb_substr( $k, $len + 16 );
+							$save[ 'bitracker_field_' . mb_substr( $k, $len + 16 ) ] = $v;
+						}
 					}
-					\IPS\bitracker\File::createFromForm( $save, $category, FALSE );
+					
+					$file = \IPS\bitracker\File::createFromForm( $save, $category, FALSE );
+					\IPS\File::claimAttachments( "filedata_{$key}_downloads-new-file", $file->id, NULL, 'desc' );
+					foreach ( $customFields as $k )
+					{
+						\IPS\File::claimAttachments( md5( 'IPS\bitracker\Field-filedata_' . $key . '_' . $k . '-new' ), $file->id, $k, 'fields' );
+					}
+					$file->markRead();
 				}
-				
+
 				if ( \IPS\Member::loggedIn()->moderateNewContent() OR \IPS\bitracker\File::moderateNewItems( \IPS\Member::loggedIn(), $category ) )
 				{
 					\IPS\bitracker\File::_sendUnapprovedNotifications( $category );
@@ -662,6 +681,7 @@ class _submit extends \IPS\Dispatcher\Controller
 		}
 		
 		$category = NULL;
+		\IPS\Output::i()->sidebar['enabled'] = FALSE;
 		if ( isset( \IPS\Request::i()->category ) )
 		{
 			try
@@ -674,11 +694,6 @@ class _submit extends \IPS\Dispatcher\Controller
 					\IPS\Output::i()->breadcrumb[] = array( \IPS\Http\Url::internal( 'app=core&module=clubs&controller=directory', 'front', 'clubs_list' ), \IPS\Member::loggedIn()->language()->addToStack('module__core_clubs') );
 					\IPS\Output::i()->breadcrumb[] = array( $club->url(), $club->name );
 					\IPS\Output::i()->breadcrumb[] = array( $category->url(), $category->_title );
-					
-					if ( \IPS\Settings::i()->clubs_header == 'sidebar' )
-					{
-						\IPS\Output::i()->sidebar['contextual'] = \IPS\Theme::i()->getTemplate( 'clubs', 'core' )->header( $club, $category, 'sidebar' );
-					}
 				}
 			}
 			catch ( \OutOfRangeException $e ) { }
@@ -686,6 +701,6 @@ class _submit extends \IPS\Dispatcher\Controller
 		
 		\IPS\Output::i()->output = (string) $wizard;
 		
-		\IPS\Output::i()->breadcrumb[] = array( NULL, \IPS\Member::loggedIn()->language()->addToStack( 'submit_a_file' ) );
+		\IPS\Output::i()->breadcrumb[] = array( NULL, \IPS\Member::loggedIn()->language()->addToStack( 'submit_a_torrent' ) );
 	}
 }
