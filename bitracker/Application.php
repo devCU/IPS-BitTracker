@@ -13,7 +13,7 @@
  * @source      https://github.com/devCU/IPS-BitTracker
  * @Issue Trak  https://www.devcu.com/forums/devcu-tracker/
  * @Created     11 FEB 2018
- * @Updated     20 OCT 2020
+ * @Updated     27 OCT 2020
  *
  *                       GNU General Public License v3.0
  *    This program is free software: you can redistribute it and/or modify       
@@ -86,7 +86,7 @@ class _Application extends \IPS\Application
 			\IPS\Output::i()->error( 'rss_offline', '2D175/2', 403, 'rss_offline_admin' );
 		}
 
-		$document = \IPS\Xml\Rss::newDocument( \IPS\Http\Url::internal( 'app=bitracker&module=portal&controller=main', 'front', 'bitracker' ), $member->language()->get(bit_rss_title'), $member->language()->get('bit_rss_title') );
+		$document = \IPS\Xml\Rss::newDocument( \IPS\Http\Url::internal( 'app=bitracker&module=portal&controller=main', 'front', 'bitracker' ), $member->language()->get('bit_rss_title'), $member->language()->get('bit_rss_title') );
 		
 		foreach ( \IPS\bitracker\File::getItemsWithPermission( array(), NULL, 10, 'read', \IPS\Content\Hideable::FILTER_AUTOMATIC, 0, $member ) as $file )
 		{
