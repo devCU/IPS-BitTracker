@@ -1579,7 +1579,7 @@
             },
             "file_meta_data": {
                 "name": "file_meta_data",
-                "type": "BIT",
+                "type": "TINYINT",
                 "length": 1,
                 "decimals": null,
                 "values": null,
@@ -3104,7 +3104,7 @@
         }
     },
     "bitracker_files_notify": {
-        "name": "downloads_files_notify",
+        "name": "bitracker_files_notify",
         "columns": {
             "notify_id": {
                 "name": "notify_id",
@@ -3189,7 +3189,7 @@
         }
     },
     "bitracker_files_pending": {
-        "name": "downloads_files_pending",
+        "name": "bitracker_files_pending",
         "columns": {
             "pending_file_id": {
                 "name": "pending_file_id",
