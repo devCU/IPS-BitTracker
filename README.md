@@ -2,14 +2,14 @@
 
 [![License](https://img.shields.io/badge/License-GNUv3-blue.svg)](https://github.com/devCU/IPS-BitTracker/blob/master/LICENSE) 
 [![Version](https://img.shields.io/badge/Version-4.7.3-ff69b4.svg)](https://www.devcu.com/devcu-tracker/)
-[![Build](https://img.shields.io/badge/Build-Development-ed.svg)](https://www.devcu.com/devcu-tracker/)
+[![Build](https://img.shields.io/badge/Build-Development-red.svg)](https://www.devcu.com/devcu-tracker/)
 [![Status](https://img.shields.io/badge/Status-BETA-inactive.svg)](https://www.devcu.com/devcu-tracker/)
 [![Development](https://img.shields.io/badge/Development-Active-success.svg)](https://www.devcu.com/devcu-tracker/)
 [![Platform](https://img.shields.io/badge/Platform-IPS4.7x-blue.svg)](https://www.devcu.com/devcu-tracker/)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/devCU/IPS-BitTracker/master.svg)](https://www.devcu.com/devcu-tracker/)
 
 ```diff
-- THIS IS AN INCOMPLETE DEVELOPMENT VERSION ONLY SUPPORTERS AND REQUESTS CAN ACCESS FULL VERSIONS
+- THIS IS A NEW DEVELOPMENT VERSION FOR IPS 4.7x SUPPORTING PHP 8.x | MySQL 8.x | REDIS 6.x
 ```
 
 ## ** Become a Supporter of devCU **
@@ -31,7 +31,7 @@
  \  | \  . \ ;  |   Open Source Projects   || ; / .  / |  /
   '\_\ \\ \ \ \ |                          ||/ / / // /_/'
         \\ \ \ \|        DCU Tracker       |/ / / //
-         `'-\_\_\         v 2.5.0          /_/_/-'`
+         `'-\_\_\         v 4.7.3          /_/_/-'`
                 '--------------------------'
 </pre>
 
@@ -45,18 +45,18 @@
 
 ## ** Updated Notes **
 
-10/20/20
+10/13/22
 
-- NEW version 2.5.0 Stable release for IPS 4.5x. Upgrading this version 4.4x to 4.5x will not support legacy software so 4.4 users are out
+- NEW version 4.7.3 Development release for IPS 4.7x
 - Only devCU supporters will have access to the release betas for testing
-- Stable release expected end of October and via request only now
-- IPS 4.5x Development environment 
-   - Ubuntu 20.04.1 Server
-   - Nginx 1.19.3
-   - PHP 7.4.11
-   - Percona MySQL 8.0.21-12
-   - Redis Server 5.0.7
-- [Requirements and Recommendations](https://github.com/devCU/IPS-4.4-BitTracker/issues/7)
+- Stable release expected end of October 2022 and via request only now
+- IPS 4.7x Development environment 
+   - Ubuntu 22.04.1 Server
+   - Nginx 1.23.1
+   - PHP 8.1.2
+   - Percona MySQL 8.0.28-20
+   - Redis Server 6.0.16
+- [Requirements and Recommendations](https://github.com/devCU/IPS-BitTracker/issues/7)
 
 
 ## License
@@ -69,4 +69,4 @@ Please! Contact Me
 
 ## Copyrights
 
-Created for devCU Software ©2020
+Created for devCU Software ©2022
