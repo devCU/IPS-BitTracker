@@ -49,8 +49,7 @@
 
 - NEW version 4.7.3 Development release for IPS 4.7x
 - Only devCU supporters will have access to the release betas for testing
-- Stable release expected end of October 2022 and via request only now
-- IPS 4.7x Development environment 
+- Stable release expected end of October 2022 @ devCU
    - Ubuntu 22.04.1 Server
    - Nginx 1.23.1
    - PHP 8.1.2
