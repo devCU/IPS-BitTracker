@@ -18,7 +18,7 @@
 
 - Donators have access to Beta and Release version up to 2 weeks before the public
 
-[![donate](https://www.devcu.com/mediasrc/support_devcu.png?v=1)](https://www.devcu.com/donate/)
+[![donate](https://www.devcu.com/mediasrc/support_devcu.png?v=1)](https://www.devcu.com/donate)
 
     
 <pre>
