@@ -9,7 +9,8 @@
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/devCU/IPS-BitTracker/master.svg)](https://www.devcu.com/devcu-tracker/)
 
 ```diff
-- THIS IS A NEW DEVELOPMENT VERSION FOR IPS 4.7x SUPPORTING PHP 8.x | MySQL 8.x | REDIS 6.x NO LONGER SUPPORT VERSIONS 4.3, 4.4, 4.5 BELOW PHP 8
+- THIS IS A NEW DEVELOPMENT VERSION FOR IPS 4.7x SUPPORTING PHP 8.x | MySQL 8.x | REDIS 6.x 
+- devCU NO LONGER SUPPORTS LEGACY VERSIONS 4.3, 4.4, 4.5 OPERATING BELOW PHP 8x
 ```
 
 ## ** Become a Supporter of devCU **
